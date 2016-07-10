@@ -1,0 +1,123 @@
+//
+// Created by patryk on 23.06.16.
+//
+
+#include "NamesRegister.hpp"
+
+#include <QDirIterator>
+
+namespace Zinot
+{
+
+NamesRegister::NameId NamesRegister::getNewId()
+{
+   if (releasedId.isEmpty())
+   {
+      // First return, then increment next id
+      return nextId++;
+   }
+
+   return releasedId.pop();
+}
+
+void NamesRegister::releaseId(NameId id)
+{
+   if (id == (nextId - 1))
+   {
+      --nextId;
+      return;
+   }
+
+   releasedId.push(id);
+}
+
+NamesRegister::NameId NamesRegister::addName(const QString & name)
+{
+   // Check if name exists
+   if (nameToId.contains(name))
+      return NULL;
+
+   NameId newId = getNewId();
+
+   // Check if ID exists
+   if (idToName.find(newId) != idToName.end())
+   {
+      releaseId(newId);
+      return NULL;
+   }
+
+   nameToId.insert(name, newId);
+   idToName.insert(newId, name);
+
+   return newId;
+}
+
+bool NamesRegister::addNamesFromPath(const QString & path)
+{
+   QDirIterator it(path,
+                   QDir::Readable | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks,
+                   QDirIterator::Subdirectories);
+
+   while (it.hasNext())
+      addName(QDir::cleanPath(it.next()));
+}
+
+bool NamesRegister::deleteName(const QString & name)
+{
+   NameToIdContainer::iterator nameToIdIt = nameToId.find(name);
+   if (nameToIdIt == nameToId.end())
+      return false;
+
+   IdToNameContainer::iterator idToNameIt = idToName.find(nameToIdIt.value());
+   if (idToNameIt == idToName.end())
+      return false;
+
+   releaseId(nameToIdIt.value());
+
+   idToName.erase(idToNameIt);
+   nameToId.erase(nameToIdIt);
+
+   return true;
+}
+
+bool NamesRegister::deleteId(NameId nameId)
+{
+   IdToNameContainer::iterator idToNameIt = idToName.find(nameId);
+   if (idToNameIt == idToName.end())
+      return false;
+
+   NameToIdContainer::iterator nameToIdIt = nameToId.find(idToNameIt.value());
+   if (nameToIdIt == nameToId.end())
+      return false;
+
+   releaseId(nameToIdIt.value());
+
+   idToName.erase(idToNameIt);
+   nameToId.erase(nameToIdIt);
+
+   return true;
+}
+
+QString NamesRegister::getName(NameId nameId) const
+{
+   if (nameId == 0)
+      return QString();
+
+   IdToNameContainer::const_iterator it = idToName.find(nameId);
+
+   if (it == idToName.end())
+      return QString();
+
+   return QString(it.value());
+}
+
+NamesRegister::NameId NamesRegister::getId(const QString & name) const
+{
+   NameToIdContainer::const_iterator it = nameToId.find(name);
+
+   if (it == nameToId.end())
+      return NULL;
+
+   return it.value();
+}
+}

@@ -1,0 +1,39 @@
+{
+  "compressed": true,
+  "mipmapFilter": "lanczos3",
+
+  "glBindTexture": {
+    "target": "GL_TEXTURE_2D"
+  },
+
+  "glTexParameter": {
+    "GL_TEXTURE_LOD_BIAS": null,
+    "GL_TEXTURE_MIN_FILTER": null,
+    "GL_TEXTURE_MAG_FILTER": null,
+    "GL_TEXTURE_MIN_LOD": null,
+    "GL_TEXTURE_MAX_LOD": null,
+    "GL_TEXTURE_MAX_LEVEL": null,
+    "GL_TEXTURE_WRAP_S": null,
+    "GL_TEXTURE_WRAP_T": null,
+    "GL_TEXTURE_WRAP_R": null
+  },
+
+  "glTexImage": {
+    "internalFormat": "GL_COMPRESSED_RGBA_S3TC_DXT5_EXT",
+    "format": null,
+    "type": null
+  },
+
+  "layersNamePatterns": {
+    "positiveXEnd": "-px",
+    "negativeXEnd": "-nx",
+
+    "positiveYEnd": "-py",
+    "negativeYEnd": "-ny",
+
+    "positiveZEnd": "-pz",
+    "negativeZEnd": "-nz",
+
+    "texDepthSeparator": "-"
+  }
+}

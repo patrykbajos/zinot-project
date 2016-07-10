@@ -1,0 +1,26 @@
+{
+  "shaders": [
+    {
+      "name": "basic-shader",
+      "vertex-shader": "media/shaders/shader.vs.glsl",
+      "fragment-shader": "media/shaders/shader.fs.glsl"
+    }
+  ],
+
+  "objects": [
+    {
+      "model": "media/models/ursus.obj",
+      "shader": "basic-shader",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "rot": [
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}
