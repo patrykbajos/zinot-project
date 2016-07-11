@@ -39,18 +39,16 @@ if (WIN32)
     link_directories(E:/dev/lib/FreeImage/Dist)     # Freeimage, dynamic
     include_directories(E:/dev/lib/freetype-2.6.3/include)
     link_directories(E:/dev/lib/freetype-2.6.3/objs/vc2010/Win32) # FreeType2, dynamic
-    include_directories(E:/dev/lib/glew-1.10.0/include)
-    link_directories(E:/dev/lib/glew-1.10.0/lib/Release/Win32) # GLEW
     include_directories(/media/patryk/Gry/dev/lib/libsquish-1.13/include)
     link_directories(E:/dev/lib/libsquish-1.13/Release) # Libsquish, linked statically
     include_directories(E:/dev/lib/glm-0.9.7.5/glm) # glm
 
-    target_link_libraries(zinot-engine gl glu glew32)
+    target_link_libraries(zinot-engine gl glu)
     target_link_libraries(zinot-engine freetype263)
 endif ()
 
 if (UNIX AND NOT APPLE)
-    target_link_libraries(zinot-engine GL GLU GLEW)
+    target_link_libraries(zinot-engine GL GLU)
     include_directories(/usr/include/freetype2)
     target_link_libraries(zinot-engine freetype)
 endif ()
