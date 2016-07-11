@@ -8,7 +8,7 @@
 #include <memory>
 
 #include <SFML/Window.hpp>
-#include <zinot-engine/engine/Viewport.hpp>
+#include <zinot-engine/eng/Viewport.hpp>
 
 namespace Zinot
 {

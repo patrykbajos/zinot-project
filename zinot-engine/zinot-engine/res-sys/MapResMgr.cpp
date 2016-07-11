@@ -1,5 +1,5 @@
 #include "MapResMgr.hpp"
-#include <zinot-engine/resources/Resource.hpp>
+#include <zinot-engine/res-sys/Resource.hpp>
 
 namespace Zinot
 {

@@ -8,11 +8,11 @@
 #include <assimp/scene.h>
 #include <gl_core_3_3.hpp>
 
-#include <zinot-engine/resources/Resource.hpp>
-#include <zinot-engine/engine/resources/models/Mesh.hpp>
-#include <zinot-engine/engine/resources/Texture.hpp>
-#include <zinot-engine/engine/resources/models/ModelNode.hpp>
-#include <zinot-engine/engine/resources/models/Material.hpp>
+#include <zinot-engine/res-sys/Resource.hpp>
+#include <zinot-engine/res/models/Mesh.hpp>
+#include <zinot-engine/res/Texture.hpp>
+#include <zinot-engine/res/models/ModelNode.hpp>
+#include <zinot-engine/res/models/Material.hpp>
 
 namespace Zinot
 {

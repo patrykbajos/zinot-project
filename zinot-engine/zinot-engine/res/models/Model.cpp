@@ -60,6 +60,8 @@ bool Model::processMaterials(const aiScene * scene, MapResMgr * texResMgr)
 
    aiMaterial ** aiMaterials = scene->mMaterials;
    QString modelDir = getName().section("/", 0, -2);
+   std::string strmodeldir = modelDir.toStdString();
+
    for (uint32_t matIt = 0; matIt < materialsNum; ++matIt)
    {
       aiMaterial * aiMaterial = aiMaterials[matIt];
@@ -98,6 +100,7 @@ bool Model::processVertices(const aiScene * scene)
    gl::BindBuffer(gl::ARRAY_BUFFER, vbo);
    gl::BufferData(gl::ARRAY_BUFFER, vertsNum * vertSize, nullptr, gl::STATIC_DRAW);
 
+   // for meshes in scene
    for (uint32_t meshIt = 0, baseVert = 0; meshIt < meshesNum; ++meshIt)
    {
       aiMesh * aiMesh = scene->mMeshes[meshIt];
@@ -106,7 +109,8 @@ bool Model::processVertices(const aiScene * scene)
       uint32_t meshVertsNum = aiMesh->mNumVertices;
       mesh.baseVertex = baseVert;
 
-      for (uint32_t meshVertIt = 0; meshVertIt < aiMesh->mNumVertices; ++meshVertIt)
+      // for vertices in mesh
+      for (uint32_t meshVertIt = 0; meshVertIt < meshVertsNum; ++meshVertIt)
       {
          Vertex vert;
          auto & vertPos = aiMesh->mVertices[meshVertIt];

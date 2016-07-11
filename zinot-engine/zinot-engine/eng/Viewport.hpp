@@ -12,11 +12,11 @@
 #include <QStack>
 #include <glm/glm.hpp>
 
-#include <zinot-engine/resources/MapResMgr.hpp>
-#include <zinot-engine/engine/FPSCamera.hpp>
-#include <zinot-engine/engine/resources/models/Model.hpp>
-#include <zinot-engine/engine/resources/Texture.hpp>
-#include <zinot-engine/engine/resources/GpuProgram.hpp>
+#include <zinot-engine/res-sys/MapResMgr.hpp>
+#include <zinot-engine/eng/FPSCamera.hpp>
+#include <zinot-engine/res/models/Model.hpp>
+#include <zinot-engine/res/Texture.hpp>
+#include <zinot-engine/res/GpuProgram.hpp>
 
 namespace sf
 {

@@ -1,16 +1,16 @@
-#include <zinot-engine/engine/Engine.hpp>
+#include <zinot-engine/eng/Engine.hpp>
 
-#ifdef DEBUG
+#ifndef NDEBUG
 
-//#include <gtest/gtest.h>
+#include <gtest/gtest.h>
 #endif
 
 int main(int argc, char * argv[])
 {
-/*#ifdef DEBUG
+#ifndef NDEBUG
 	::testing::InitGoogleTest(&argc, argv);
 	RUN_ALL_TESTS();
-#endif*/
+#endif
 
    Zinot::Engine eng;
    return eng.main();

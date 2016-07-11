@@ -5,13 +5,13 @@
 #include "Viewport.hpp"
 
 #include <iostream>
-#include <zinot-engine/engine/Engine.hpp>
-#include <zinot-engine/engine/resources/Shader.hpp>
-#include <zinot-engine/engine/resources/Texture.hpp>
-#include <zinot-engine/engine/resources/models/Model.hpp>
-#include <zinot-engine/engine/resources/GpuProgram.hpp>
-#include <zinot-engine/engine/FPSCamera.hpp>
-#include <zinot-engine/engine/Window.hpp>
+#include <zinot-engine/eng/Engine.hpp>
+#include <zinot-engine/res/Shader.hpp>
+#include <zinot-engine/res/Texture.hpp>
+#include <zinot-engine/res/models/Model.hpp>
+#include <zinot-engine/res/GpuProgram.hpp>
+#include <zinot-engine/eng/FPSCamera.hpp>
+#include <zinot-engine/eng/Window.hpp>
 
 #include <SFML/Window.hpp>
 #include <glm/gtc/matrix_transform.hpp>

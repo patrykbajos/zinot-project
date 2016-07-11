@@ -16,7 +16,7 @@ void main()
 {
     mat4 mvp = proj * view * model;
 
-    gl_Position = mvp * vec4(vertPos, 1.0);
+    gl_Position = mvp * vec4(vertPos, 1.0f);
 
     fragColor = vec4(0.8f, 0.8f, 0.8f, 1.0f);
     fragNorm = (mvp * vec4(vertNorm, 0.0f)).xyz;

@@ -1,7 +1,7 @@
 #ifndef RESOURCEMANAGER_HPP
 #define RESOURCEMANAGER_HPP
 
-#include <zinot-engine/resources/NamesRegister.hpp>
+#include <zinot-engine/res-sys/NamesRegister.hpp>
 #include <QMap>
 
 namespace Zinot

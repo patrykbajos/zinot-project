@@ -1,8 +1,8 @@
-#include <zinot-engine/engine/Engine.hpp>
+#include <zinot-engine/eng/Engine.hpp>
 
 #include <zinot-utils/Logger.hpp>
-#include <zinot-engine/engine/Viewport.hpp>
-#include <zinot-engine/engine/Window.hpp>
+#include <zinot-engine/eng/Viewport.hpp>
+#include <zinot-engine/eng/Window.hpp>
 
 namespace Zinot
 {

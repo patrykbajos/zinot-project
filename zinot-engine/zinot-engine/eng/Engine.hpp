@@ -6,7 +6,7 @@
 #define ZINOT_ENGINE_HPP
 
 #include <memory>
-#include <zinot-engine/engine/Window.hpp>
+#include <zinot-engine/eng/Window.hpp>
 
 namespace Zinot
 {

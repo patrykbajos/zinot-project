@@ -2,24 +2,33 @@ cmake_minimum_required(VERSION 3.5)
 project(zinot-engine)
 
 set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/zinot-engine)
-set(ZINOT_ENGINE_SRC
+set(ZINOT_ENGINE_SRC_MAIN
         ${PROJECT_SOURCE_DIR}/main.cpp
-        ${PROJECT_SOURCE_DIR}/engine/Viewport.cpp
-        ${PROJECT_SOURCE_DIR}/engine/resources/models/ModelNode.cpp
-        ${PROJECT_SOURCE_DIR}/engine/resources/models/Material.cpp
-        ${PROJECT_SOURCE_DIR}/engine/resources/models/Mesh.cpp
-        ${PROJECT_SOURCE_DIR}/engine/resources/models/Model.cpp
-        ${PROJECT_SOURCE_DIR}/engine/resources/GpuProgram.cpp
-        ${PROJECT_SOURCE_DIR}/engine/resources/Texture.cpp
-        ${PROJECT_SOURCE_DIR}/engine/resources/Shader.cpp
-        ${PROJECT_SOURCE_DIR}/engine/Engine.cpp
-        ${PROJECT_SOURCE_DIR}/engine/Window.cpp
-        ${PROJECT_SOURCE_DIR}/engine/FPSCamera.cpp
-        ${PROJECT_SOURCE_DIR}/resources/MapResMgr.cpp
-        ${PROJECT_SOURCE_DIR}/resources/NamesRegister.cpp
-        ${PROJECT_SOURCE_DIR}/resources/Resource.cpp
+        ${PROJECT_SOURCE_DIR}/eng/Viewport.cpp
+        ${PROJECT_SOURCE_DIR}/res/models/ModelNode.cpp
+        ${PROJECT_SOURCE_DIR}/res/models/Material.cpp
+        ${PROJECT_SOURCE_DIR}/res/models/Mesh.cpp
+        ${PROJECT_SOURCE_DIR}/res/models/Model.cpp
+        ${PROJECT_SOURCE_DIR}/res/GpuProgram.cpp
+        ${PROJECT_SOURCE_DIR}/res/Texture.cpp
+        ${PROJECT_SOURCE_DIR}/res/Shader.cpp
+        ${PROJECT_SOURCE_DIR}/eng/Engine.cpp
+        ${PROJECT_SOURCE_DIR}/eng/Window.cpp
+        ${PROJECT_SOURCE_DIR}/eng/FPSCamera.cpp
+        ${PROJECT_SOURCE_DIR}/res-sys/MapResMgr.cpp
+        ${PROJECT_SOURCE_DIR}/res-sys/NamesRegister.cpp
+        ${PROJECT_SOURCE_DIR}/res-sys/Resource.cpp
+        )
+set(ZINOT_ENGINE_SRC_TESTS
+        tests/NamesRegisterTest.cpp
         )
 include_directories(./)
+
+if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
+    set(ZINOT_ENGINE_SRC ${ZINOT_ENGINE_SRC_MAIN} ${ZINOT_ENGINE_SRC_TESTS})
+else ()
+    set(ZINOT_ENGINE_SRC ${ZINOT_ENGINE_SRC_MAIN})
+endif ()
 
 add_executable(zinot-engine ${ZINOT_ENGINE_SRC})
 
@@ -53,3 +62,6 @@ target_link_libraries(zinot-engine assimp)
 target_link_libraries(zinot-engine freeimage)
 target_link_libraries(zinot-engine zinot-utils)
 target_link_libraries(zinot-engine glloadgen)
+
+target_link_libraries(zinot-engine debug gtest)
+target_link_libraries(zinot-engine debug pthread)

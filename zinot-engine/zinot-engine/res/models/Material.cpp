@@ -53,15 +53,15 @@ bool Material::processParameters(aiMaterial * aiMat)
    if (aiMat->Get(AI_MATKEY_SHININESS, specular) != aiReturn_SUCCESS)
       return false;
 
-   aiVector3D aiAmbient;
+   aiColor3D aiAmbient;
    if (aiMat->Get(AI_MATKEY_COLOR_AMBIENT, aiAmbient) != aiReturn_SUCCESS)
       return false;
-   ambient = glm::vec3(aiAmbient.x, aiAmbient.y, aiAmbient.z);
+   ambient = glm::vec3(aiAmbient.r, aiAmbient.g, aiAmbient.b);
 
-   aiVector3D aiDiff;
+   aiColor3D aiDiff;
    if (aiMat->Get(AI_MATKEY_COLOR_DIFFUSE, aiDiff) != aiReturn_SUCCESS)
       return false;
-   diffuse = glm::vec3(aiDiff.x, aiDiff.y, aiDiff.z);
+   diffuse = glm::vec3(aiDiff.r, aiDiff.g, aiDiff.b);
 
    return true;
 }

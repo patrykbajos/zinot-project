@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 #include <assimp/scene.h>
 
-#include <zinot-engine/engine/resources/Texture.hpp>
+#include <zinot-engine/res/Texture.hpp>
 
 namespace Zinot
 {

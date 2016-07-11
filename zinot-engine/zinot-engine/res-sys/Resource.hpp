@@ -1,7 +1,7 @@
 #ifndef RESOURCE_HPP
 #define RESOURCE_HPP
 
-#include <zinot-engine/resources/MapResMgr.hpp>
+#include <zinot-engine/res-sys/MapResMgr.hpp>
 
 namespace Zinot
 {
