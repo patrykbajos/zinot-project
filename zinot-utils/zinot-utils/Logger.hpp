@@ -17,7 +17,6 @@ private:
    ~Logger();
 
 protected:
-   QString dir;
    QFile logFile;
    QTextStream stream;
 
@@ -25,7 +24,7 @@ protected:
 public:
    static Logger & getInstance();
 
-   bool createLog(QString const & desFolder);
+   bool createLog(QString const & outPath);
 
    void destroyLog();
 

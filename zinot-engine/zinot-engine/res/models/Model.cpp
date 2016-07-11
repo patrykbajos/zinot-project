@@ -189,20 +189,17 @@ bool Model::draw(GLuint program)
    uint32_t uvSize = sizeof(TexCoord);
 
    gl::VertexAttribPointer(0, 3, gl::FLOAT, gl::FALSE_,
-                           vertSize - posSize, nullptr); // Pos  vec3
+                           vertSize, nullptr); // Pos  vec3
    gl::VertexAttribPointer(1, 3, gl::FLOAT, gl::FALSE_,
-                           vertSize - normSize, (void *) posSize); // Norm vec3
+                           vertSize, (void *) posSize); // Norm vec3
    gl::VertexAttribPointer(2, 2, gl::FLOAT, gl::FALSE_,
-                           vertSize - uvSize, (void *) (posSize + normSize)); // Uv   vec2
+                           vertSize, (void *) (posSize + normSize)); // Uv   vec2
 
    GLint texDiffLoc = gl::GetUniformLocation(program, "texDiff");
 
    for (uint32_t it = 0; it < meshesNum; ++it)
    {
       const Mesh & mesh = meshes[it];
-
-      if (it == 1)
-         continue;
 
       gl::ActiveTexture(gl::TEXTURE0);
       GLuint texDiff = materials[mesh.matIt].getTexDiff()->getId();

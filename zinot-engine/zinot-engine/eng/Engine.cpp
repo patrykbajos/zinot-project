@@ -9,8 +9,8 @@ namespace Zinot
 int Engine::main()
 {
    Logger & log = Logger::getInstance();
-   log.createLog("logs/");
-   log.log("Starting engine...");
+   log.createLog("logs/log");
+   log.log("(INFO) Starting engine...");
 
    mainWindow.reset(new Window());
    mainWindow->setParentEngine(this);

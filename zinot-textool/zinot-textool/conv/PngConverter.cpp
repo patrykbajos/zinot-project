@@ -223,7 +223,8 @@ FIBITMAP * PngConverter::loadFiBitmap(const std::string & inFile, FREE_IMAGE_FOR
    }
 
    makeValidBpp(fiBitmap);
-   flipVertically(fiBitmap);
+   //flipVertically(fiBitmap);
+   dibToRGBA(fiBitmap);
    // Now we have converted to 32bpp and loaded image
 
    return fiBitmap;
@@ -254,6 +255,25 @@ bool PngConverter::makeValidBpp(FIBITMAP *& fiBitmap) const
 bool PngConverter::flipVertically(FIBITMAP * fiBitmap) const
 {
    return (bool) FreeImage_FlipVertical(fiBitmap);
+}
+
+bool PngConverter::dibToRGBA(FIBITMAP * fiBitmap) const
+{
+   auto pixelsNum = FreeImage_GetWidth(fiBitmap) * FreeImage_GetHeight(fiBitmap);
+   struct bgraPixel
+   {
+      uint8_t b, g, r, a;
+   };
+
+   bgraPixel * pixels = (bgraPixel *) FreeImage_GetBits(fiBitmap);
+
+   for (uint32_t it = 0; it < pixelsNum; ++it)
+   {
+      bgraPixel & pixel = pixels[it];
+      std::swap(pixel.r, pixel.b);
+   }
+
+   return true;
 }
 }
 }

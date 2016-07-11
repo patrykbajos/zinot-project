@@ -26,6 +26,7 @@ protected:
    FIBITMAP * loadFiBitmap(const std::string & inFile, FREE_IMAGE_FORMAT fiFormat) const;
    bool makeValidBpp(FIBITMAP *& fiBitmap) const;
    bool flipVertically(FIBITMAP * fiBitmap) const;
+   bool dibToRGBA(FIBITMAP * fiBitmap) const;
 
    int generateSquishFlags(const Configuration & configuration) const;
    bool generateMipMaps(FIBITMAP * fiBitmap, const Configuration & configuration,
