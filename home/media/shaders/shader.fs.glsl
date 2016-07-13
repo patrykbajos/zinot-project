@@ -9,5 +9,5 @@ out vec4 outColor;
 
 void main()
 {
-    outColor = fragColor * texture2D(texDiff, fragUv);
+    outColor = fragColor * texture2D(texDiff, fragUv) * dot(vec3(0.0f, 0.0f, -1.0f), fragNorm);
 }
