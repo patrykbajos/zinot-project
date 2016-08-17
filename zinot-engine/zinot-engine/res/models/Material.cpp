@@ -5,6 +5,7 @@
 #include "Material.hpp"
 
 #include <assimp/cimport.h>
+#include <zinot-engine/res-sys/MapResMgr.hpp>
 
 namespace Zinot
 {
@@ -83,10 +84,10 @@ bool Material::processTexDiff(QString modelDir, aiMaterial * aiMat, MapResMgr * 
    QString fullPath = modelDir + "/" + pathWithZitexExt;
 
    // Create texture resource
-   auto resId = texResMgr->getNamesRegister().addName(fullPath);
-   texDiff = (Texture *) texResMgr->getRes(resId);
+   auto resId = texResMgr->getNamesRegister().getId(fullPath);
+   texDiff = texResMgr->newRes<Texture>(resId);
    if (!texDiff)
-      texDiff = (Texture *) texResMgr->newRes(resId, new Texture(), true);
+      return false;
 
    // Try loat dexture
    if (!texDiff->loadFromFile())

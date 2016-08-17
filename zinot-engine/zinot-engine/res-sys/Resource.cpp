@@ -1,5 +1,7 @@
 #include "Resource.hpp"
 
+#include <zinot-engine/res-sys/MapResMgr.hpp>
+
 namespace Zinot
 {
 
@@ -11,7 +13,8 @@ Resource::Resource()
 }
 
 Resource::~Resource()
-{ }
+{
+}
 
 Resource::Resource(const Resource & src)
 {
@@ -26,4 +29,10 @@ Resource::Resource(Resource && src)
    resId = std::move(src.resId);
    resOwner = std::move(src.resOwner);
 }
+
+QString Resource::getName()
+{
+   return resOwner->getNamesRegister().getName(resId);
+}
+
 }

@@ -4,7 +4,6 @@ project(zinot-engine)
 set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/zinot-engine)
 set(ZINOT_ENGINE_SRC_MAIN
         ${PROJECT_SOURCE_DIR}/main.cpp
-        ${PROJECT_SOURCE_DIR}/eng/Viewport.cpp
         ${PROJECT_SOURCE_DIR}/res/models/ModelNode.cpp
         ${PROJECT_SOURCE_DIR}/res/models/Material.cpp
         ${PROJECT_SOURCE_DIR}/res/models/Mesh.cpp
@@ -15,13 +14,14 @@ set(ZINOT_ENGINE_SRC_MAIN
         ${PROJECT_SOURCE_DIR}/eng/Engine.cpp
         ${PROJECT_SOURCE_DIR}/eng/Window.cpp
         ${PROJECT_SOURCE_DIR}/eng/FPSCamera.cpp
-        ${PROJECT_SOURCE_DIR}/res-sys/MapResMgr.cpp
         ${PROJECT_SOURCE_DIR}/res-sys/NamesRegister.cpp
         ${PROJECT_SOURCE_DIR}/res-sys/Resource.cpp
-        )
+        ${PROJECT_SOURCE_DIR}/render/DeferredRenderer.cpp
+        ${PROJECT_SOURCE_DIR}/scene/Scene.cpp
+        ${PROJECT_SOURCE_DIR}/res-sys/MapResMgr.cpp zinot-engine/scene/ShaderDao.cpp zinot-engine/scene/ShaderDao.hpp zinot-engine/scene/ObjectDao.cpp zinot-engine/scene/ObjectDao.hpp zinot-engine/scene/CameraDao.cpp zinot-engine/scene/CameraDao.hpp)
 set(ZINOT_ENGINE_SRC_TESTS
         tests/NamesRegisterTest.cpp
-        )
+        tests/MapResMgrTest.cpp)
 include_directories(./)
 
 if (${CMAKE_BUILD_TYPE} MATCHES "Debug")

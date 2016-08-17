@@ -1,17 +1,21 @@
 #ifndef RESOURCE_HPP
 #define RESOURCE_HPP
 
-#include <zinot-engine/res-sys/MapResMgr.hpp>
+#include <cstdint>
+#include <QString>
 
 namespace Zinot
 {
-
+class MapResMgr;
 
 class Resource
 {
+public:
+   typedef uint32_t ResRefCount;
+   typedef uint32_t ResId;
 private:
-   MapResMgr::ResRefCount refCount;
-   MapResMgr::ResName resId;
+   ResRefCount refCount;
+   ResId resId;
    MapResMgr * resOwner;
 public:
    Resource();
@@ -20,28 +24,41 @@ public:
    virtual ~Resource();
 
    virtual void decRefCount()
-   { --refCount; }
+   {
+      --refCount;
+   }
 
-   virtual int64_t getRefCount()
-   { return refCount; }
+   virtual ResRefCount getRefCount()
+   {
+      return refCount;
+   }
 
    virtual void incRefCount()
-   { ++refCount; }
+   {
+      ++refCount;
+   }
 
-   virtual QString getName()
-   { return resOwner->getNamesRegister().getName(resId); }
+   virtual ResId getResId()
+   {
+      return resId;
+   }
 
-   virtual MapResMgr::ResName getResId()
-   { return resId; }
-
-   virtual void setName(MapResMgr::ResName newName)
-   { resId = newName; }
+   virtual void setResId(ResId newId)
+   {
+      resId = newId;
+   }
 
    virtual void setResOwner(MapResMgr * newResOwner)
-   { resOwner = newResOwner; }
+   {
+      resOwner = newResOwner;
+   }
 
    virtual MapResMgr * getResOwner()
-   { return resOwner; }
+   {
+      return resOwner;
+   }
+
+   virtual QString getName();
 };
 }
 

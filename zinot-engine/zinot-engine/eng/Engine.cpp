@@ -1,7 +1,6 @@
 #include <zinot-engine/eng/Engine.hpp>
 
 #include <zinot-utils/Logger.hpp>
-#include <zinot-engine/eng/Viewport.hpp>
 #include <zinot-engine/eng/Window.hpp>
 
 namespace Zinot
@@ -12,12 +11,14 @@ int Engine::main()
    log.createLog("logs/log");
    log.log("(INFO) Starting engine...");
 
-   mainWindow.reset(new Window());
-   mainWindow->setParentEngine(this);
-   mainWindow->addViewport(new Viewport);
+   mainWindow.reset(new Window(this));
+   mainScene.reset(new Scene());
+   mainScene->loadFromJSON("media/scene.json");
 
-   mainWindow->createWindow();
+   mainWindow->setScenePtr(mainScene.get());
+   mainWindow->open();
    mainWindow->enterMainLoop();
+   mainWindow->close();
 
    return 0;
 }

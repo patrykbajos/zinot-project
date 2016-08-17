@@ -6,9 +6,8 @@
 #define ZINOTENGINEPROJECT_WINDOW_HPP
 
 #include <memory>
-
 #include <SFML/Window.hpp>
-#include <zinot-engine/eng/Viewport.hpp>
+#include <zinot-engine/scene/Scene.hpp>
 
 namespace Zinot
 {
@@ -17,23 +16,24 @@ class Engine;
 class Window
 {
 protected:
-   std::unique_ptr<sf::Window> window;
-   std::unique_ptr<Viewport> viewport;
-   Engine * parentEngine;
-
+   std::unique_ptr<sf::Window> sfWindow;
+   Engine * parentEnginePtr;
+   Scene * scenePtr;
 public:
-   void createWindow();
-   bool addViewport(Viewport * newViewport);
+   void open();
    bool enterMainLoop();
+   void close();
 
-   const sf::Window * getSFMLWindow() const
+   Window(Engine * enginePtr);
+
+   const sf::Window * getSfWindow() const
    {
-      return window.get();
+      return sfWindow.get();
    }
 
-   void setParentEngine(Engine * value)
+   void setScenePtr(Scene * scenePtr)
    {
-      parentEngine = value;
+      Window::scenePtr = scenePtr;
    }
 };
 }

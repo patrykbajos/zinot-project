@@ -31,28 +31,7 @@ void NamesRegister::releaseId(NameId id)
    releasedId.push(id);
 }
 
-NamesRegister::NameId NamesRegister::addName(const QString & name)
-{
-   // Check if name exists
-   if (nameToId.contains(name))
-      return NULL;
-
-   NameId newId = getNewId();
-
-   // Check if ID exists
-   if (idToName.find(newId) != idToName.end())
-   {
-      releaseId(newId);
-      return NULL;
-   }
-
-   nameToId.insert(name, newId);
-   idToName.insert(newId, name);
-
-   return newId;
-}
-
-bool NamesRegister::addNamesFromPath(const QString & path)
+/*bool NamesRegister::addNamesFromPath(const QString & path)
 {
    QDirIterator it(path,
                    QDir::Readable | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks,
@@ -60,7 +39,7 @@ bool NamesRegister::addNamesFromPath(const QString & path)
 
    while (it.hasNext())
       addName(QDir::cleanPath(it.next()));
-}
+}*/
 
 bool NamesRegister::deleteName(const QString & name)
 {
@@ -111,12 +90,22 @@ QString NamesRegister::getName(NameId nameId) const
    return QString(it.value());
 }
 
-NamesRegister::NameId NamesRegister::getId(const QString & name) const
+NamesRegister::NameId NamesRegister::getId(const QString & name, bool autoCreate)
 {
    NameToIdContainer::const_iterator it = nameToId.find(name);
 
    if (it == nameToId.end())
-      return NULL;
+   {
+      if (!autoCreate)
+         return 0;
+
+      NameId newId = getNewId();
+
+      nameToId.insert(name, newId);
+      idToName.insert(newId, name);
+
+      return newId;
+   }
 
    return it.value();
 }

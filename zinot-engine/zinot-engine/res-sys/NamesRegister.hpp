@@ -16,6 +16,7 @@ class NamesRegister
 {
 public:
    typedef uint32_t NameId;
+   typedef QString Name;
 protected:
    typedef QMap<QString, NameId> NameToIdContainer;
    typedef QMap<NameId, QString> IdToNameContainer;
@@ -28,14 +29,13 @@ protected:
    NameId getNewId();
    void releaseId(NameId id);
 public:
-   NameId addName(const QString & name);
-   bool addNamesFromPath(const QString & path);
+   //bool addNamesFromPath(const QString & path);
 
-   bool deleteName(const QString & name);
+   bool deleteName(const Name & name);
    bool deleteId(NameId nameId);
 
-   QString getName(NameId nameId) const;
-   NameId getId(const QString & name) const;
+   Name getName(NameId nameId) const;
+   NameId getId(const Name & name, bool autoCreate = true);
 };
 }
 
