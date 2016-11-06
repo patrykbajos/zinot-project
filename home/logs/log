@@ -1,0 +1,8 @@
+
+[====== STARTING LOG ======]
+[ DATE: 19.08.2016 15:42:09]
+
+(INFO) Starting engine...
+(INFO): Shader[0]{name = basic-shader, vs = media/shaders/shader.vs.glsl, fs = media/shaders/shader.fs.glsl }
+(INFO): Obj[0]{model = media/models/ursus.obj, shader = basic-shader }
+(INFO): Obj[1]{model = media/models/czl.obj, shader = basic-shader }

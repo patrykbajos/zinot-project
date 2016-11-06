@@ -4,16 +4,15 @@
 
 #include "TexImageHeader.hpp"
 
-namespace Zinot
+namespace Zitex
 {
-namespace Tex
+
+void TexImageHeader::toEndian(Zinot::Endian::Type inEndian, Zinot::Endian::Type outEndian)
 {
-void TexImageHeader::toEndian(Endian::Type inEndian, Endian::Type outEndian)
-{
-   Endian endian;
+   Zinot::Endian endian;
 
    // If UNKNOWN it means "convert to local endianness!" :D
-   if (outEndian == Endian::LOCAL)
+   if (outEndian == Zinot::Endian::LOCAL)
       outEndian = endian.getLocalEndian();
 
    // glTexImage()
@@ -26,5 +25,5 @@ void TexImageHeader::toEndian(Endian::Type inEndian, Endian::Type outEndian)
    // Length of pixel data
    endian.toEndian(inEndian, sizeof(imageSize), &imageSize, outEndian);
 }
-}
+
 }

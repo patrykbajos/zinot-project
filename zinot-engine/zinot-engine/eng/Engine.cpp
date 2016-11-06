@@ -12,7 +12,7 @@ int Engine::main()
    log.log("(INFO) Starting engine...");
 
    mainWindow.reset(new Window(this));
-   mainScene.reset(new Scene());
+   mainScene.reset(new SceneDao());
    mainScene->loadFromJSON("media/scene.json");
 
    mainWindow->setScenePtr(mainScene.get());

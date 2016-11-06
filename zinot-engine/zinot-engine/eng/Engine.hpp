@@ -7,14 +7,14 @@
 
 #include <memory>
 #include <zinot-engine/eng/Window.hpp>
-#include <zinot-engine/scene/Scene.hpp>
+#include <zinot-engine/scene/dao/SceneDao.hpp>
 
 namespace Zinot
 {
 class Engine
 {
    std::unique_ptr<Window> mainWindow;
-   std::unique_ptr<Scene> mainScene;
+   std::unique_ptr<SceneDao> mainScene;
 public:
    int main();
 };

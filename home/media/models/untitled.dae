@@ -601,7 +601,7 @@
   </library_geometries>
   <library_controllers/>
   <library_visual_scenes>
-    <visual_scene id="Scene" resId="Scene">
+    <visual_scene id="SceneDao" resId="SceneDao">
       <node id="Camera" resId="Camera" type="NODE">
         <matrix sid="transform">0.6858805 -0.3173701 0.6548619 7.481132 0.7276338 0.3124686 -0.6106656 -6.50764 -0.01081678 0.8953432 0.4452454 5.343665 0 0 0 1</matrix>
         <instance_camera url="#Camera-camera"/>
@@ -683,6 +683,6 @@
     </visual_scene>
   </library_visual_scenes>
   <scene>
-    <instance_visual_scene url="#Scene"/>
+    <instance_visual_scene url="#SceneDao"/>
   </scene>
 </COLLADA>

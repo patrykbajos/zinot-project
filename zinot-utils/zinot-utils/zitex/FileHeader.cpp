@@ -2,19 +2,18 @@
 // Created by patryk on 14.02.16.
 //
 
-#include "Header.hpp"
+#include "FileHeader.hpp"
 #include <zinot-utils/Endian.hpp>
 
-namespace Zinot
+namespace Zitex
 {
-namespace Tex
-{
-void Header::toEndian(Endian::Type outEndian)
-{
-   Endian endian;
-   Endian::Type inEndian = getEndian();
 
-   if (outEndian == Endian::LOCAL)
+void FileHeader::toEndian(Zinot::Endian::Type outEndian)
+{
+   Zinot::Endian endian;
+   Zinot::Endian::Type inEndian = getEndian();
+
+   if (outEndian == Zinot::Endian::LOCAL)
       outEndian = endian.getLocalEndian();
 
    endian.toEndian(inEndian, sizeof(version), &version, outEndian);
@@ -38,18 +37,18 @@ void Header::toEndian(Endian::Type outEndian)
 
    endian.toEndian(inEndian, sizeof(squishFlags), &squishFlags, outEndian);
 
-   if (outEndian == Endian::Type::LE)
+   if (outEndian == Zinot::Endian::Type::LE)
       isLE = 1;
    else
       isLE = 0;
 }
 
-Endian::Type Header::getEndian()
+Zinot::Endian::Type FileHeader::getEndian()
 {
    if (isLE)
-      return Endian::Type::LE;
+      return Zinot::Endian::Type::LE;
    else
-      return Endian::Type::BE;
+      return Zinot::Endian::Type::BE;
 }
-}
+
 }

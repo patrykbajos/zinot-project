@@ -10,7 +10,7 @@
 #include <FreeImage.h>
 #include <squish/squish.h>
 #include <zinot-textool/conv/Mipmap.hpp>
-#include <zinot-utils/tex/Writer.hpp>
+#include <zinot-utils/zitex/Writer.hpp>
 
 namespace Zinot
 {

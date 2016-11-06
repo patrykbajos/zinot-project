@@ -1,22 +1,15 @@
-//
-// Created by patryk on 13.02.16.
-//
-
 #ifndef ZINOTPROJECT_HEADER_HPP
 #define ZINOTPROJECT_HEADER_HPP
 
 #include <GL/gl.h>
 #include <zinot-utils/Endian.hpp>
 
-#define TEX_HEADER_SIZE (4*32)
+namespace Zitex
+{
 
-namespace Zinot
-{
-namespace Tex
-{
+#define ZITEX_FILEHEADER_SIZE 128
 #pragma pack(push, 1)
-
-struct Header
+struct FileHeader
 {
    // Basic informations
    uint32_t isLE;    // true = LE, false = BE
@@ -48,11 +41,11 @@ struct Header
    // libSquish compression flags
    int squishFlags;
 
-   void toEndian(Endian::Type outEndian);
-   Endian::Type getEndian();
+   void toEndian(Zinot::Endian::Type outEndian);
+   Zinot::Endian::Type getEndian();
 };
-
 #pragma pack(pop)
+
 }
-}
+
 #endif //ZINOTPROJECT_HEADER_HPP

@@ -7,25 +7,23 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
-#include <zinot-utils/tex/Header.hpp>
-#include <zinot-utils/tex/TexImageHeader.hpp>
+#include <zinot-utils/zitex/FileHeader.hpp>
+#include <zinot-utils/zitex/TexImageHeader.hpp>
 #include <zinot-utils/Endian.hpp>
 
-namespace Zinot
+namespace Zitex
 {
-namespace Tex
-{
+
 class Writer
 {
 public:
    struct Data
    {
-      Endian::Type outEndian;
-      Header header;
-
-      std::vector<TexImageHeader> texImageHeader;
-      std::vector<const void *> texImageData;
+      FileHeader header;
+      std::vector<TexImageHeader> texImageHeaders;
+      std::vector<std::unique_ptr<uint8_t[]>> texImageData;
    };
 
    bool write(const std::string & fileName, const Data & inData);
@@ -33,7 +31,7 @@ public:
 private:
    uint32_t calculateOutSize(const Data & writeData);
 };
-}
+
 }
 
 #endif //ZINOTENGINEPROJECT_WRITER_HPP

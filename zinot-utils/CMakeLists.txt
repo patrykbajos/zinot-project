@@ -7,14 +7,22 @@ set(ZINOT_UTILS_SRC
         ${PROJECT_SOURCE_DIR}/unicode/Utf32.cpp
         ${PROJECT_SOURCE_DIR}/unicode/Utf8.cpp
         ${PROJECT_SOURCE_DIR}/unicode/Utf16.cpp
+
         ${PROJECT_SOURCE_DIR}/Logger.cpp
         ${PROJECT_SOURCE_DIR}/Endian.cpp
         ${PROJECT_SOURCE_DIR}/Utf8String.cpp
-        ${PROJECT_SOURCE_DIR}/tex/Header.cpp
-        ${PROJECT_SOURCE_DIR}/tex/Writer.cpp
-        ${PROJECT_SOURCE_DIR}/tex/TexImageHeader.cpp
-        ${PROJECT_SOURCE_DIR}/tex/Reader.cpp
-        )
+
+        ${PROJECT_SOURCE_DIR}/zitex/FileHeader.cpp
+        ${PROJECT_SOURCE_DIR}/zitex/Writer.cpp
+        ${PROJECT_SOURCE_DIR}/zitex/TexImageHeader.cpp
+        ${PROJECT_SOURCE_DIR}/zitex/Reader.cpp
+
+        ${PROJECT_SOURCE_DIR}/zimesh-json/JSONReader.cpp
+        ${PROJECT_SOURCE_DIR}/zimesh-json/JSONData.cpp
+        ${PROJECT_SOURCE_DIR}/zimesh-json/Material.cpp
+        ${PROJECT_SOURCE_DIR}/zimesh-json/Mesh.cpp
+        ${PROJECT_SOURCE_DIR}/zimesh-json/Object.cpp
+        ${PROJECT_SOURCE_DIR}/zimesh-json/UvLayer.cpp)
 link_directories(./)
 
 add_library(zinot-utils SHARED ${ZINOT_UTILS_SRC})

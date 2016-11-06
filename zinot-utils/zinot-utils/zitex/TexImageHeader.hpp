@@ -1,21 +1,14 @@
-//
-// Created by patryk on 14.02.16.
-//
-
 #ifndef ZINOTPROJECT_TEXIMAGE_HPP
 #define ZINOTPROJECT_TEXIMAGE_HPP
 
 #include <GL/gl.h>
 #include <zinot-utils/Endian.hpp>
+#define ZITEX_TEXIMAGEHEADER_SIZE 64
 
-#define TEX_TEXIMAGEHEADER_SIZE (4*16)
+namespace Zitex
+{
 
-namespace Zinot
-{
-namespace Tex
-{
 #pragma pack(push, 1)
-
 struct TexImageHeader
 {
    // glTexImage()
@@ -28,12 +21,10 @@ struct TexImageHeader
    // glCompressedTexImage()
    GLuint imageSize;
 
-   void toEndian(Endian::Type inEndian, Endian::Type outEndian);
+   void toEndian(Zinot::Endian::Type inEndian, Zinot::Endian::Type outEndian);
 };
-
 #pragma pack(pop)
-}
-}
 
+}
 
 #endif //ZINOTPROJECT_TEXIMAGE_HPP

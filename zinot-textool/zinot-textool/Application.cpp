@@ -47,7 +47,7 @@ void Application::parseConfig()
 
 void Application::parseCmd()
 {
-   cmdParser.setApplicationDescription("Textool converts png images to Zinot .tex format.");
+   cmdParser.setApplicationDescription("Textool converts png images to Zinot .zitex format.");
    cmdParser.addHelpOption();
    cmdParser.addVersionOption();
 
