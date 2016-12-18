@@ -9,8 +9,8 @@ namespace Zinot
 {
 bool Texture::loadFromFile()
 {
-   Tex::Reader reader;
-   Tex::Reader::Data data;
+   Zitex::Reader reader;
+   Zitex::Reader::Data data;
 
    reader.readFromFile(getName().toStdString(), data);
    auto & header = data.header;
@@ -20,11 +20,11 @@ bool Texture::loadFromFile()
 
    for (uint32_t it = 0; it < data.header->texImagesNum; ++it)
    {
-      auto & tiHeader = data.texImage[it].header;
+      auto & tiHeader = data.texImages[it].header;
 
       gl::CompressedTexImage2D(gl::TEXTURE_2D, tiHeader->level, (GLenum) header->internalFormat,
                                tiHeader->width, tiHeader->height, 0,
-                               tiHeader->imageSize, data.texImage[it].data);
+                               tiHeader->imageSize, data.texImages[it].data);
    }
 
    gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, gl::LINEAR);

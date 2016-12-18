@@ -5,8 +5,8 @@
 #ifndef ZINOTENGINEPROJECT_MODEL_HPP
 #define ZINOTENGINEPROJECT_MODEL_HPP
 
+#include <GL/gl.h>
 #include <assimp/scene.h>
-#include <gl_core_3_3.hpp>
 
 #include <zinot-engine/res-sys/Resource.hpp>
 #include <zinot-engine/res/models/Mesh.hpp>

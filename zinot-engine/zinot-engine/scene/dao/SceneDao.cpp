@@ -3,7 +3,6 @@
 //
 
 #include "SceneDao.hpp"
-#include <gl_core_3_3.hpp>
 
 #include <QFile>
 #include <QJsonDocument>

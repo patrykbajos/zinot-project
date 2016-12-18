@@ -33,6 +33,9 @@ bool Window::enterMainLoop()
             running = false;
       }
 
+      gl::Clear(gl::COLOR_BUFFER_BIT);
+      gl::ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
       sfWindow->display();
    }
 

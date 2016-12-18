@@ -7,7 +7,7 @@
 
 #include <QCoreApplication>
 #include <QCommandLineParser>
-#include <zinot-textool/conf/Configuration.hpp>
+#include <zinot-textool/config/ConfigDao.hpp>
 
 namespace Zinot
 {
@@ -17,7 +17,7 @@ class Application
 {
    QCoreApplication coreApplication;
    QCommandLineParser cmdParser;
-   Configuration configuration;
+   ConfigDao configuration;
 
    void parseCmd();
 

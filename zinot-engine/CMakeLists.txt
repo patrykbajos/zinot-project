@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 project(zinot-engine)
 
 set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/zinot-engine)
-set(ZINOT_ENGINE_SRC_MAIN
+set(ZINOT_ENGINE_SRC
         zinot-engine/main.cpp
         zinot-engine/res/models/ModelNode.cpp
         zinot-engine/res/models/Material.cpp
@@ -28,15 +28,13 @@ set(ZINOT_ENGINE_SRC_MAIN
         zinot-engine/scene/GameObject.cpp
         zinot-engine/scene/Scene.cpp
         )
-set(ZINOT_ENGINE_SRC_TESTS
+set(ZINOT_ENGINE_TESTS
         tests/NamesRegisterTest.cpp
         tests/MapResMgrTest.cpp)
 include_directories(./)
 
 if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
-    set(ZINOT_ENGINE_SRC ${ZINOT_ENGINE_SRC_MAIN} ${ZINOT_ENGINE_SRC_TESTS})
-else ()
-    set(ZINOT_ENGINE_SRC ${ZINOT_ENGINE_SRC_MAIN})
+    set(ZINOT_ENGINE_SRC ${ZINOT_ENGINE_SRC} ${ZINOT_ENGINE_TESTS})
 endif ()
 
 add_executable(zinot-engine ${ZINOT_ENGINE_SRC})
@@ -44,8 +42,6 @@ add_executable(zinot-engine ${ZINOT_ENGINE_SRC})
 if (WIN32)
     include_directories(E:/dev/lib/SFML-2.1/include)
     link_directories(E:/dev/lib/SFML-2.1/lib)       # SFML, dynamic
-    include_directories(E:/dev/lib/FreeImage/Dist)
-    link_directories(E:/dev/lib/FreeImage/Dist)     # Freeimage, dynamic
     include_directories(E:/dev/lib/freetype-2.6.3/include)
     link_directories(E:/dev/lib/freetype-2.6.3/objs/vc2010/Win32) # FreeType2, dynamic
     include_directories(/media/patryk/Gry/dev/lib/libsquish-1.13/include)
@@ -64,10 +60,9 @@ endif ()
 
 find_package(Qt5Core)
 target_link_libraries(zinot-engine Qt5::Core)
+target_link_libraries(zinot-engine zinot-utils)
 target_link_libraries(zinot-engine sfml-window sfml-graphics sfml-system)
 target_link_libraries(zinot-engine assimp)
-target_link_libraries(zinot-engine freeimage)
-target_link_libraries(zinot-engine zinot-utils)
 target_link_libraries(zinot-engine glloadgen)
 
 target_link_libraries(zinot-engine debug gtest)

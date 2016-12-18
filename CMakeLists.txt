@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 project(zinot-project)
 
 if (UNIX AND NOT APPLE)
-    set(CMAKE_PREFIX_PATH "~/programy/Qt5.5.1/5.5/gcc_64")
+    set(CMAKE_PREFIX_PATH "/home/patryk/programy/Qt5.7.0/5.7/gcc_64")
 elseif (WIN32)
     if (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
         set(CMAKE_PREFIX_PATH "E:/dev/lib/qt5.7.0/5.7/mingw53_32")

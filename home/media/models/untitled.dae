@@ -603,15 +603,15 @@
   <library_visual_scenes>
     <visual_scene id="SceneDao" resId="SceneDao">
       <node id="Camera" resId="Camera" type="NODE">
-        <matrix sid="transform">0.6858805 -0.3173701 0.6548619 7.481132 0.7276338 0.3124686 -0.6106656 -6.50764 -0.01081678 0.8953432 0.4452454 5.343665 0 0 0 1</matrix>
+        <matrixWorld sid="transform">0.6858805 -0.3173701 0.6548619 7.481132 0.7276338 0.3124686 -0.6106656 -6.50764 -0.01081678 0.8953432 0.4452454 5.343665 0 0 0 1</matrixWorld>
         <instance_camera url="#Camera-camera"/>
       </node>
       <node id="Lamp" resId="Lamp" type="NODE">
-        <matrix sid="transform">-0.4933181 0.6754509 -0.5480907 4.076245 -0.8680965 -0.4222748 0.2609455 1.005454 -0.05518906 0.6045247 0.7946723 5.903862 0 0 0 1</matrix>
+        <matrixWorld sid="transform">-0.4933181 0.6754509 -0.5480907 4.076245 -0.8680965 -0.4222748 0.2609455 1.005454 -0.05518906 0.6045247 0.7946723 5.903862 0 0 0 1</matrixWorld>
         <instance_light url="#Lamp-light"/>
       </node>
       <node id="Cube" resId="Cube" type="NODE">
-        <matrix sid="transform">1 0 0 0.2724948 0 2.321659 0 0 0 0 0.6491914 1.063223 0 0 0 1</matrix>
+        <matrixWorld sid="transform">1 0 0 0.2724948 0 2.321659 0 0 0 0 0.6491914 1.063223 0 0 0 1</matrixWorld>
         <instance_geometry url="#Cube-mesh">
           <bind_material>
             <technique_common>
@@ -621,7 +621,7 @@
         </instance_geometry>
       </node>
       <node id="Plane_013" resId="Plane_013" type="NODE">
-        <matrix sid="transform">-0.1725935 -1.65575e-8 -3.82837e-9 -0.2271947 -4.11631e-9 -1.65575e-8 0.1605203 2.26899 -1.30304e-8 0.2193104 1.21189e-8 1.063994 0 0 0 1</matrix>
+        <matrixWorld sid="transform">-0.1725935 -1.65575e-8 -3.82837e-9 -0.2271947 -4.11631e-9 -1.65575e-8 0.1605203 2.26899 -1.30304e-8 0.2193104 1.21189e-8 1.063994 0 0 0 1</matrixWorld>
         <instance_geometry url="#Plane-mesh">
           <bind_material>
             <technique_common>
@@ -631,7 +631,7 @@
         </instance_geometry>
       </node>
       <node id="Plane_014" resId="Plane_014" type="NODE">
-        <matrix sid="transform">2.796489 0 0 0.235997 0 4.232402 0 -0.08537871 0 0 2.25667 0.4258443 0 0 0 1</matrix>
+        <matrixWorld sid="transform">2.796489 0 0 0.235997 0 4.232402 0 -0.08537871 0 0 2.25667 0.4258443 0 0 0 1</matrixWorld>
         <instance_geometry url="#Plane_001-mesh">
           <bind_material>
             <technique_common>
@@ -641,7 +641,7 @@
         </instance_geometry>
       </node>
       <node id="Cube_005" resId="Cube_005" type="NODE">
-        <matrix sid="transform">0.04776632 0 -0.01158158 -0.3163259 0 2.420121 0 0.007883534 0.02114588 0 0.02616157 1.87829 0 0 0 1</matrix>
+        <matrixWorld sid="transform">0.04776632 0 -0.01158158 -0.3163259 0 2.420121 0 0.007883534 0.02114588 0 0.02616157 1.87829 0 0 0 1</matrixWorld>
         <instance_geometry url="#Cube_003-mesh">
           <bind_material>
             <technique_common>
@@ -651,7 +651,7 @@
         </instance_geometry>
       </node>
       <node id="Plane_025" resId="Plane_025" type="NODE">
-        <matrix sid="transform">0.0482241 0.2673553 -0.2968233 -0.7120481 -0.04136848 0.3116617 0.2546263 2.429472 0.1984745 0 0.1251926 0.6246875 0 0 0 1</matrix>
+        <matrixWorld sid="transform">0.0482241 0.2673553 -0.2968233 -0.7120481 -0.04136848 0.3116617 0.2546263 2.429472 0.1984745 0 0.1251926 0.6246875 0 0 0 1</matrixWorld>
         <instance_geometry url="#Plane_004-mesh">
           <bind_material>
             <technique_common>
@@ -661,7 +661,7 @@
         </instance_geometry>
       </node>
       <node id="Cube_008" resId="Cube_008" type="NODE">
-        <matrix sid="transform">0.1545027 0 0 -0.05453698 0 0.2322287 0 1.121799 0 0 0.04273193 2.199894 0 0 0 1</matrix>
+        <matrixWorld sid="transform">0.1545027 0 0 -0.05453698 0 0.2322287 0 1.121799 0 0 0.04273193 2.199894 0 0 0 1</matrixWorld>
         <instance_geometry url="#Cube_005-mesh">
           <bind_material>
             <technique_common>
@@ -671,7 +671,7 @@
         </instance_geometry>
       </node>
       <node id="Plane_029" resId="Plane_029" type="NODE">
-        <matrix sid="transform">-0.06408834 -0.1039543 -0.3662579 -0.9050722 0.02251266 -0.2959339 0.1286574 0.4822248 -0.197015 0 0.133844 0.6229166 0 0 0 1</matrix>
+        <matrixWorld sid="transform">-0.06408834 -0.1039543 -0.3662579 -0.9050722 0.02251266 -0.2959339 0.1286574 0.4822248 -0.197015 0 0.133844 0.6229166 0 0 0 1</matrixWorld>
         <instance_geometry url="#Plane_005-mesh">
           <bind_material>
             <technique_common>

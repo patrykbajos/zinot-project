@@ -5,6 +5,8 @@
 #ifndef ZINOT_PROJECT_SCENE_HPP
 #define ZINOT_PROJECT_SCENE_HPP
 
+#include <gl_core_3_3.hpp>
+
 #include <QString>
 #include <QJsonObject>
 #include <QJsonArray>

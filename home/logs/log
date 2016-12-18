@@ -6,3 +6,18 @@
 (INFO): Shader[0]{name = basic-shader, vs = media/shaders/shader.vs.glsl, fs = media/shaders/shader.fs.glsl }
 (INFO): Obj[0]{model = media/models/ursus.obj, shader = basic-shader }
 (INFO): Obj[1]{model = media/models/czl.obj, shader = basic-shader }
+
+[====== STARTING LOG ======]
+[ DATE: 03.12.2016 20:39:51]
+
+(INFO) Starting engine...
+
+[====== STARTING LOG ======]
+[ DATE: 03.12.2016 20:53:12]
+
+(INFO) Starting engine...
+
+[====== STARTING LOG ======]
+[ DATE: 03.12.2016 21:18:01]
+
+(INFO) Starting engine...

@@ -8,7 +8,7 @@
 #include <QJsonObject>
 #include <QFile>
 
-#include <zinot-textool/conv/ConverterFactory.hpp>
+#include <zinot-textool/convert/ConverterFactory.hpp>
 
 namespace Zinot
 {
@@ -42,7 +42,7 @@ void Application::parseConfig()
    QJsonParseError err;
    QJsonDocument configJson = QJsonDocument::fromJson(content.toUtf8(), &err);
 
-   configuration.fromJsonObject(configJson.object());
+   configuration.loadFromJsonObject(configJson.object());
 }
 
 void Application::parseCmd()
@@ -55,7 +55,7 @@ void Application::parseCmd()
     *	Positional argument files allows giving file or files to conversion.
     *	Output file resId will be the same but with changed extension.
     */
-   cmdParser.addOption(QCommandLineOption({"c", "config"}, "Configuration in JSON", "config",
+   cmdParser.addOption(QCommandLineOption({"c", "config"}, "ConfigDao in JSON", "config",
                                           "default-config.json"));
    cmdParser.addPositionalArgument("files", "List of files to convert");
 

@@ -14,6 +14,44 @@ bl_info = {
     "location": "File > Export > Zimesh JSON (.json)"
 }
 
+rootKeys = {
+    "depTexKey": "dependentTextures",
+    "matsKey": "materials",
+    "meshesKey": "meshes",
+    "objectsKey": "objects"
+}
+
+objectKeys = {
+    "typeKey": "type",
+    "dataKey": "data",
+    "matWorldKey": "matrixWorld",
+    "parentKey": "parent"
+}
+
+uvLayersKey = {
+    "uvKey": "uv",
+    "tanKey": "tan"
+}
+
+meshKeys = {
+    "facesGroupsKey": "facesGroups",
+    "matSlotsKey": "materialSlots",
+    "normalsKey": "normals",
+    "uvLayersKey": "uvLayers",
+    "verticesKey": "vertices"
+}
+
+materialKeys = {
+    "drawableKey": "drawable",
+    "metalnessKey": "metalness",
+    "roughnessKey": "roughness",
+    "alphaKey": "alpha",
+    "fsKey": "fragmentShader",
+    "vsKey": "vertexShader",
+    "depTexKey": "dependentTextures",
+    "envmapSourceKey": "envmapSource",
+    "surfaceTypeKey": "surfaceType"
+}
 
 class ZimeshJSONWriter:
     def write(self, packedData, filepath):
@@ -42,27 +80,27 @@ class DataPacker:
 
                 fp = node.image.filepath
                 packedTextures.add(os.path.splitext(os.path.normpath(fp))[0] + ".zitex")
-        packedData["dependent_textures"] = list(packedTextures)
+        packedData[rootKeys["depTexKey"]] = list(packedTextures)
         return None
 
     def packMaterials(self, packedData, context):
-        packedMaterials = packedData["materials"] = {}
+        packedMaterials = packedData[rootKeys["matsKey"]] = {}
 
         for mat in bpy.data.materials:
             packedMaterial = packedMaterials[mat.name] = {}
-            packedMaterial["metalness"] = mat.get("metalness", 0.1)
-            packedMaterial["roughness"] = mat.get("roughness", 0.5)
+            packedMaterial[materialKeys["metalnessKey"]] = mat.get("metalness", 0.1)
+            packedMaterial[materialKeys["roughnessKey"]] = mat.get("roughness", 0.5)
 
-            packedMaterial["envmap_source"] = "static_object_world_cubemap"
-            packedMaterial["surface_type"] = "opaque"
-            packedMaterial["drawable"] = True
-            packedMaterial["transparency"] = 0.0
+            packedMaterial[materialKeys["envmapSourceKey"]] = "staticObject"
+            packedMaterial[materialKeys["surfaceTypeKey"]] = "opaque"
+            packedMaterial[materialKeys["drawableKey"]] = True
+            packedMaterial[materialKeys["alphaKey"]] = 1.0
 
             basename = os.path.basename(bpy.data.filepath)
             filename = str(os.path.splitext(basename)[0]).replace(".", "_")
 
-            packedMaterial["vertex_shader"] = self.exporter.vsFormat.format(filename=filename, matname=mat.name)
-            packedMaterial["fragment_shader"] = self.exporter.fsFormat.format(filename=filename, matname=mat.name)
+            packedMaterial[materialKeys["vsKey"]] = self.exporter.vsFormat.format(filename=filename, matname=mat.name)
+            packedMaterial[materialKeys["fsKey"]] = self.exporter.fsFormat.format(filename=filename, matname=mat.name)
 
             dependentTextures = set()
             for node in mat.node_tree.nodes:
@@ -74,7 +112,7 @@ class DataPacker:
 
                 fp = node.image.filepath
                 dependentTextures.add(os.path.splitext(os.path.normpath(fp))[0] + ".zitex")
-            packedMaterial["dependent_textures"] = list(dependentTextures)
+            packedMaterial[materialKeys["depTexKey"]] = list(dependentTextures)
         return None
 
     def packMeshObject(self, obj, packedData, context):
@@ -87,52 +125,66 @@ class DataPacker:
         bm.to_mesh(meshTemp)
         bm.free()
 
-        packedObjects = packedData["objects"]
-        packedMeshes = packedData["meshes"]
+        packedObjects = packedData[rootKeys["objectsKey"]]
+        packedMeshes = packedData[rootKeys["meshesKey"]]
 
         packedObject = packedObjects[obj.name] = {}
         packedMesh = packedMeshes[obj.data.name] = {}
 
-        packedVertices = packedMesh["vertices"] = []
-        packedNormals = packedMesh["normals"] = []
-        for vert in meshTemp.vertices:
+        meshTemp.calc_normals_split()
+
+        packedVertices = packedMesh[meshKeys["verticesKey"]] = []
+        packedNormals = packedMesh[meshKeys["normalsKey"]] = []
+        for loop in meshTemp.loops:
+            norm = loop.normal
+            vertIdx = loop.vertex_index
+            vert = meshTemp.vertices[vertIdx]
+
             packedVertices.extend([vert.co[0], vert.co[1], vert.co[2]])
-            packedNormals.extend([vert.normal[0], vert.normal[1], vert.normal[2]])
+            packedNormals.extend([norm[0], norm[1], norm[2]])
 
-        packedUvLayers = packedMesh["uv_layers"] = {}
+        packedUvLayers = packedMesh[meshKeys["uvLayersKey"]] = {}
         for uvLayer in meshTemp.uv_layers:
-            uvLayerData = packedUvLayers[uvLayer.name] = []
-            for uvItem in uvLayer.data:
-                uvLayerData.extend([uvItem.uv[0], uvItem.uv[1]])
+            uvLayerData = packedUvLayers[uvLayer.name] = {}
+            uvComponents = uvLayerData[uvLayersKey["uvKey"]] = []
+            tanComponents = uvLayerData[uvLayersKey["tanKey"]] = []
 
-        packedMatSlots = packedMesh["material_slots"] = []
+            for uvLoop in uvLayer.data:
+                uvComponents.extend([uvLoop.uv[0], uvLoop.uv[1]])
+
+            meshTemp.calc_tangents(uvLayer.name)
+            for loop in meshTemp.loops:
+                tan = loop.tangent
+                bitanSign = loop.bitangent_sign
+                tanComponents.extend([tan[0], tan[1], tan[2], bitanSign])
+
+        packedMatSlots = packedMesh[meshKeys["matSlotsKey"]] = []
         for slot in obj.material_slots:
             packedMatSlots.append(slot.material.name)
 
-        packedFaces = packedMesh["faces"] = {}
+        packedFaces = packedMesh[meshKeys["facesGroupsKey"]] = {}
         for matSlotIndex in range(0, len(obj.material_slots)):
             packedFaces[matSlotIndex] = []
 
         for polygon in meshTemp.polygons:
-            packedFaces[polygon.material_index].extend([polygon.vertices[0],
-                                                        polygon.vertices[1],
-                                                        polygon.vertices[2]])
+            if polygon.loop_total >= 3:
+                fg = packedFaces[polygon.material_index]
+                fg.extend([polygon.loop_indices[0], polygon.loop_indices[1], polygon.loop_indices[2]])
 
-        packedObject["type"] = "mesh"
-        packedObject["data"] = obj.data.name
+        packedObject[objectKeys["typeKey"]] = "mesh"
+        packedObject[objectKeys["dataKey"]] = obj.data.name
         if obj.parent is not None:
-            packedObject["parent"] = obj.parent.name
+            packedObject[objectKeys["parentKey"]] = obj.parent.name
         else:
-            packedObject["parent"] = None
+            packedObject[objectKeys["parentKey"]] = None
 
-        packedObject["matrix"] = [obj.matrix_world[0][0], obj.matrix_world[1][0], obj.matrix_world[2][0],
-                                  obj.matrix_world[3][0],
-                                  obj.matrix_world[0][1], obj.matrix_world[1][1], obj.matrix_world[2][1],
-                                  obj.matrix_world[3][1],
-                                  obj.matrix_world[0][2], obj.matrix_world[1][2], obj.matrix_world[2][2],
-                                  obj.matrix_world[3][2],
-                                  obj.matrix_world[0][3], obj.matrix_world[1][3], obj.matrix_world[2][3],
-                                  obj.matrix_world[3][3]]
+        matWorld = obj.matrix_world
+        packedObject[objectKeys["matWorldKey"]] = [
+            matWorld.col[0][0], matWorld.col[0][1], matWorld.col[0][2], matWorld.col[0][3],
+            matWorld.col[1][0], matWorld.col[1][1], matWorld.col[1][2], matWorld.col[1][3],
+            matWorld.col[2][0], matWorld.col[2][1], matWorld.col[2][2], matWorld.col[2][3],
+            matWorld.col[3][0], matWorld.col[3][1], matWorld.col[3][2], matWorld.col[3][3]
+        ]
 
         # Free temporary mesh (with applied modifiers of obj)
         bpy.data.meshes.remove(meshTemp)
@@ -148,8 +200,8 @@ class DataPacker:
         else:
             objectsToExport = context.scene.objects
 
-        packedData["objects"] = {}
-        packedData["meshes"] = {}
+        packedData[rootKeys["objectsKey"]] = {}
+        packedData[rootKeys["meshesKey"]] = {}
 
         for obj in objectsToExport:
             if obj.type == "MESH":
