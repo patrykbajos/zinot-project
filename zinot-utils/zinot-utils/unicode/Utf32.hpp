@@ -6,8 +6,8 @@
 #define ZINOTENGINEPROJECT_UTF32_HPP
 
 #include <stdint.h>
-#include "Unicode.hpp"
 #include <zinot-utils/Endian.hpp>
+#include <zinot-utils/unicode/Unicode.hpp>
 
 namespace Zinot
 {

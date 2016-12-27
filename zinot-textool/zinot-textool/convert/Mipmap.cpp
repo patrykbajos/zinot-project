@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <squish/squish.h>
+#include <GL/glext.h>
 
 namespace Zinot
 {

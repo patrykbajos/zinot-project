@@ -3,7 +3,6 @@
 //
 
 #include "Utf32.hpp"
-#include "Unicode.hpp"
 
 namespace Zinot
 {

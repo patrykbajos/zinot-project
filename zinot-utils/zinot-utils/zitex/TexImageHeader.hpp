@@ -3,11 +3,11 @@
 
 #include <GL/gl.h>
 #include <zinot-utils/Endian.hpp>
-#define ZITEX_TEXIMAGEHEADER_SIZE 64
 
 namespace Zitex
 {
 
+#define ZITEX_TEXIMAGEHEADER_SIZE 64
 #pragma pack(push, 1)
 struct TexImageHeader
 {

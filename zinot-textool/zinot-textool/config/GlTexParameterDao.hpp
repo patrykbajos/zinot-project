@@ -6,9 +6,7 @@
 #define ZINOTPROJECT_GLTEXPARAMETER_HPP
 
 #include <GL/gl.h>
-
-class QJsonObject;
-
+#include <QJsonObject>
 
 namespace Zinot
 {
@@ -20,9 +18,7 @@ public:
    bool loadFromJsonObject(const QJsonObject & jsonObj);
 private:
    void parseMinFilter(const QJsonObject & jsonObj);
-
    void parseMagFilter(const QJsonObject & jsonObj);
-
    void parseWrapping(const QJsonObject & jsonObj);
 
    GLint glTextureLodBias;

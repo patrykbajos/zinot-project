@@ -3,8 +3,6 @@
 
 #include <zinot-utils/zitex/Reader.hpp>
 
-#include <FreeImage.h>
-
 namespace Zinot
 {
 bool Texture::loadFromFile()

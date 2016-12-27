@@ -4,12 +4,10 @@
 
 #include "PngConverter.hpp"
 
+#include <squish/squish.h>
 #include <iostream>
 #include <cmath>
 
-#include <FreeImage.h>
-#include <squish/squish.h>
-#include <zinot-textool/convert/Mipmap.hpp>
 #include <zinot-utils/zitex/Writer.hpp>
 #include <zinot-textool/convert/PngLoader.hpp>
 

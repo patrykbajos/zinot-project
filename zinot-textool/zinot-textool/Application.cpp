@@ -4,6 +4,7 @@
 
 #include "Application.hpp"
 
+#include <memory>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QFile>

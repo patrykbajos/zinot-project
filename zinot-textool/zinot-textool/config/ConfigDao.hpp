@@ -5,14 +5,16 @@
 #ifndef ZINOTPROJECT_CONFROOT_HPP
 #define ZINOTPROJECT_CONFROOT_HPP
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include <FreeImage.h>
+#include <QJsonObject>
 
 #include <zinot-textool/config/GlBindTextureDao.hpp>
 #include <zinot-textool/config/GlTexImageDao.hpp>
 #include <zinot-textool/config/GlTexParameterDao.hpp>
 #include <zinot-textool/config/LayersNamePatternsDao.hpp>
-
-class QJsonObject;
 
 namespace Zinot
 {

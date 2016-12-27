@@ -6,8 +6,7 @@
 #define ZINOTPROJECT_GLBINDTEXTURE_HPP
 
 #include <GL/gl.h>
-
-class QJsonObject;
+#include <QJsonObject>
 
 namespace Zinot
 {

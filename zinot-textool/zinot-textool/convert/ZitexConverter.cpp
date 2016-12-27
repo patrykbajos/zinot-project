@@ -4,8 +4,8 @@
 
 #include "ZitexConverter.hpp"
 
-#include <zinot-utils/zitex/Reader.hpp>
 #include <squish/squish.h>
+#include <zinot-utils/zitex/Reader.hpp>
 
 namespace Zinot
 {

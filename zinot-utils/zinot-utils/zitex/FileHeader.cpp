@@ -3,7 +3,6 @@
 //
 
 #include "FileHeader.hpp"
-#include <zinot-utils/Endian.hpp>
 
 namespace Zitex
 {

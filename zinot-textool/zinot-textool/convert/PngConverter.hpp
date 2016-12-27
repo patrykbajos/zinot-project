@@ -5,12 +5,15 @@
 #ifndef ZINOTENGINEPROJECT_PNGCONVERTER_HPP
 #define ZINOTENGINEPROJECT_PNGCONVERTER_HPP
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+#include <FreeImage.h>
 #include <vector>
 #include <memory>
 
 #include <zinot-textool/convert/Converter.hpp>
 #include <zinot-textool/convert/Mipmap.hpp>
-#include <FreeImage.h>
 
 class QString;
 

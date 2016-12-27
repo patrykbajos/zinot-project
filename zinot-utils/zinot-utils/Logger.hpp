@@ -1,11 +1,6 @@
 #ifndef LOGGER_HPP_
 #define LOGGER_HPP_
 
-#include <fstream>
-#include <string>
-#include <ctime>
-#include <cstdlib>
-
 #include <QFile>
 #include <QTextStream>
 

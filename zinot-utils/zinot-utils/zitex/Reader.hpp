@@ -7,7 +7,6 @@
 
 #include <string>
 #include <vector>
-#include <memory>
 
 #include <zinot-utils/zitex/FileHeader.hpp>
 #include <zinot-utils/zitex/TexImageHeader.hpp>
