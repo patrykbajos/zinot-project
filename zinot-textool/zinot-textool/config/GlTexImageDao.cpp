@@ -3,7 +3,10 @@
 //
 #include "GlTexImageDao.hpp"
 
+#ifdef _WIN32
 #include <GL/glext.h>
+#endif
+
 #include <QJsonObject>
 #include <QMap>
 

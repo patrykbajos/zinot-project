@@ -4,7 +4,10 @@
 
 #include "GlBindTextureDao.hpp"
 
+#ifdef _WIN32
 #include <GL/glext.h>
+#endif
+
 #include <QMap>
 
 namespace Zinot

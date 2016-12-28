@@ -6,7 +6,6 @@
 
 #include <memory>
 #include <QJsonDocument>
-#include <QJsonObject>
 #include <QFile>
 
 #include <zinot-textool/convert/ConverterFactory.hpp>

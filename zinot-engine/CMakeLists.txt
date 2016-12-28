@@ -5,11 +5,9 @@ set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/zinot-engine)
 set(ZINOT_ENGINE_SRC
         zinot-engine/main.cpp
         zinot-engine/res/models/Material.cpp
-        zinot-engine/res/models/Mesh.cpp
         zinot-engine/res/models/Model.cpp
         zinot-engine/res/GpuProgram.cpp
         zinot-engine/res/Texture.cpp
-        zinot-engine/res/Shader.cpp
         zinot-engine/eng/Engine.cpp
         zinot-engine/eng/Window.cpp
         zinot-engine/eng/FPSCamera.cpp
