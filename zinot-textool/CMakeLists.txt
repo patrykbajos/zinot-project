@@ -19,10 +19,18 @@ set(ZINOT_TEXTOOL_SRC
         )
 link_directories(./)
 
+if(WIN32)
+    include_directories(E:/dev/lib/libsquish-1.14/include)
+    link_directories(E:/dev/lib/libsquish-1.14/build)
+
+    include_directories(E:/dev/lib/libFreeImage/Dist/x32)
+    link_directories(E:/dev/lib/libFreeImage/Dist/x32)
+endif()
+
 add_executable(zinot-textool ${ZINOT_TEXTOOL_SRC})
 
 find_package(Qt5Core)
-target_link_libraries(zinot-textool zinot-utils)
-target_link_libraries(zinot-textool freeimage)
-target_link_libraries(zinot-textool squish)
 target_link_libraries(zinot-textool Qt5::Core)
+target_link_libraries(zinot-textool zinot-utils)
+target_link_libraries(zinot-textool FreeImage)
+target_link_libraries(zinot-textool squish)

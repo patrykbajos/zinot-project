@@ -5,10 +5,8 @@
 #ifndef ZINOTENGINEPROJECT_CONVERTERFACTORY_HPP
 #define ZINOTENGINEPROJECT_CONVERTERFACTORY_HPP
 
-#include <memory>
+#include <QString>
 #include <zinot-textool/convert/Converter.hpp>
-
-class QString;
 
 namespace Zinot
 {

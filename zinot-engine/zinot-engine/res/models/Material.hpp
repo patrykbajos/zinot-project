@@ -5,10 +5,6 @@
 #ifndef ZINOTENGINEPROJECT_MATERIAL_HPP
 #define ZINOTENGINEPROJECT_MATERIAL_HPP
 
-#include <QMap>
-
-#include <zinot-engine/res/Texture.hpp>
-#include <zinot-engine/res/GpuProgram.hpp>
 #include <zinot-utils/zimesh-json/MaterialDao.hpp>
 
 namespace Zinot
@@ -16,16 +12,6 @@ namespace Zinot
 
 class Material
 {
-protected:
-   bool drawable;
-   float metalness;
-   float roughness;
-   float alpha;
-   Zimesh::MaterialDao::SurfaceType surfaceType;
-   Zimesh::MaterialDao::EnvmapSource envmapSource;
-
-   QMap<GLuint, Texture *> tex;
-   GpuProgram * gpuProgram;
 public:
    Material();
    ~Material();

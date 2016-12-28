@@ -5,9 +5,12 @@
 #ifndef ZINOT_PROJECT_PNGLOADER_HPP
 #define ZINOT_PROJECT_PNGLOADER_HPP
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+#include <FreeImage.h>
 #include <iostream>
 #include <QString>
-#include <FreeImage.h>
 
 namespace Zinot
 {

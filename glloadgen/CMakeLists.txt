@@ -8,3 +8,4 @@ set(GLLOADGEN_SRC
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(glloadgen SHARED ${GLLOADGEN_SRC})
+target_link_libraries(glloadgen opengl32 glu32)

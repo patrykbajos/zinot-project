@@ -5,9 +5,13 @@
 #ifndef ZINOTENGINEPROJECT_MIPMAP_HPP
 #define ZINOTENGINEPROJECT_MIPMAP_HPP
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include <FreeImage.h>
 #include <memory>
 #include <cstring>
+
 #include <zinot-textool/config/ConfigDao.hpp>
 
 namespace Zinot

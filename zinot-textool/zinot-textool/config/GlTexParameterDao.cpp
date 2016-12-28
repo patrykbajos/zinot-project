@@ -4,6 +4,7 @@
 
 #include "GlTexParameterDao.hpp"
 
+#include <GL/glext.h>
 #include <QJsonObject>
 #include <QMap>
 

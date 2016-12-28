@@ -4,7 +4,7 @@
 
 #include "GlBindTextureDao.hpp"
 
-#include <QJsonObject>
+#include <GL/glext.h>
 #include <QMap>
 
 namespace Zinot

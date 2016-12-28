@@ -5,7 +5,6 @@
 #include "Writer.hpp"
 
 #include <QFile>
-#include <memory>
 
 namespace Zitex
 {

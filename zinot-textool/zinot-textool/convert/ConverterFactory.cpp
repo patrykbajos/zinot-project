@@ -4,7 +4,6 @@
 
 #include "ConverterFactory.hpp"
 
-#include <memory>
 #include <zinot-textool/convert/PngConverter.hpp>
 #include <zinot-textool/convert/ZitexConverter.hpp>
 

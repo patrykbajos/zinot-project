@@ -4,7 +4,6 @@
 
 #include "ConfigDao.hpp"
 
-#include <QJsonObject>
 #include <QMap>
 
 namespace Zinot
