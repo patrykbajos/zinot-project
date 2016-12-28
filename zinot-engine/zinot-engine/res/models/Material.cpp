@@ -4,7 +4,7 @@
 
 #include "Material.hpp"
 
-#include <assimp/cimport.h>
+#include <QFileInfo>
 #include <zinot-engine/res-sys/MapResMgr.hpp>
 
 namespace Zinot
@@ -12,90 +12,39 @@ namespace Zinot
 
 Material::Material()
 {
-   texDiff = nullptr;
 
-   diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
-   ambient = glm::vec3(0.8f, 0.8f, 0.8f);
-   specular = 0.5f;
 }
 
 Material::~Material()
 {
-   if (texDiff)
-      delete texDiff;
-   /*if (texSpec)
-      delete texSpec;
-   if (texNorm)
-      delete texNorm;*/
+
 }
 
-bool Material::processAiMaterial(QString modelDir, aiMaterial * aiMat, MapResMgr * texResMgr)
+bool Material::loadFromZimeshJsonMaterialDao(const Zimesh::MaterialDao & materialDao, MapResMgr * gpuProgsMgr)
 {
-   aiString aiName;
-   if (aiMat->Get(AI_MATKEY_NAME, aiName) != aiReturn_SUCCESS)
-      return false;
+   drawable = materialDao.isDrawable();
+   metalness = materialDao.getMetalness();
+   roughness = materialDao.getRoughness();
+   alpha = materialDao.getAlpha();
+   surfaceType = materialDao.getSurfaceType();
+   envmapSource = materialDao.getEnvmapSource();
 
-   // Get path and change extension to .zitex
-   if (QString(aiName.C_Str()) == AI_DEFAULT_MATERIAL_NAME)
-      return true;
+   // TODO: Textures
+   // TODO: Shader
 
-   if (!processParameters(aiMat))
-      return false;
+   QString vsPath = materialDao.getVsPath();
+   QString fsPath = materialDao.getFsPath();
 
-   if (!processTexDiff(modelDir, aiMat, texResMgr))
-      return false;
+   QFileInfo fileInfo;
+   fileInfo.setFile(vsPath);
+   QString vsName = fileInfo.baseName();
+   fileInfo.setFile(fsPath);
+   QString fsName = fileInfo.baseName();
 
-   return true;
-}
+   QString shaderName = "shader_" + vsName + "_" + fsName;
 
-bool Material::processParameters(aiMaterial * aiMat)
-{
-   // Get parameters
-   if (aiMat->Get(AI_MATKEY_SHININESS, specular) != aiReturn_SUCCESS)
-      return false;
-
-   aiColor3D aiAmbient;
-   if (aiMat->Get(AI_MATKEY_COLOR_AMBIENT, aiAmbient) != aiReturn_SUCCESS)
-      return false;
-   ambient = glm::vec3(aiAmbient.r, aiAmbient.g, aiAmbient.b);
-
-   aiColor3D aiDiff;
-   if (aiMat->Get(AI_MATKEY_COLOR_DIFFUSE, aiDiff) != aiReturn_SUCCESS)
-      return false;
-   diffuse = glm::vec3(aiDiff.r, aiDiff.g, aiDiff.b);
-
-   return true;
-}
-
-bool Material::processTexDiff(QString modelDir, aiMaterial * aiMat, MapResMgr * texResMgr)
-{
-   // Load and check path
-   aiString aiPath;
-   aiMat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), aiPath);
-   QString texturePath = QString(aiPath.C_Str());
-   if (texturePath.isEmpty())
-   {
-      texDiff = nullptr;
-      return true;
-   }
-
-   // Get relative to engine path
-   QString pathWithZitexExt(texturePath.section(".", 0, -2).append(".zitex"));
-   QString fullPath = modelDir + "/" + pathWithZitexExt;
-
-   // Create texture resource
-   auto resId = texResMgr->getNamesRegister().getId(fullPath);
-   texDiff = texResMgr->newRes<Texture>(resId);
-   if (!texDiff)
-      return false;
-
-   // Try loat dexture
-   if (!texDiff->loadFromFile())
-   {
-      texResMgr->deleteRes(resId);
-      texDiff = nullptr;
-      return false;
-   }
+   NamesRegister & namReg = gpuProgsMgr->getNamesRegister();
+   namReg.
 
    return true;
 }

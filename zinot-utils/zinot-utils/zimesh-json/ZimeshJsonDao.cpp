@@ -9,20 +9,14 @@ namespace Zimesh
 namespace RootKeys
 {
 
-static const QString depTexKey = "dependentTextures";
 static const QString matsKey = "materials";
 static const QString meshesKey = "meshes";
 static const QString objectsKey = "objects";
+
 }
 
 bool ZimeshJsonDao::loadFromJsonObject(const QJsonObject & jsonObject)
 {
-   if (jsonObject.contains(RootKeys::depTexKey))
-   {
-      QJsonValue depTexVal = jsonObject[RootKeys::depTexKey];
-      if (!loadDepTex(depTexVal))
-         return false;
-   }
    if (jsonObject.contains(RootKeys::matsKey))
    {
       QJsonValue matsVal = jsonObject[RootKeys::matsKey];
@@ -45,38 +39,20 @@ bool ZimeshJsonDao::loadFromJsonObject(const QJsonObject & jsonObject)
    return true;
 }
 
-bool ZimeshJsonDao::loadDepTex(const QJsonValue & jsonVal)
-{
-   if (!jsonVal.isArray())
-      return false;
-
-   QJsonArray depTexArr = jsonVal.toArray();
-
-   for (QJsonValue val : depTexArr)
-   {
-      if (val.isString())
-         depTex.push_back(val.toString());
-   }
-
-   return true;
-}
-
 bool ZimeshJsonDao::loadMaterials(const QJsonValue & jsonVal)
 {
    if (!jsonVal.isObject())
       return false;
    QJsonObject matsObj = jsonVal.toObject();
 
-   for (QJsonObject::ConstIterator it = matsObj.begin(); it == matsObj.end(); ++it)
+   for (QJsonObject::Iterator it = matsObj.begin(); it != matsObj.end(); ++it)
    {
-      QJsonValue matVal = it.value();
-      QString key = it.key();
+      QString matName = it.key();
+      QJsonValueRef matVal = it.value();
 
-      if (!matVal.isObject())
-         continue;
-
-      materials[key] = MaterialDao();
-      materials[key].loadFromJsonValue(matVal.toObject());
+      MaterialDao & matDao = materials[matName];
+      if (!matDao.loadFromJsonValue(matName, matVal))
+         return false;
    }
 
    return true;
@@ -88,15 +64,14 @@ bool ZimeshJsonDao::loadMeshes(const QJsonValue & jsonVal)
       return false;
    QJsonObject meshesObj = jsonVal.toObject();
 
-   for (QJsonObject::ConstIterator it = meshesObj.begin(); it == meshesObj.end(); ++it)
+   for (QJsonObject::Iterator it = meshesObj.begin(); it != meshesObj.end(); ++it)
    {
-      QJsonValue meshVal = it.value();
-      QString key = it.key();
-      if (!meshVal.isObject())
-         continue;
+      QString meshName = it.key();
+      QJsonValueRef meshVal = it.value();
 
-      meshes[key] = MeshDao();
-      meshes[key].loadFromJsonValue(meshVal.toObject());
+      MeshDao & meshDao = meshes[meshName];
+      if (!meshDao.loadFromJsonValue(meshName, meshVal))
+         return false;
    }
 
    return true;
@@ -108,15 +83,14 @@ bool ZimeshJsonDao::loadObjects(const QJsonValue & jsonVal)
       return false;
    QJsonObject objectsObj = jsonVal.toObject();
 
-   for (QJsonObject::ConstIterator it = objectsObj.begin(); it == objectsObj.end(); ++it)
+   for (QJsonObject::Iterator it = objectsObj.begin(); it != objectsObj.end(); ++it)
    {
-      QJsonValue objectVal = it.value();
-      QString key = it.key();
-      if (!objectVal.isObject())
-         continue;
+      QString objectName = it.key();
+      QJsonValueRef objectVal = it.value();
 
-      objects[key] = ObjectDao();
-      objects[key].loadFromJsonValue(objectVal.toObject());
+      ObjectDao & objectDao = objects[objectName];
+      if (!objectDao.loadFromJsonValue(objectName, objectVal))
+         return false;
    }
 
    return true;

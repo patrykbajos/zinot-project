@@ -16,15 +16,16 @@ static const QString matSlotsKey = "materialSlots";
 static const QString normalsKey = "normals";
 static const QString uvLayersKey = "uvLayers";
 static const QString verticesKey = "vertices";
-//static const QString Key = "";
 
 }
 
-bool MeshDao::loadFromJsonValue(const QJsonValue & meshJsonVal)
+bool MeshDao::loadFromJsonValue(const QString & meshName, const QJsonValue & meshJsonVal)
 {
    if (!meshJsonVal.isObject())
       return false;
    QJsonObject meshJsonObj = meshJsonVal.toObject();
+
+   name = meshName;
 
    if (meshJsonObj.contains(MeshKeys::verticesKey))
    {
@@ -86,11 +87,11 @@ bool MeshDao::loadFacesGroups(const QJsonValue & fgsJsonVal)
    QJsonObject fgsJsonObj = fgsJsonVal.toObject();
 
    facesGroups.resize(fgsJsonObj.size());
-   for (QJsonObject::Iterator it = fgsJsonObj.begin(); it == fgsJsonObj.end(); ++it)
+   for (QJsonObject::Iterator it = fgsJsonObj.begin(); it != fgsJsonObj.end(); ++it)
    {
       // Get face group name (corresponding to id of material) and Json value
       QString fgName = it.key();
-      QJsonValue fgJsonVal = it.value();
+      QJsonValueRef fgJsonVal = it.value();
 
       loadFacesGroup(fgName, fgJsonVal);
    }
@@ -156,13 +157,14 @@ bool MeshDao::loadUvLayers(const QJsonValue & uvLayersJsonVal)
    QJsonObject uvLayersJsonObj = uvLayersJsonVal.toObject();
 
    // Iterate through iterator. It gives possibility to get key.
-   for (QJsonObject::Iterator it = uvLayersJsonObj.begin(); it == uvLayersJsonObj.end(); ++it)
+   for (QJsonObject::Iterator it = uvLayersJsonObj.begin(); it != uvLayersJsonObj.end(); ++it)
    {
       QString uvLayerName = it.key();
-      QJsonValue uvLayerJsonVal = it.value();
+      QJsonValueRef uvLayerJsonVal = it.value();
 
-      uvLayers[uvLayerName] = UvLayerDao();
-      uvLayers[uvLayerName].loadFromJsonValue(uvLayerJsonVal);
+      UvLayerDao & uvLayerDao = uvLayers[uvLayerName];
+      if (!uvLayerDao.loadFromJsonValue(uvLayerName, uvLayerJsonVal))
+         return false;
    }
 
    return true;

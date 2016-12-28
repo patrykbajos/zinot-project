@@ -6,7 +6,7 @@
 #define ZINOT_PROJECT_MATERIAL_HPP
 
 #include <QString>
-#include <QVector>
+#include <QMap>
 #include <QJsonObject>
 
 namespace Zimesh
@@ -20,75 +20,33 @@ public:
       Transparent
    };
 
-   enum EnvmapSource{
+   enum EnvprobeType
+   {
       None,
-      StaticObject,
-      StaticMesh,
-      DynamicObject,
-      DynamicMesh,
-      Texture
+      EnvprobeObject,
+      TextureCubemap
+   };
+
+   enum RenderPass
+   {
+      Deferred,
+      Forward
    };
 private:
+   QString name;
    bool drawable;
-   float metalness;
-   float roughness;
-   float alpha;
-   QString fsPath;
-   QString vsPath;
+   QString shaderPath;
+   QMap<QString, QString> shaderProperties;
+   EnvprobeType envprobeType;
+   RenderPass renderPass;
    SurfaceType surfaceType;
-   EnvmapSource envmapSource;
-   QVector<QString> depTex;
 
-   void loadSurfaceType(const QJsonObject & matObj);
-   void loadEnvmapSource(const QJsonObject & matObj);
-   bool loadDepTex(const QJsonObject & matObj);
+   bool loadShaderProperties(const QJsonValue & shaderPropVal);
+   bool loadEnvprobeType(const QJsonValue & envProbeVal);
+   bool loadRenderPass(const QJsonValue & renderPassVal);
+   bool loadSurfaceType(const QJsonValue & surfTypeVal);
 public:
-   bool loadFromJsonValue(const QJsonValue & jsonVal);
-
-   bool isDrawable() const
-   {
-      return drawable;
-   }
-
-   float getMetalness() const
-   {
-      return metalness;
-   }
-
-   float getRoughness() const
-   {
-      return roughness;
-   }
-
-   float getAlpha() const
-   {
-      return alpha;
-   }
-
-   const QString & getFsPath() const
-   {
-      return fsPath;
-   }
-
-   const QString & getVsPath() const
-   {
-      return vsPath;
-   }
-
-   SurfaceType getSurfaceType() const
-   {
-      return surfaceType;
-   }
-
-   EnvmapSource getEnvmapSource() const
-   {
-      return envmapSource;
-   }
-
-   const QVector<QString> & getDepTex() const
-   {
-      return depTex;
-   }
+   bool loadFromJsonValue(const QString & matName, const QJsonValue & matVal);
 };
 
 }

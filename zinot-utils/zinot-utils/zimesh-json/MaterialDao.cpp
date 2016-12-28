@@ -13,78 +13,115 @@ namespace MaterialKeys
 {
 
 static const QString drawableKey = "drawable";
-static const QString metalnessKey = "metalness";
-static const QString roughnessKey = "roughness";
-static const QString alphaKey = "alpha";
-static const QString fsKey = "fragmentShader";
-static const QString vsKey = "vertexShader";
-static const QString depTexKey = "dependentTextures";
-static const QString envmapSourceKey = "envmapSource";
+static const QString shaderPathKey = "shaderPath";
+static const QString shaderPropertiesKey = "shaderProperties";
+static const QString envprobeTypeKey = "envprobeType";
+static const QString renderPassKey = "renderPass";
 static const QString surfaceTypeKey = "surfaceType";
-//static const QString Key = "";
 
 }
 
-bool MaterialDao::loadFromJsonValue(const QJsonValue & jsonVal)
+bool MaterialDao::loadFromJsonValue(const QString & matName, const QJsonValue & matVal)
 {
-   if (!jsonVal.isObject())
+   if (!matVal.isObject())
       return false;
+   QJsonObject matObj = matVal.toObject();
 
-   QJsonObject matObj = jsonVal.toObject();
-
+   name = matName;
    drawable = matObj[MaterialKeys::drawableKey].toBool(true);
-   metalness = (float) matObj[MaterialKeys::metalnessKey].toDouble(0.0);
-   roughness = (float) matObj[MaterialKeys::roughnessKey].toDouble(0.5);
-   alpha = (float) matObj[MaterialKeys::alphaKey].toDouble(0.0);
-   fsPath = matObj[MaterialKeys::fsKey].toString();
-   vsPath = matObj[MaterialKeys::vsKey].toString();
+   shaderPath = matObj[MaterialKeys::shaderPathKey].toString();
 
-   loadSurfaceType(matObj);
-   loadEnvmapSource(matObj);
-
-   return loadDepTex(matObj);
-}
-
-void MaterialDao::loadSurfaceType(const QJsonObject & matObj)
-{
-   static QMap<QString, SurfaceType> surfaceTypeDict = {
-      {"opaque",      SurfaceType::Opaque},
-      {"transparent", SurfaceType::Transparent}
-   };
-   QJsonValue surfTypeVal = matObj[MaterialKeys::surfaceTypeKey];
-   QString surfTypeName = surfTypeVal.toString();
-
-   surfaceType = surfaceTypeDict.value(surfTypeName, SurfaceType::Opaque);
-}
-
-void MaterialDao::loadEnvmapSource(const QJsonObject & matObj)
-{
-   static QMap<QString, EnvmapSource> envmapSourceDict = {
-      {"none",          EnvmapSource::None},
-      {"staticObject",  EnvmapSource::StaticObject},
-      {"staticMesh",    EnvmapSource::StaticMesh},
-      {"dynamicObject", EnvmapSource::DynamicObject},
-      {"dynamicMesh",   EnvmapSource::DynamicMesh},
-      {"texture",       EnvmapSource::Texture}
-   };
-
-   QJsonValue envSrcVal = matObj[MaterialKeys::envmapSourceKey];
-   QString envSrcName = envSrcVal.toString();
-   envmapSource = envmapSourceDict.value(envSrcName, EnvmapSource::StaticObject);
-}
-
-bool MaterialDao::loadDepTex(const QJsonObject & matObj)
-{
-   QJsonValue depTexVal = matObj[MaterialKeys::depTexKey];
-   if (!depTexVal.isArray())
-      return false;
-
-   for (QJsonValue val : depTexVal.toArray())
+   if (matObj.contains(MaterialKeys::shaderPropertiesKey))
    {
-      if (val.isString())
-         depTex.push_back(val.toString());
+      QJsonValue shaderPropVal = matObj[MaterialKeys::shaderPropertiesKey];
+      if (!loadShaderProperties(shaderPropVal))
+         return false;
    }
 
+   if (matObj.contains(MaterialKeys::envprobeTypeKey))
+   {
+      QJsonValue envprobeVal = matObj[MaterialKeys::envprobeTypeKey];
+      if (!loadEnvprobeType(envprobeVal))
+         return false;
+   }
+
+   if (matObj.contains(MaterialKeys::renderPassKey))
+   {
+      QJsonValue renderPassVal = matObj[MaterialKeys::renderPassKey];
+      if (!loadRenderPass(renderPassVal))
+         return false;
+   }
+
+   if (matObj.contains(MaterialKeys::surfaceTypeKey))
+   {
+      QJsonValue surfTypeVal = matObj[MaterialKeys::surfaceTypeKey];
+      if (!loadSurfaceType(surfTypeVal))
+         return false;
+   }
+
+   return true;
+}
+
+bool MaterialDao::loadShaderProperties(const QJsonValue & shaderPropVal)
+{
+   if (!shaderPropVal.isObject())
+      return false;
+   QJsonObject shaderPropObj = shaderPropVal.toObject();
+
+   for (QJsonObject::Iterator it = shaderPropObj.begin(); it != shaderPropObj.end(); ++it)
+   {
+      QString propName = it.key();
+      QJsonValueRef propJsonVal = it.value();
+
+      if (!propJsonVal.isString())
+         continue;
+
+      shaderProperties.insert(propName, propJsonVal.toString());
+   }
+
+   return true;
+}
+
+bool MaterialDao::loadEnvprobeType(const QJsonValue & envProbeVal)
+{
+   static QMap<QString, MaterialDao::EnvprobeType> envprobeTypeDict = {
+      {"None",           EnvprobeType::None},
+      {"EnvprobeObject", EnvprobeType::EnvprobeObject},
+      {"TextureCubemap", EnvprobeType::TextureCubemap}
+   };
+
+   if (!envProbeVal.isString())
+      return false;
+
+   envprobeType = envprobeTypeDict.value(envProbeVal.toString(), EnvprobeType::None);
+   return true;
+}
+
+bool MaterialDao::loadRenderPass(const QJsonValue & renderPassVal)
+{
+   static QMap<QString, RenderPass> renderPassDict = {
+      {"Deferred", RenderPass::Deferred},
+      {"Forward",  RenderPass::Forward}
+   };
+
+   if (!renderPassVal.isString())
+      return false;
+
+   renderPass = renderPassDict.value(renderPassVal.toString(), RenderPass::Deferred);
+   return true;
+}
+
+bool MaterialDao::loadSurfaceType(const QJsonValue & surfTypeVal)
+{
+   static QMap<QString, SurfaceType> surfaceTypeDict = {
+      {"Opaque",      SurfaceType::Opaque},
+      {"Transparent", SurfaceType::Transparent}
+   };
+
+   if (!surfTypeVal.isString())
+      return false;
+
+   surfaceType = surfaceTypeDict.value(surfTypeVal.toString(), SurfaceType::Opaque);
    return true;
 }
 }

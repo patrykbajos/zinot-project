@@ -21,17 +21,11 @@ namespace Zimesh
 class ZimeshJsonDao
 {
 private:
-   QVector<QString> depTex;
    QMap<QString, MaterialDao> materials;
    QMap<QString, MeshDao> meshes;
    QMap<QString, ObjectDao> objects;
 public:
    bool loadFromJsonObject(const QJsonObject & jsonObject);
-
-   const QVector<QString> & getDepTex() const
-   {
-      return depTex;
-   }
 
    const QMap<QString, MaterialDao> & getMaterials() const
    {
@@ -49,7 +43,6 @@ public:
    }
 
 private:
-   bool loadDepTex(const QJsonValue & jsonVal);
    bool loadMaterials(const QJsonValue & jsonVal);
    bool loadMeshes(const QJsonValue & jsonVal);
    bool loadObjects(const QJsonValue & jsonVal);

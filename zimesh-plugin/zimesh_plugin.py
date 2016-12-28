@@ -41,17 +41,15 @@ meshKeys = {
     "verticesKey": "vertices"
 }
 
-materialKeys = {
+matKeys = {
     "drawableKey": "drawable",
-    "metalnessKey": "metalness",
-    "roughnessKey": "roughness",
-    "alphaKey": "alpha",
-    "fsKey": "fragmentShader",
-    "vsKey": "vertexShader",
-    "depTexKey": "dependentTextures",
-    "envmapSourceKey": "envmapSource",
+    "shaderPathKey": "shaderPath",
+    "shaderPropertiesKey": "shaderProperties",
+    "envprobeTypeKey": "envprobeType",
+    "renderPassKey": "renderPass",
     "surfaceTypeKey": "surfaceType"
 }
+
 
 class ZimeshJSONWriter:
     def write(self, packedData, filepath):
@@ -68,54 +66,46 @@ class DataPacker:
     exporter = None
     toOpenGLSpaceMat = mathutils.Matrix.Rotation(math.radians(-90.0), 4, "X")
 
-    def packDependentTextures(self, packedData, context):
-        packedTextures = set()
-        for mat in bpy.data.materials:
-            for node in mat.node_tree.nodes:
-                if type(node) is not bpy.types.ShaderNodeTexImage:
-                    continue
-
-                if (node.image.source != "FILE") or (node.image.type != "IMAGE"):
-                    continue
-
-                fp = node.image.filepath
-                packedTextures.add(os.path.splitext(os.path.normpath(fp))[0] + ".zitex")
-        packedData[rootKeys["depTexKey"]] = list(packedTextures)
-        return None
-
     def packMaterials(self, packedData, context):
         packedMaterials = packedData[rootKeys["matsKey"]] = {}
 
         for mat in bpy.data.materials:
             packedMaterial = packedMaterials[mat.name] = {}
-            packedMaterial[materialKeys["metalnessKey"]] = mat.get("metalness", 0.1)
-            packedMaterial[materialKeys["roughnessKey"]] = mat.get("roughness", 0.5)
+            self.packMaterial(packedMaterial, mat)
 
-            packedMaterial[materialKeys["envmapSourceKey"]] = "staticObject"
-            packedMaterial[materialKeys["surfaceTypeKey"]] = "opaque"
-            packedMaterial[materialKeys["drawableKey"]] = True
-            packedMaterial[materialKeys["alphaKey"]] = 1.0
-
-            basename = os.path.basename(bpy.data.filepath)
-            filename = str(os.path.splitext(basename)[0]).replace(".", "_")
-
-            packedMaterial[materialKeys["vsKey"]] = self.exporter.vsFormat.format(filename=filename, matname=mat.name)
-            packedMaterial[materialKeys["fsKey"]] = self.exporter.fsFormat.format(filename=filename, matname=mat.name)
-
-            dependentTextures = set()
-            for node in mat.node_tree.nodes:
-                if type(node) is not bpy.types.ShaderNodeTexImage:
-                    continue
-
-                if (node.image.source != "FILE") or (node.image.type != "IMAGE"):
-                    continue
-
-                fp = node.image.filepath
-                dependentTextures.add(os.path.splitext(os.path.normpath(fp))[0] + ".zitex")
-            packedMaterial[materialKeys["depTexKey"]] = list(dependentTextures)
         return None
 
-    def packMeshObject(self, obj, packedData, context):
+    def packMaterial(self, packedMaterial, mat):
+        nodes = mat.node_tree.nodes
+
+        propFrame = nodes.get("zimeshShaderProp")
+        if propFrame is None:
+            return False
+
+        packedMaterial[matKeys["shaderPathKey"]] = propFrame.label
+
+        propNodes = []
+        for node in nodes:
+            if node.parent == propFrame:
+                propNodes.append(node)
+
+        packedShdProps = packedMaterial[matKeys["shaderPropertiesKey"]] = {}
+        for propNode in propNodes:
+            packedShdProp = packedShdProps[propNode.name] = None
+            self.packShaderProp(packedShdProp, propNode)
+
+        packedMaterial[matKeys["drawableKey"]] = True
+        matPropFrame = nodes.get("zimeshMaterialProp")
+
+        packedMaterial[matKeys["envprobeTypeKey"]]
+        packedMaterial[matKeys["renderPassKey"]]
+        packedMaterial[matKeys["surfaceTypeKey"]]
+
+
+
+        return None
+
+    def packMeshObject(self, packedData, obj, context):
         # Triangulate and transform to OpenGL Space
         meshTemp = obj.to_mesh(context.scene, True, "PREVIEW")
         bm = bmesh.new()
@@ -190,7 +180,7 @@ class DataPacker:
         bpy.data.meshes.remove(meshTemp)
         return
 
-    def packLightObject(self, obj, packedData, context):
+    def packLightObject(self, packedData, light, context):
         return
 
     def packObjects(self, packedData, context):
@@ -205,15 +195,14 @@ class DataPacker:
 
         for obj in objectsToExport:
             if obj.type == "MESH":
-                self.packMeshObject(obj, packedData, context)
+                self.packMeshObject(packedData, obj, context)
             if obj.type == "LIGHT":
-                self.packLightObject(obj, packedData, context)
+                self.packLightObject(packedData, obj, context)
         return None
 
-    def packData(self, context, exporter):
+    def packData(self, exporter, context):
         self.exporter = exporter
         packedData = {}
-        self.packDependentTextures(packedData, context)
         self.packMaterials(packedData, context)
         self.packObjects(packedData, context)
         return packedData
@@ -248,7 +237,7 @@ class ExportZimesh(bpy.types.Operator, bpy_extras.io_utils.ExportHelper):
     writer = ZimeshJSONWriter()
 
     def execute(self, context):
-        packedData = self.packer.packData(context, self)
+        packedData = self.packer.packData(self, context)
         self.writer.write(packedData, self.filepath)
 
         return {'FINISHED'}

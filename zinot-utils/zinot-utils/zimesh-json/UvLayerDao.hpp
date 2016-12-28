@@ -14,10 +14,11 @@ namespace Zimesh
 class UvLayerDao
 {
 private:
+   QString name;
    QVector<float> uv;  // vec2 of u, v
    QVector<float> tan; // vec4 of x, y, z, bitangent sign
 public:
-   bool loadFromJsonValue(const QJsonValue & jsonVal);
+   bool loadFromJsonValue(const QString & uvLayerName, const QJsonValue & jsonVal);
 
    const QVector<float> & getUv() const
    {

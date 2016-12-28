@@ -16,15 +16,16 @@ static const QString TypeKey = "type";
 static const QString DataKey = "data";
 static const QString MatWorldKey = "matrixWorld";
 static const QString ParentKey = "parent";
-//static const QString Key = "";
 
 }
 
-bool ObjectDao::loadFromJsonValue(const QJsonValue & objectJsonVal)
+bool ObjectDao::loadFromJsonValue(const QString & objectName, const QJsonValue & objectJsonVal)
 {
    if (!objectJsonVal.isObject())
       return false;
    QJsonObject objectJsonObj = objectJsonVal.toObject();
+
+   name = objectName;
 
    if (objectJsonObj.contains(ObjectKeys::TypeKey))
    {
@@ -57,22 +58,17 @@ bool ObjectDao::loadFromJsonValue(const QJsonValue & objectJsonVal)
    return true;
 }
 
-ObjectDao::Type ObjectDao::getTypeFromString(const QString & typeName) const
-{
-   static QMap<QString, Type> typeMap{
-      {"empty", Type::Empty},
-      {"mesh",  Type::Mesh}
-   };
-
-   return typeMap.value(typeName, Type::Empty);
-}
-
 bool ObjectDao::loadType(const QJsonValue & typeJsonVal)
 {
+   static QMap<QString, Type> typeDict = {
+      {"Empty", Type::Empty},
+      {"Mesh",  Type::Mesh}
+   };
+
    if (!typeJsonVal.isString())
       return false;
 
-   type = getTypeFromString(typeJsonVal.toString());
+   type = typeDict.value(typeJsonVal.toString(), Type::Empty);
    return true;
 }
 

@@ -5,39 +5,32 @@
 #ifndef ZINOTENGINEPROJECT_MATERIAL_HPP
 #define ZINOTENGINEPROJECT_MATERIAL_HPP
 
-#include <glm/glm.hpp>
-#include <assimp/scene.h>
+#include <QMap>
 
 #include <zinot-engine/res/Texture.hpp>
+#include <zinot-engine/res/GpuProgram.hpp>
+#include <zinot-utils/zimesh-json/MaterialDao.hpp>
 
 namespace Zinot
 {
+
 class Material
 {
 protected:
-public:
-   Texture * getTexDiff() const
-   {
-      return texDiff;
-   }
+   bool drawable;
+   float metalness;
+   float roughness;
+   float alpha;
+   Zimesh::MaterialDao::SurfaceType surfaceType;
+   Zimesh::MaterialDao::EnvmapSource envmapSource;
 
-protected:
-   Texture * texDiff;
-   //Texture * texSpec;
-   //Texture * texNorm;
-
-   glm::vec3 diffuse;
-   glm::vec3 ambient;
-   float specular;
-
-   bool processParameters(aiMaterial * aiMat);
-   bool processTexDiff(QString modelDir, aiMaterial * aiMat, MapResMgr * texResMgr);
-   //bool processTexSpec(QString modelDir, aiMaterial * aiMat, MapResMgr * texResMgr);
-   //bool processTexNorm(QString modelDir, aiMaterial * aiMat, MapResMgr * texResMgr);
+   QMap<GLuint, Texture *> tex;
+   GpuProgram * gpuProgram;
 public:
    Material();
    ~Material();
-   bool processAiMaterial(QString modelDir, aiMaterial * aiMat, MapResMgr * texResMgr);
+
+   bool loadFromZimeshJsonMaterialDao(const Zimesh::MaterialDao & materialDao, MapResMgr * gpuProgsMgr);
 };
 }
 

@@ -19,6 +19,7 @@ public:
       Mesh, Empty
    };
 private:
+   QString name;
    Type type;                    // Type of object
    QString data;                 // Data key assigned to scene object
    QVector<float> matrixWorld;   // Column major
@@ -28,9 +29,8 @@ private:
    bool loadData(const QJsonValue & dataJsonVal);
    bool loadMatWorld(const QJsonValue & matWorldJsonVal);
    bool loadParent(const QJsonValue & parentJsonVal);
-   Type getTypeFromString(const QString & typeName) const;
 public:
-   bool loadFromJsonValue(const QJsonValue & objectJsonVal);
+   bool loadFromJsonValue(const QString & objectName, const QJsonValue & objectJsonVal);
 
    Type getType() const
    {

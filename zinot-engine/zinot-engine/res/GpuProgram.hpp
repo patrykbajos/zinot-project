@@ -13,12 +13,13 @@ namespace Zinot
 class GpuProgram : public Resource
 {
 protected:
-   GLuint program;
+   GLuint vs, fs, program;
+   GLuint loadShaderFromFile(const QString & path, GLenum type);
 public:
    GpuProgram();
    virtual ~GpuProgram() override;
 
-   GLenum loadFromShaders(GLuint vertexShader, GLuint fragmentShader);
+   GLenum loadFromFiles(const QString & vsPath, const QString & fsPath);
 
    GLuint getProgram()
    { return program; };

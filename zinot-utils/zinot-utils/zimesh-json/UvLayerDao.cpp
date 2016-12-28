@@ -15,13 +15,14 @@ static const QString uvKey = "uv";
 static const QString tanKey = "tan";
 }
 
-bool UvLayerDao::loadFromJsonValue(const QJsonValue & jsonVal)
+bool UvLayerDao::loadFromJsonValue(const QString & uvLayerName, const QJsonValue & jsonVal)
 {
    if (!jsonVal.isObject())
       return false;
    QJsonObject jsonObj = jsonVal.toObject();
 
-   // Load UVs if contains
+   name = uvLayerName;
+
    if (jsonObj.contains(UvLayerKeys::uvKey))
    {
       QJsonValue uvVal = jsonObj[UvLayerKeys::uvKey];

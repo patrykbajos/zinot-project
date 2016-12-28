@@ -18,6 +18,7 @@ namespace Zimesh
 class MeshDao
 {
 private:
+   QString name;
    QVector<QString> matSlots;
    QVector<QVector<uint32_t>> facesGroups;
 
@@ -32,7 +33,7 @@ private:
    bool loadNormals(const QJsonValue & normalsJsonVal);
    bool loadUvLayers(const QJsonValue & uvLayersJsonVal);
 public:
-   bool loadFromJsonValue(const QJsonValue & meshJsonVal);
+   bool loadFromJsonValue(const QString & meshName, const QJsonValue & meshJsonVal);
 
    const QVector<QString> & getMatSlots() const
    {
