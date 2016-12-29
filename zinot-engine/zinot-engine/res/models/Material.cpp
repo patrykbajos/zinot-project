@@ -4,8 +4,6 @@
 
 #include "Material.hpp"
 
-#include <zinot-engine/res-sys/MapResMgr.hpp>
-
 namespace Zinot
 {
 

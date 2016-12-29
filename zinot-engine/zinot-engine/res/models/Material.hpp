@@ -6,6 +6,7 @@
 #define ZINOTENGINEPROJECT_MATERIAL_HPP
 
 #include <zinot-utils/zimesh-json/MaterialDao.hpp>
+#include <zinot-engine/res-sys/MapResMgr.hpp>
 
 namespace Zinot
 {
