@@ -5,11 +5,10 @@
 
 #include <zinot-engine/res-sys/MapResMgr.hpp>
 #include <zinot-engine/res-sys/NamesRegister.hpp>
-#include <zinot-engine/res/Shader.hpp>
 
 using Zinot::MapResMgr;
 using Zinot::NamesRegister;
-using Zinot::Shader;
+using Zinot::Resource;
 
 class MapResMgrTest : public ::testing::Test
 {
@@ -25,7 +24,7 @@ public:
 TEST_F(MapResMgrTest, OneOwner)
 {
    NamesRegister::NameId res1id = namesRegister.getId("OneOwner", true);
-   Shader * shd1inst1 = mapResMgr.newRes<Shader>(res1id);
+   Resource * shd1inst1 = mapResMgr.newRes<Resource>(res1id);
 
    EXPECT_TRUE(shd1inst1);
    EXPECT_EQ(1, shd1inst1->getRefCount());
@@ -39,7 +38,7 @@ TEST_F(MapResMgrTest, OneOwner)
 TEST_F(MapResMgrTest, MultipleOwners)
 {
    NamesRegister::NameId id = namesRegister.getId("MultipleOwners", true);
-   Shader * shd2inst1 = mapResMgr.newRes<Shader>(id);
+   Resource * shd2inst1 = mapResMgr.newRes<Resource>(id);
 
    EXPECT_TRUE(shd2inst1);
    EXPECT_EQ(&mapResMgr, shd2inst1->getResOwner());
@@ -49,7 +48,7 @@ TEST_F(MapResMgrTest, MultipleOwners)
    EXPECT_EQ(1, shd2inst1->getRefCount());
 
 
-   Shader * shd2inst2 = mapResMgr.newRes<Shader>(id);
+   Resource * shd2inst2 = mapResMgr.newRes<Resource>(id);
 
    EXPECT_TRUE(shd2inst2);
    EXPECT_EQ(&mapResMgr, shd2inst2->getResOwner());
