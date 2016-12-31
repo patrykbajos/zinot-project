@@ -7,7 +7,7 @@ import json
 import os
 
 bl_info = {
-    "name": "Expoter to Zimesh JSON",
+    "name": "Exporter to Zimesh JSON",
     "author": "bajos",
     "description": "Exports scene to Zinot Engine Zimesh JSON format.",
     "category": "Import-Export",
@@ -58,8 +58,8 @@ class ZimeshJSONWriter:
             json.dump(packedData, fileStream, indent=4, sort_keys=True)
             fileStream.close()
         except IOError:
-            return None
-        return None
+            return False
+        return True
 
 
 class DataPacker:
@@ -73,7 +73,7 @@ class DataPacker:
             packedMaterial = packedMaterials[mat.name] = {}
             self.packMaterial(packedMaterial, mat)
 
-        return None
+        return True
 
     def packMaterial(self, packedMaterial, mat):
         nodes = mat.node_tree.nodes
@@ -82,7 +82,10 @@ class DataPacker:
         if propFrame is None:
             return False
 
-        packedMaterial[matKeys["shaderPathKey"]] = propFrame.label
+        shd_fp = propFrame.label
+        shd_fp = os.path.normpath(shd_fp)
+        shd_fp = shd_fp.lstrip("/")
+        packedMaterial[matKeys["shaderPathKey"]] = shd_fp
 
         propNodes = []
         for node in nodes:
@@ -91,18 +94,28 @@ class DataPacker:
 
         packedShdProps = packedMaterial[matKeys["shaderPropertiesKey"]] = {}
         for propNode in propNodes:
-            packedShdProp = packedShdProps[propNode.name] = None
-            self.packShaderProp(packedShdProp, propNode)
+            packedShdProp = packedShdProps[propNode.name] = self.packShaderProp(propNode)
 
         packedMaterial[matKeys["drawableKey"]] = True
-        matPropFrame = nodes.get("zimeshMaterialProp")
+        packedMaterial[matKeys["envprobeTypeKey"]] = "None"
+        packedMaterial[matKeys["renderPassKey"]] = "Deferred"
+        packedMaterial[matKeys["surfaceTypeKey"]] = "Opaque"
 
-        packedMaterial[matKeys["envprobeTypeKey"]]
-        packedMaterial[matKeys["renderPassKey"]]
-        packedMaterial[matKeys["surfaceTypeKey"]]
+        return True
 
+    def packShaderProp(self, propNode):
+        if type(propNode) is bpy.types.ShaderNodeValue:
+            val = propNode.outputs[0].default_value
+            return str(val)
+        if type(propNode) is bpy.types.ShaderNodeTexImage:
+            img_fp = propNode.image.filepath
+            img_fp = os.path.normpath(img_fp)
+            img_fp = img_fp.lstrip("/")
 
-
+            zitex_fp = os.path.splitext(img_fp)[0] + ".zitex"
+            return zitex_fp
+        if type(propNode) is bpy.types.ShaderNodeUVMap:
+            return propNode.uv_map
         return None
 
     def packMeshObject(self, packedData, obj, context):
@@ -178,10 +191,10 @@ class DataPacker:
 
         # Free temporary mesh (with applied modifiers of obj)
         bpy.data.meshes.remove(meshTemp)
-        return
+        return True
 
     def packLightObject(self, packedData, light, context):
-        return
+        return True
 
     def packObjects(self, packedData, context):
         objectsToExport = None
@@ -198,7 +211,7 @@ class DataPacker:
                 self.packMeshObject(packedData, obj, context)
             if obj.type == "LIGHT":
                 self.packLightObject(packedData, obj, context)
-        return None
+        return True
 
     def packData(self, exporter, context):
         self.exporter = exporter
