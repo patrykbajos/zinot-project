@@ -222,7 +222,7 @@ class DataPacker:
                 fg = packedFaces[polygon.material_index]
                 fg.extend([polygon.loop_indices[0], polygon.loop_indices[1], polygon.loop_indices[2]])
 
-        packedObject[objectKeys["typeKey"]] = "mesh"
+        packedObject[objectKeys["typeKey"]] = "Mesh"
         packedObject[objectKeys["dataKey"]] = obj.data.name
         if obj.parent is not None:
             packedObject[objectKeys["parentKey"]] = obj.parent.name
