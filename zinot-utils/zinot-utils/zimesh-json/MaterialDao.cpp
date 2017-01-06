@@ -4,7 +4,6 @@
 
 #include "MaterialDao.hpp"
 
-#include <QMap>
 #include <QJsonArray>
 
 namespace Zimesh
@@ -14,10 +13,11 @@ namespace MaterialKeys
 
 static const QString drawableKey = "drawable";
 static const QString shaderPathKey = "shaderPath";
-static const QString shaderPropertiesKey = "shaderProperties";
+static const QString shaderUniformsKey = "shaderUniforms";
+static const QString shaderAttributesKey = "shaderAttributes";
 static const QString envprobeTypeKey = "envprobeType";
 static const QString renderPassKey = "renderPass";
-static const QString surfaceTypeKey = "surfaceType";
+static const QString lightingModelKey = "lightingModel";
 
 }
 
@@ -31,14 +31,24 @@ bool MaterialDao::loadFromJsonValue(const QString & matName, const QJsonValue & 
    drawable = matObj[MaterialKeys::drawableKey].toBool(true);
    shaderPath = matObj[MaterialKeys::shaderPathKey].toString();
 
-   if (matObj.contains(MaterialKeys::shaderPropertiesKey))
+   if (matObj.contains(MaterialKeys::shaderAttributesKey))
    {
-      QJsonValue shaderPropVal = matObj[MaterialKeys::shaderPropertiesKey];
-      if (!loadShaderProperties(shaderPropVal))
+      QJsonValue shaderAttrVal = matObj[MaterialKeys::shaderAttributesKey];
+      if (!loadShaderAttributes(shaderAttrVal))
          return false;
    } else
    {
-      shaderProperties.clear();
+      shaderAttributes.clear();
+   }
+
+   if (matObj.contains(MaterialKeys::shaderUniformsKey))
+   {
+      QJsonValue shaderUniVal = matObj[MaterialKeys::shaderUniformsKey];
+      if (!loadShaderUniforms(shaderUniVal))
+         return false;
+   } else
+   {
+      shaderUniforms.clear();
    }
 
    if (matObj.contains(MaterialKeys::envprobeTypeKey))
@@ -61,20 +71,30 @@ bool MaterialDao::loadFromJsonValue(const QString & matName, const QJsonValue & 
       renderPass = RenderPass::Deferred;
    }
 
-   if (matObj.contains(MaterialKeys::surfaceTypeKey))
+   if (matObj.contains(MaterialKeys::lightingModelKey))
    {
-      QJsonValue surfTypeVal = matObj[MaterialKeys::surfaceTypeKey];
-      if (!loadSurfaceType(surfTypeVal))
+      QJsonValue lightingMdlVal = matObj[MaterialKeys::lightingModelKey];
+      if (!loadLightingModel(lightingMdlVal))
          return false;
    } else
    {
-      surfaceType = SurfaceType::Opaque;
+      lightingModel = "Default";
    }
 
    return true;
 }
 
-bool MaterialDao::loadShaderProperties(const QJsonValue & shaderPropVal)
+bool MaterialDao::loadShaderUniforms(const QJsonValue & shaderUniVal)
+{
+   return loadShaderProperties(shaderUniVal, shaderUniforms);
+}
+
+bool MaterialDao::loadShaderAttributes(const QJsonValue & shaderAttrVal)
+{
+   return loadShaderProperties(shaderAttrVal, shaderAttributes);
+}
+
+bool MaterialDao::loadShaderProperties(const QJsonValue & shaderPropVal, QMap<QString, QString> & map)
 {
    if (!shaderPropVal.isObject())
       return false;
@@ -85,10 +105,8 @@ bool MaterialDao::loadShaderProperties(const QJsonValue & shaderPropVal)
       QString propName = it.key();
       QJsonValueRef propJsonVal = it.value();
 
-      if (!propJsonVal.isString())
-         continue;
-
-      shaderProperties.insert(propName, propJsonVal.toString());
+      if (propJsonVal.isString())
+         map.insert(propName, propJsonVal.toString());
    }
 
    return true;
@@ -123,52 +141,12 @@ bool MaterialDao::loadRenderPass(const QJsonValue & renderPassVal)
    return true;
 }
 
-bool MaterialDao::loadSurfaceType(const QJsonValue & surfTypeVal)
+bool MaterialDao::loadLightingModel(const QJsonValue & lightingMdlVal)
 {
-   static QMap<QString, SurfaceType> surfaceTypeDict = {
-      {"Opaque",      SurfaceType::Opaque},
-      {"Transparent", SurfaceType::Transparent}
-   };
-
-   if (!surfTypeVal.isString())
+   if (!lightingMdlVal.isString())
       return false;
 
-   surfaceType = surfaceTypeDict.value(surfTypeVal.toString(), SurfaceType::Opaque);
+   lightingModel = lightingMdlVal.toString();
    return true;
-}
-
-const QString & MaterialDao::getName() const
-{
-   return name;
-}
-
-bool MaterialDao::isDrawable() const
-{
-   return drawable;
-}
-
-const QString & MaterialDao::getShaderPath() const
-{
-   return shaderPath;
-}
-
-const QMap<QString, QString> & MaterialDao::getShaderProperties() const
-{
-   return shaderProperties;
-}
-
-MaterialDao::EnvprobeType MaterialDao::getEnvprobeType() const
-{
-   return envprobeType;
-}
-
-MaterialDao::RenderPass MaterialDao::getRenderPass() const
-{
-   return renderPass;
-}
-
-MaterialDao::SurfaceType MaterialDao::getSurfaceType() const
-{
-   return surfaceType;
 }
 }
