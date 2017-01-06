@@ -47,6 +47,14 @@ private:
    bool loadSurfaceType(const QJsonValue & surfTypeVal);
 public:
    bool loadFromJsonValue(const QString & matName, const QJsonValue & matVal);
+
+   const QString & getName() const;
+   bool isDrawable() const;
+   const QString & getShaderPath() const;
+   const QMap<QString, QString> & getShaderProperties() const;
+   EnvprobeType getEnvprobeType() const;
+   RenderPass getRenderPass() const;
+   SurfaceType getSurfaceType() const;
 };
 
 }

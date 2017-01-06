@@ -44,12 +44,22 @@ meshKeys = {
 matKeys = {
     "drawableKey": "drawable",
     "shaderPathKey": "shaderPath",
-    "shaderPropertiesKey": "shaderProperties",
+    "shaderUniformsKey": "shaderUniforms",
+    "shaderAttributesKey": "shaderAttributes",
     "envprobeTypeKey": "envprobeType",
     "renderPassKey": "renderPass",
-    "surfaceTypeKey": "surfaceType"
+    "lightingModelKey": "lightingModel"
 }
 
+
+def normalizeFilePath(path):
+    path = os.path.normpath(path)
+    path = path.lstrip('/')
+    return path
+
+
+def changeFileExtension(file, ext):
+    return (os.path.splitext(file)[0] + '.' + ext)
 
 class ZimeshJSONWriter:
     def write(self, packedData, filepath):
@@ -64,7 +74,7 @@ class ZimeshJSONWriter:
 
 class DataPacker:
     exporter = None
-    toOpenGLSpaceMat = mathutils.Matrix.Rotation(math.radians(-90.0), 4, "X")
+    toOpenGLSpaceMat = mathutils.Matrix.Rotation(math.radians(-90.0), 4, 'X')
 
     def packMaterials(self, packedData, context):
         packedMaterials = packedData[rootKeys["matsKey"]] = {}
@@ -78,44 +88,82 @@ class DataPacker:
     def packMaterial(self, packedMaterial, mat):
         nodes = mat.node_tree.nodes
 
-        propFrame = nodes.get("zimeshShaderProp")
-        if propFrame is None:
+        """
+        EN: Search frames called "zimeshShader", "uniforms", "attributes"
+        PL: Szuka ramek "zimeshShader", "uniforms", "attributes"
+        """
+        shdFrame = nodes.get('zimeshShader')
+        if (shdFrame is None) or (type(shdFrame) is not bpy.types.NodeFrame):
             return False
 
-        shd_fp = propFrame.label
-        shd_fp = os.path.normpath(shd_fp)
-        shd_fp = shd_fp.lstrip("/")
-        packedMaterial[matKeys["shaderPathKey"]] = shd_fp
+        shdUniformsFrame = nodes.get('uniforms')
+        if (shdUniformsFrame is None) or (type(shdUniformsFrame) is not bpy.types.NodeFrame):
+            return False
 
-        propNodes = []
+        shdAttribsFrame = nodes.get('attributes')
+        if (shdAttribsFrame is None) or (type(shdAttribsFrame) is not bpy.types.NodeFrame):
+            return False
+
+        """
+        EN: Get name Label from frame "zimeshShader", which is
+            path to shader descriptor file.
+        PL: Z ramki "zimeshShader" pobiera jej nazwę Label, która jest
+            ścieżką do deskryptora shadera.
+        """
+        packedMaterial[matKeys["shaderPathKey"]] = normalizeFilePath(shdFrame.label)
+
+        """
+        EN: Search nodes belong to frame "uniforms" or "attributes".
+        PL: Szuka nodes należących do ramki "uniforms" lub "attributes".
+        """
+        uniformNodes = []
+        attribNodes = []
         for node in nodes:
-            if node.parent == propFrame:
-                propNodes.append(node)
+            if node.parent == shdUniformsFrame:
+                uniformNodes.append(node)
+            if node.parent == shdAttribsFrame:
+                attribNodes.append(node)
 
-        packedShdProps = packedMaterial[matKeys["shaderPropertiesKey"]] = {}
-        for propNode in propNodes:
-            packedShdProp = packedShdProps[propNode.name] = self.packShaderProp(propNode)
+        packedShdUniforms = packedMaterial[matKeys["shaderUniformsKey"]] = {}
+        packedShdAttribs = packedMaterial[matKeys["shaderAttributesKey"]] = {}
+
+        """
+        EN: Pack attribute and uniform nodes to dictionary
+        PL: Pakuje nodes atrybutów lub uniformów do słownika
+        """
+        for node in uniformNodes:
+            uniform = self.packShaderUniform(node)
+            if uniform is not None:
+                packedShdUniform = packedShdUniforms[node.name] = uniform
+        for node in attribNodes:
+            attrib = self.packShaderAttrib(node)
+            if attrib is not None:
+                packedShdAttrib = packedShdAttribs[node.name] = attrib
 
         packedMaterial[matKeys["drawableKey"]] = True
         packedMaterial[matKeys["envprobeTypeKey"]] = "None"
         packedMaterial[matKeys["renderPassKey"]] = "Deferred"
-        packedMaterial[matKeys["surfaceTypeKey"]] = "Opaque"
+        packedMaterial[matKeys["lightingModelKey"]] = "PBR"
 
         return True
 
-    def packShaderProp(self, propNode):
-        if type(propNode) is bpy.types.ShaderNodeValue:
-            val = propNode.outputs[0].default_value
+    def packShaderUniform(self, node):
+        if type(node) is bpy.types.ShaderNodeValue:
+            val = node.outputs[0].default_value
             return str(val)
-        if type(propNode) is bpy.types.ShaderNodeTexImage:
-            img_fp = propNode.image.filepath
-            img_fp = os.path.normpath(img_fp)
-            img_fp = img_fp.lstrip("/")
+        if type(node) is bpy.types.ShaderNodeTexImage:
+            img_fp = normalizeFilePath(node.image.filepath)
+            return changeFileExtension(img_fp, "zitex")
+        return None
 
-            zitex_fp = os.path.splitext(img_fp)[0] + ".zitex"
-            return zitex_fp
-        if type(propNode) is bpy.types.ShaderNodeUVMap:
-            return propNode.uv_map
+    def packShaderAttrib(self, node):
+        if type(node) is bpy.types.ShaderNodeUVMap:
+            return node.uv_map
+        if type(node) is bpy.types.ShaderNodeTangent:
+            if node.direction_type == "UV_MAP":
+                return node.uv_map
+            else:
+                return None
         return None
 
     def packMeshObject(self, packedData, obj, context):

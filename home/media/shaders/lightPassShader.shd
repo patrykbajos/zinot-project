@@ -1,0 +1,10 @@
+{
+  "shaderProperties": {
+    "uniformProperty": "type|default|value"
+  },
+  "shaderAttributes": {
+    "glslAttribute": "ValueSource"
+  },
+  "vertexShader": "",
+  "fragmentShader": ""
+}

@@ -36,6 +36,9 @@ bool MaterialDao::loadFromJsonValue(const QString & matName, const QJsonValue & 
       QJsonValue shaderPropVal = matObj[MaterialKeys::shaderPropertiesKey];
       if (!loadShaderProperties(shaderPropVal))
          return false;
+   } else
+   {
+      shaderProperties.clear();
    }
 
    if (matObj.contains(MaterialKeys::envprobeTypeKey))
@@ -43,6 +46,9 @@ bool MaterialDao::loadFromJsonValue(const QString & matName, const QJsonValue & 
       QJsonValue envprobeVal = matObj[MaterialKeys::envprobeTypeKey];
       if (!loadEnvprobeType(envprobeVal))
          return false;
+   } else
+   {
+      envprobeType = EnvprobeType::None;
    }
 
    if (matObj.contains(MaterialKeys::renderPassKey))
@@ -50,6 +56,9 @@ bool MaterialDao::loadFromJsonValue(const QString & matName, const QJsonValue & 
       QJsonValue renderPassVal = matObj[MaterialKeys::renderPassKey];
       if (!loadRenderPass(renderPassVal))
          return false;
+   } else
+   {
+      renderPass = RenderPass::Deferred;
    }
 
    if (matObj.contains(MaterialKeys::surfaceTypeKey))
@@ -57,6 +66,9 @@ bool MaterialDao::loadFromJsonValue(const QString & matName, const QJsonValue & 
       QJsonValue surfTypeVal = matObj[MaterialKeys::surfaceTypeKey];
       if (!loadSurfaceType(surfTypeVal))
          return false;
+   } else
+   {
+      surfaceType = SurfaceType::Opaque;
    }
 
    return true;
@@ -123,5 +135,40 @@ bool MaterialDao::loadSurfaceType(const QJsonValue & surfTypeVal)
 
    surfaceType = surfaceTypeDict.value(surfTypeVal.toString(), SurfaceType::Opaque);
    return true;
+}
+
+const QString & MaterialDao::getName() const
+{
+   return name;
+}
+
+bool MaterialDao::isDrawable() const
+{
+   return drawable;
+}
+
+const QString & MaterialDao::getShaderPath() const
+{
+   return shaderPath;
+}
+
+const QMap<QString, QString> & MaterialDao::getShaderProperties() const
+{
+   return shaderProperties;
+}
+
+MaterialDao::EnvprobeType MaterialDao::getEnvprobeType() const
+{
+   return envprobeType;
+}
+
+MaterialDao::RenderPass MaterialDao::getRenderPass() const
+{
+   return renderPass;
+}
+
+MaterialDao::SurfaceType MaterialDao::getSurfaceType() const
+{
+   return surfaceType;
 }
 }
