@@ -3,18 +3,21 @@
     "table_mat": {
       "drawable": true,
       "envprobeType": "None",
+      "lightingModel": "PBR",
       "renderPass": "Deferred",
+      "shaderAttributes": {
+        "vertTan": "texture",
+        "vertUv1": "texture",
+        "vertUv2": "ao"
+      },
       "shaderPath": "media/shaders/pbrDoubleUVShader.shd",
-      "shaderProperties": {
+      "shaderUniforms": {
         "metalness": "0.20000000298023224",
         "roughness": "0.4000000059604645",
-        "texture_ao": "table_ao.zitex",
-        "texture_diffuse": "wood_d.zitex",
-        "uv_1": "texture",
-        "uv_2": "ao"
-      },
-      "surfaceType": "Opaque"
-    }
+        "texAO": "table_ao.zitex",
+        "texDiffuse": "wood_d.zitex"
+      }
+        }
   },
   "meshes": {
     "table_mesh": {
@@ -8391,5 +8394,5 @@
       "parent": null,
       "type": "mesh"
     }
-  }
+    }
 }
