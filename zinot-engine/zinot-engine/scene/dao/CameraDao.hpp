@@ -14,35 +14,16 @@ namespace Zinot
 class CameraDao
 {
 protected:
-   bool valid = false;
    float fov;
+   float near;
+   float far;
    glm::vec3 pos;
    glm::vec2 rot;
 
-   bool typesCheck(const QJsonObject & cameraObj);
-   bool validCheck();
+   bool loadPos(const QJsonValue & posVal);
+   bool loadRot(const QJsonValue & rotVal);
 public:
-   bool parseObject(const QJsonObject & cameraObj);
-
-   bool isValid() const
-   {
-      return valid;
-   }
-
-   float getFov() const
-   {
-      return fov;
-   }
-
-   const glm::vec3 & getPos() const
-   {
-      return pos;
-   }
-
-   const glm::vec2 & getRot() const
-   {
-      return rot;
-   }
+   bool loadFromJsonVal(const QJsonValue & camVal);
 };
 }
 

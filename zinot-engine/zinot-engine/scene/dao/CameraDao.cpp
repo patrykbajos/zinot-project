@@ -9,63 +9,89 @@
 namespace Zinot
 {
 
-bool CameraDao::parseObject(const QJsonObject & cameraObj)
+namespace CameraKeys
 {
-   if (!typesCheck(cameraObj))
+const QString fovKey = "fov";
+const QString nearKey = "near";
+const QString farKey = "far";
+const QString posKey = "pos";
+const QString rotKey = "rot";
+}
+
+bool CameraDao::loadFromJsonVal(const QJsonValue & camVal)
+{
+   if (!camVal.isObject())
       return false;
+   QJsonObject camObj = camVal.toObject();
 
-   fov = (float) cameraObj["fov"].toDouble();
+   if (camObj.contains(CameraKeys::fovKey))
+   {
+      QJsonValue fovVal = camObj[CameraKeys::fovKey];
+      fov = (float) fovVal.toDouble(70.0);
+   } else
+      fov = 70.0f;
 
-   QJsonArray posArr = cameraObj["pos"].toArray();
-   pos = glm::vec3((float) posArr[0].toDouble(),
-                   (float) posArr[1].toDouble(),
-                   (float) posArr[2].toDouble());
+   if (camObj.contains(CameraKeys::nearKey))
+   {
+      QJsonValue nearVal = camObj[CameraKeys::nearKey];
+      near = (float) nearVal.toDouble(0.1);
+   } else
+      near = 0.1f;
 
-   QJsonArray rotArr = cameraObj["rot"].toArray();
-   rot = glm::vec2((float) rotArr[0].toDouble(),
-                   (float) rotArr[1].toDouble());
+   if (camObj.contains(CameraKeys::farKey))
+   {
+      QJsonValue farVal = camObj[CameraKeys::farKey];
+      far = (float) farVal.toDouble(100.0);
+   } else
+      far = 100.0f;
 
-   if (!validCheck())
-      return false;
+   if (camObj.contains(CameraKeys::posKey))
+   {
+      QJsonValue posVal = camObj[CameraKeys::posKey];
+      if (!loadPos(posVal))
+         return false;
+   } else
+      pos = glm::vec3(0.0f, 0.0f, 0.0f);
 
-   valid = true;
+   if (camObj.contains(CameraKeys::rotKey))
+   {
+      QJsonValue rotVal = camObj[CameraKeys::rotKey];
+      if (!loadRot(rotVal))
+         return false;
+   } else
+      rot = glm::vec2(0.0f, 0.0f);
+
    return true;
 }
 
-bool CameraDao::typesCheck(const QJsonObject & cameraObj)
+bool CameraDao::loadPos(const QJsonValue & posVal)
 {
-   bool fovValid = cameraObj["fov"].isDouble();
-   bool posValid = cameraObj["pos"].isArray();
-   bool rotValid = cameraObj["rot"].isArray();
+   if (!posVal.isArray())
+      return false;
+   QJsonArray posArr = posVal.toArray();
 
-   // Basic types valid
-   if (!(fovValid && posValid && rotValid))
+   if (posArr.size() != 3)
       return false;
 
-   QJsonArray posArr = cameraObj["pos"].toArray();
-   QJsonArray rotArr = cameraObj["rot"].toArray();
-
-   // Arrays size valid
-   if ((posArr.size() != 3) || (rotArr.size() != 2))
-      return false;
-
-   // Arrays types valid
-   for (uint32_t it = 0; it < 3; ++it)
-   {
-      if (!posArr[it].isDouble())
-         return false;
-   }
-   for (uint32_t it = 0; it < 2; ++it)
-   {
-      if (!rotArr[it].isDouble())
-         return false;
-   }
+   pos.x = (float) posArr[0].toDouble(0.0);
+   pos.y = (float) posArr[1].toDouble(0.0);
+   pos.z = (float) posArr[2].toDouble(0.0);
 
    return true;
 }
 
-bool CameraDao::validCheck()
+bool CameraDao::loadRot(const QJsonValue & rotVal)
 {
+   if (!rotVal.isArray())
+      return false;
+   QJsonArray rotArr = rotVal.toArray();
+
+   if (rotArr.size() != 2)
+      return false;
+
+   rot.x = (float) rotArr[0].toDouble(0.0);
+   rot.y = (float) rotArr[1].toDouble(0.0);
+
    return true;
 }
 }
