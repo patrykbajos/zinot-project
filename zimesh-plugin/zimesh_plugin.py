@@ -278,20 +278,9 @@ class ExportZimesh(bpy.types.Operator, bpy_extras.io_utils.ExportHelper):
     filter_glob = bpy.props.StringProperty(default='*.json', options={'HIDDEN'})
 
     selectedOnly = bpy.props.BoolProperty(
-        name="Export selected only",
-        description="Export only objects selected on scene",
+        name="Selected only",
+        description="Export only selected objects.",
         default=True
-    )
-
-    vsFormat = bpy.props.StringProperty(
-        name="Vertex shader path format",
-        description="format for vertex shader path. Use {matname} for material name and {filename} for file name.",
-        default="/media/shaders/{matname}_vs.glsl"
-    )
-    fsFormat = bpy.props.StringProperty(
-        name="Fragment shader path format",
-        description="format for fragment shader path. Use {matname} for material name and {filename} for file name.",
-        default="/media/shaders/{matname}_fs.glsl"
     )
 
     packer = DataPacker()
