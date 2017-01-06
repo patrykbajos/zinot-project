@@ -12,6 +12,5 @@ protected:
 
 TEST_F(ZimeshJsonTest, loading)
 {
-   EXPECT_TRUE(Zimesh::ZimeshJsonReader::loadFromJson("media/models/table.json", zimeshJsonDao));
-   Zimesh::ZimeshJsonDao & dao = zimeshJsonDao;
+   EXPECT_TRUE(Zimesh::ZimeshJsonReader::loadFromJson("media/models/table/table.json", zimeshJsonDao));
 }
