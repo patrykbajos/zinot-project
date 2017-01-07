@@ -11,9 +11,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <zinot-engine/res-sys/MapResMgr.hpp>
-#include <zinot-engine/scene/dao/ShaderDao.hpp>
-#include <zinot-engine/scene/dao/ObjectDao.hpp>
-#include <zinot-engine/scene/dao/CameraDao.hpp>
+#include <zinot-engine/dao/ShaderDescDao.hpp>
+#include <zinot-engine/dao/ObjectDao.hpp>
+#include <zinot-engine/dao/CameraDao.hpp>
 #include <zinot-engine/scene/GameObject.hpp>
 #include <zinot-engine/eng/FPSCamera.hpp>
 
@@ -24,7 +24,7 @@ class SceneDao
 {
 protected:
    CameraDao mainCam;
-   QVector<ShaderDao> shadersDao;
+   QVector<ShaderDescDao> shadersDao;
    QVector<ObjectDao> objectsDao;
 
    bool parse(const QJsonObject & mainObj);
@@ -39,7 +39,7 @@ public:
       return mainCam;
    }
 
-   const QVector<ShaderDao> & getShadersDao() const
+   const QVector<ShaderDescDao> & getShadersDao() const
    {
       return shadersDao;
    }

@@ -6,7 +6,7 @@ set(ZINOT_ENGINE_SRC
         zinot-engine/main.cpp
         zinot-engine/res/models/Material.cpp
         zinot-engine/res/models/Model.cpp
-        zinot-engine/res/GpuProgram.cpp
+        zinot-engine/res/Shader.cpp
         zinot-engine/res/Texture.cpp
         zinot-engine/eng/Engine.cpp
         zinot-engine/eng/Window.cpp
@@ -15,10 +15,10 @@ set(ZINOT_ENGINE_SRC
         zinot-engine/res-sys/Resource.cpp
         zinot-engine/res-sys/MapResMgr.cpp
         zinot-engine/render/DeferredRenderer.cpp
-        zinot-engine/scene/dao/SceneDao.cpp
-        zinot-engine/scene/dao/ShaderDao.cpp
-        zinot-engine/scene/dao/ObjectDao.cpp
-        zinot-engine/scene/dao/CameraDao.cpp
+        zinot-engine/dao/SceneDao.cpp
+        zinot-engine/dao/ShaderDescDao.cpp
+        zinot-engine/dao/ObjectDao.cpp
+        zinot-engine/dao/CameraDao.cpp
         zinot-engine/scene/GameObject.cpp
         zinot-engine/scene/Scene.cpp
         )

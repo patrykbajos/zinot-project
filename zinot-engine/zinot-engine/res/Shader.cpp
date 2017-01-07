@@ -4,7 +4,7 @@
 
 #include <gl_core_3_3.hpp>
 
-#include "GpuProgram.hpp"
+#include "Shader.hpp"
 
 #include <QFile>
 #include <zinot-utils/Logger.hpp>
@@ -13,14 +13,14 @@
 namespace Zinot
 {
 
-GpuProgram::GpuProgram()
+Shader::Shader()
 {
    vs = 0;
    fs = 0;
    program = 0;
 }
 
-GpuProgram::~GpuProgram()
+Shader::~Shader()
 {
    if (program)
       gl::DeleteProgram(program);
@@ -30,17 +30,19 @@ GpuProgram::~GpuProgram()
       gl::DeleteShader(fs);
 }
 
-GLenum GpuProgram::loadFromFiles(const QString & vsPath, const QString & fsPath)
+GLenum Shader::loadFromFile(const QString & shaderPath)
 {
+   QString vsPath, fsPath;
+
    program = gl::CreateProgram();
    if (!program)
       return gl::GetError();
 
-   vs = loadShaderFromFile(vsPath, gl::VERTEX_SHADER);
+   GLuint vs = loadShaderFromFile(vsPath, gl::VERTEX_SHADER);
    if (!vs)
       return gl::GetError();
 
-   fs = loadShaderFromFile(fsPath, gl::FRAGMENT_SHADER);
+   GLuint fs = loadShaderFromFile(fsPath, gl::FRAGMENT_SHADER);
    if (!fs)
       return gl::GetError();
 
@@ -51,7 +53,7 @@ GLenum GpuProgram::loadFromFiles(const QString & vsPath, const QString & fsPath)
    return gl::GetError();
 }
 
-GLuint GpuProgram::loadShaderFromFile(const QString & path, GLenum type)
+GLuint Shader::loadShaderFromFile(const QString & path, GLenum type)
 {
    GLuint shader = 0;
    shader = gl::CreateShader(type);
@@ -88,8 +90,6 @@ GLuint GpuProgram::loadShaderFromFile(const QString & path, GLenum type)
               QString::fromUtf8(logMessage.get(), lenRet) + "\n");
 
       gl::DeleteShader(shader);
-      shader = 0;
-
       return 0;
    }
 

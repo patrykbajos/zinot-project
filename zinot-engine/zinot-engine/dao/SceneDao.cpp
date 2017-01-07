@@ -11,9 +11,9 @@
 #include <QJsonObject>
 
 #include <zinot-utils/Logger.hpp>
-#include <zinot-engine/res/GpuProgram.hpp>
-#include <zinot-engine/scene/dao/ShaderDao.hpp>
-#include <zinot-engine/scene/dao/ObjectDao.hpp>
+#include <zinot-engine/res/Shader.hpp>
+#include <zinot-engine/dao/ShaderDescDao.hpp>
+#include <zinot-engine/dao/ObjectDao.hpp>
 
 namespace Zinot
 {
@@ -85,7 +85,7 @@ bool SceneDao::parseShaders(const QJsonArray & shadersArr)
       if (!shaderVal.isObject())
          continue;
 
-      ShaderDao shaderDao;
+      ShaderDescDao shaderDao;
       if (!shaderDao.parseObject(shaderVal.toObject()))
          continue;
 

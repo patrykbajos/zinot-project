@@ -7,7 +7,7 @@
 
 #include <memory>
 #include <SFML/Window.hpp>
-#include <zinot-engine/scene/dao/SceneDao.hpp>
+#include <zinot-engine/dao/SceneDao.hpp>
 
 namespace Zinot
 {

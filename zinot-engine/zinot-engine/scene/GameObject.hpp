@@ -6,7 +6,7 @@
 #define ZINOT_PROJECT_GAMEOBJECT_HPP
 
 #include <zinot-engine/res-sys/MapResMgr.hpp>
-#include <zinot-engine/res/GpuProgram.hpp>
+#include <zinot-engine/res/Shader.hpp>
 #include <zinot-engine/res/Texture.hpp>
 #include <zinot-engine/res/models/Model.hpp>
 

@@ -5,21 +5,22 @@
 #ifndef ZINOT_GPUPROGRAM_HPP
 #define ZINOT_GPUPROGRAM_HPP
 
-#include <GL/gl.h>
+#include <gl_core_3_3.hpp>
 #include <zinot-engine/res-sys/Resource.hpp>
 
 namespace Zinot
 {
-class GpuProgram : public Resource
+
+class Shader : public Resource
 {
 protected:
-   GLuint vs, fs, program;
+   GLuint program;
    GLuint loadShaderFromFile(const QString & path, GLenum type);
 public:
-   GpuProgram();
-   virtual ~GpuProgram() override;
+   Shader();
+   virtual ~Shader() override;
 
-   GLenum loadFromFiles(const QString & vsPath, const QString & fsPath);
+   GLenum loadFromFile(const QString & shaderPath);
 
    GLuint getProgram()
    { return program; };
