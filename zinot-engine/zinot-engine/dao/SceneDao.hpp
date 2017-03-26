@@ -5,7 +5,7 @@
 #ifndef ZINOT_PROJECT_SCENE_HPP
 #define ZINOT_PROJECT_SCENE_HPP
 
-#include <gl_core_3_3.hpp>
+//#include <gl_core_3_3.hpp>
 
 #include <QString>
 #include <QJsonObject>
@@ -16,38 +16,19 @@
 #include <zinot-engine/dao/CameraDao.hpp>
 #include <zinot-engine/scene/GameObject.hpp>
 #include <zinot-engine/eng/FPSCamera.hpp>
+#include <zinot-utils/json/JsonDao.hpp>
 
 namespace Zinot
 {
 
-class SceneDao
+class SceneDao : public JsonDao
 {
 protected:
    CameraDao mainCam;
    QVector<ShaderDescDao> shadersDao;
    QVector<ObjectDao> objectsDao;
-
-   bool parse(const QJsonObject & mainObj);
-   bool parseShaders(const QJsonArray & shadersArr);
-   bool parseObjects(const QJsonArray & objectsArr);
-   bool parseMainCamera(const QJsonObject & cameraObj);
 public:
-   bool loadFromJSON(const QString & filePath);
-
-   const CameraDao & getMainCam() const
-   {
-      return mainCam;
-   }
-
-   const QVector<ShaderDescDao> & getShadersDao() const
-   {
-      return shadersDao;
-   }
-
-   const QVector<ObjectDao> & getObjectsDao() const
-   {
-      return objectsDao;
-   }
+   virtual bool loadFromJsonDoc(const QJsonDocument & jsonDoc) override;
 };
 }
 

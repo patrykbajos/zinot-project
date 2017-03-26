@@ -2,10 +2,9 @@
 // Created by patryk on 13.05.16.
 //
 #include <gl_core_3_3.hpp>
-#include <GL/glu.h>
-
 #include "FPSCamera.hpp"
 
+#include <GL/glu.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -21,9 +20,9 @@ void FPSCamera::computeDirection()
    float degToRad = (float) M_PI / 180;
    glm::vec2 rotInRad = rotation * degToRad;
 
-   direction.z = -(float) std::cos(rotInRad.y) * (float) std::cos(rotInRad.x);
-   direction.x = (float) std::cos(rotInRad.y) * (float) std::sin(rotInRad.x);
-   direction.y = (float) std::sin(rotInRad.y);
+   direction.z = -std::cos(rotInRad.y) * std::cos(rotInRad.x);
+   direction.x = std::cos(rotInRad.y) * std::sin(rotInRad.x);
+   direction.y = std::sin(rotInRad.y);
 }
 
 void FPSCamera::setVectorUp(const glm::vec3 & newUpVector)

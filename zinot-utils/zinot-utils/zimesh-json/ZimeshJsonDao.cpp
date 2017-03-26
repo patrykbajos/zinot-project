@@ -15,23 +15,27 @@ static const QString objectsKey = "objects";
 
 }
 
-bool ZimeshJsonDao::loadFromJsonObject(const QJsonObject & jsonObject)
+bool ZimeshJsonDao::loadFromJsonDoc(const QJsonDocument & jsonDoc)
 {
-   if (jsonObject.contains(RootKeys::matsKey))
+   if (!jsonDoc.isObject())
+      return false;
+   QJsonObject jsonObj = jsonDoc.object();
+
+   if (jsonObj.contains(RootKeys::matsKey))
    {
-      QJsonValue matsVal = jsonObject[RootKeys::matsKey];
+      QJsonValue matsVal = jsonObj[RootKeys::matsKey];
       if (!loadMaterials(matsVal))
          return false;
    }
-   if (jsonObject.contains(RootKeys::meshesKey))
+   if (jsonObj.contains(RootKeys::meshesKey))
    {
-      QJsonValue meshesVal = jsonObject[RootKeys::meshesKey];
+      QJsonValue meshesVal = jsonObj[RootKeys::meshesKey];
       if (!loadMeshes(meshesVal))
          return false;
    }
-   if (jsonObject.contains(RootKeys::objectsKey))
+   if (jsonObj.contains(RootKeys::objectsKey))
    {
-      QJsonValue objsVal = jsonObject[RootKeys::objectsKey];
+      QJsonValue objsVal = jsonObj[RootKeys::objectsKey];
       if (!loadObjects(objsVal))
          return false;
    }

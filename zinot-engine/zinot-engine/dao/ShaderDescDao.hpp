@@ -5,61 +5,98 @@
 #ifndef ZINOT_PROJECT_SHADERDAO_HPP
 #define ZINOT_PROJECT_SHADERDAO_HPP
 
+#include <GL/gl.h>
+#include <glm/glm.hpp>
+
 #include <QString>
 #include <QMap>
 #include <QJsonObject>
-#include <gl_core_3_3.hpp>
+
+#include <zinot-utils/json/JsonDao.hpp>
+#include <cstring>
 
 namespace Zinot
 {
 
-class ShaderDescDao
+class ShaderDescDao : public JsonDao
 {
 public:
-   enum AttribType
+   enum class AttribType
    {
-      Position, Normal, Tangent, UV, Color, Weight
+      None, Position, Normal, Tangent, UV, Color, Weight
    };
 
-   enum UniformDataType
+   enum class UniformDataType
    {
+      None,
       Mat3, Mat4,
       Vec2, Vec3, Vec4,
       Bool, Int, Uint, Float, Double,
       Sampler1D, Sampler2D, Sampler3D, SamplerCube
    };
+
    union UniformDefaults
    {
-      enum Mat3Defaults
+      UniformDefaults()
+      { std::memset(this, 0, sizeof(UniformDefaults)); }
+
+      enum class NoneDefaults
+      {
+         None
+      };
+      enum class Mat3Defaults
       {
          Identity
       };
-      enum Mat4Defaults
+      enum class Mat4Defaults
       {
-         Model, View, Projection, Identity
+         Identity, Model, View, Projection
       };
-      enum Sampler2DDefaults
+      enum class Sampler1DDefaults
+      {
+         White
+      };
+      enum class Sampler2DDefaults
       {
          White, Black, FlatNormal
       };
+      enum class Sampler3DDefaults
+      {
+         Fog
+      };
+      enum class SamplerCubeDefaults
+      {
+         Sky
+      };
 
+      NoneDefaults noneDefaults;
       Mat3Defaults mat3Defaults;
       Mat4Defaults mat4Defaults;
-      Sampler2DDefaults sampler2DDefaults;
+
+      glm::vec2 vec2Defaults;
+      glm::vec3 vec3Defaults;
+      glm::vec4 vec4Defaults;
+
       GLboolean boolVal;
       GLint intVal;
       GLuint uintVal;
       GLfloat floatVal;
       GLdouble doubleVal;
+
+      Sampler1DDefaults sampler1DDefaults;
+      Sampler2DDefaults sampler2DDefaults;
+      Sampler3DDefaults sampler3DDefaults;
+      SamplerCubeDefaults samplerCubeDefaults;
    };
+
    struct UniformType
    {
       UniformDataType dataType;
-      UniformDefaults defaults;
+      UniformDefaults defVal;
    };
 protected:
    QMap<QString, AttribType> shdAttributes;
-   QMap<QString, UniformType> shdUnifroms;
+   QMap<QString, UniformType> shdUniforms;
    QString vsPath, fsPath;
 
    bool loadShdAttributes(const QJsonValue & attribsVal);
@@ -67,8 +104,16 @@ protected:
 
    bool loadShdUniforms(const QJsonValue & uniformsVal);
    void loadShdUniform(const QString & uniformName, const QJsonValue & uniformVal);
+
+   ShaderDescDao::UniformDefaults getUniformDefault(const QString & defaultStr, UniformDataType dataType) const;
+   ShaderDescDao::UniformDataType getUniformDataType(const QString & dataTypeStr) const;
 public:
-   bool loadFromJsonVal(const QJsonValue & shdDescVal);
+   virtual bool loadFromJsonDoc(const QJsonDocument & jsonDoc) override;
+
+   const QMap<QString, AttribType> & getShdAttributes() const;
+   const QMap<QString, UniformType> & getShdUniforms() const;
+   const QString & getVsPath() const;
+   const QString & getFsPath() const;
 };
 }
 

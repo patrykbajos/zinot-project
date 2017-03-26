@@ -21,9 +21,13 @@ set(ZINOT_ENGINE_SRC
         zinot-engine/dao/CameraDao.cpp
         zinot-engine/scene/GameObject.cpp
         zinot-engine/scene/Scene.cpp
+        zinot-engine/scene/components/Component.cpp
+        zinot-engine/scene/components/Transform.cpp
+        zinot-engine/eng/ResMgrList.cpp
         )
 set(ZINOT_ENGINE_TESTS
         tests/NamesRegisterTest.cpp
+        tests/ShaderDescDaoTest.cpp
         tests/MapResMgrTest.cpp)
 include_directories(./)
 

@@ -5,8 +5,9 @@
 #ifndef ZINOT_GPUPROGRAM_HPP
 #define ZINOT_GPUPROGRAM_HPP
 
-#include <gl_core_3_3.hpp>
+#include <GL/gl.h>
 #include <zinot-engine/res-sys/Resource.hpp>
+#include <zinot-engine/dao/ShaderDescDao.hpp>
 
 namespace Zinot
 {
@@ -15,12 +16,15 @@ class Shader : public Resource
 {
 protected:
    GLuint program;
-   GLuint loadShaderFromFile(const QString & path, GLenum type);
+   QMap<QString, GLint> uniforms;
+   QMap<ShaderDescDao::AttribType, GLint> attribs;
+
+   GLuint loadShaderSrcFromFile(const QString & path, GLenum type);
 public:
    Shader();
    virtual ~Shader() override;
 
-   GLenum loadFromFile(const QString & shaderPath);
+   GLenum loadFromFile(const QString & shdDescPath);
 
    GLuint getProgram()
    { return program; };

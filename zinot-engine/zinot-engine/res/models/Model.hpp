@@ -6,9 +6,7 @@
 #define ZINOTENGINEPROJECT_MODEL_HPP
 
 #include <GL/gl.h>
-
 #include <zinot-engine/res-sys/Resource.hpp>
-#include <zinot-engine/res/Texture.hpp>
 
 namespace Zinot
 {
@@ -16,8 +14,8 @@ namespace Zinot
 class Model : public Resource
 {
 public:
-   ~Model();
-   bool loadFromFile(MapResMgr * texResMgr);
+   virtual ~Model() override;
+   bool loadFromFile();
 };
 
 }

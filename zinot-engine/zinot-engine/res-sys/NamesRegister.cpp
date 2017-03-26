@@ -9,7 +9,7 @@
 namespace Zinot
 {
 
-NamesRegister::NameId NamesRegister::getNewId()
+NamesRegister::Id NamesRegister::getNewId()
 {
    if (releasedId.isEmpty())
    {
@@ -20,7 +20,7 @@ NamesRegister::NameId NamesRegister::getNewId()
    return releasedId.pop();
 }
 
-void NamesRegister::releaseId(NameId id)
+void NamesRegister::releaseId(Id id)
 {
    if (id == (nextId - 1))
    {
@@ -59,7 +59,7 @@ bool NamesRegister::deleteName(const QString & name)
    return true;
 }
 
-bool NamesRegister::deleteId(NameId nameId)
+bool NamesRegister::deleteId(Id nameId)
 {
    IdToNameContainer::iterator idToNameIt = idToName.find(nameId);
    if (idToNameIt == idToName.end())
@@ -77,7 +77,7 @@ bool NamesRegister::deleteId(NameId nameId)
    return true;
 }
 
-QString NamesRegister::getName(NameId nameId) const
+QString NamesRegister::getName(Id nameId) const
 {
    if (nameId == 0)
       return QString();
@@ -90,7 +90,7 @@ QString NamesRegister::getName(NameId nameId) const
    return QString(it.value());
 }
 
-NamesRegister::NameId NamesRegister::getId(const QString & name, bool autoCreate)
+NamesRegister::Id NamesRegister::getId(const QString & name, bool autoCreate)
 {
    NameToIdContainer::const_iterator it = nameToId.find(name);
 
@@ -99,7 +99,7 @@ NamesRegister::NameId NamesRegister::getId(const QString & name, bool autoCreate
       if (!autoCreate)
          return 0;
 
-      NameId newId = getNewId();
+      Id newId = getNewId();
 
       nameToId.insert(name, newId);
       idToName.insert(newId, name);

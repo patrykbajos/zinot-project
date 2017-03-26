@@ -10,7 +10,7 @@ class NamesRegisterTest : public ::testing::Test
 {
 protected:
    NamesRegister namesRegister;
-   NamesRegister::NameId name1, name2, name3;
+   NamesRegister::Id name1, name2, name3;
 };
 
 TEST_F(NamesRegisterTest, BasicTest)

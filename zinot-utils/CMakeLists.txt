@@ -17,7 +17,9 @@ set(ZINOT_UTILS_SRC
         ${PROJECT_SOURCE_DIR}/zitex/TexImageHeader.cpp
         ${PROJECT_SOURCE_DIR}/zitex/Reader.cpp
 
-        ${PROJECT_SOURCE_DIR}/zimesh-json/ZimeshJsonReader.cpp
+        ${PROJECT_SOURCE_DIR}/json/JsonDao.cpp
+        ${PROJECT_SOURCE_DIR}/json/JsonReader.cpp
+
         ${PROJECT_SOURCE_DIR}/zimesh-json/ZimeshJsonDao.cpp
         ${PROJECT_SOURCE_DIR}/zimesh-json/MaterialDao.cpp
         ${PROJECT_SOURCE_DIR}/zimesh-json/MeshDao.cpp

@@ -3,20 +3,20 @@
 //
 
 #include <gl_core_3_3.hpp>
-
 #include "Shader.hpp"
 
 #include <QFile>
-#include <zinot-utils/Logger.hpp>
 #include <memory>
+
+#include <zinot-utils/Logger.hpp>
+#include <zinot-utils/json/JsonReader.hpp>
+#include <zinot-engine/dao/ShaderDescDao.hpp>
 
 namespace Zinot
 {
 
 Shader::Shader()
 {
-   vs = 0;
-   fs = 0;
    program = 0;
 }
 
@@ -24,25 +24,23 @@ Shader::~Shader()
 {
    if (program)
       gl::DeleteProgram(program);
-   if (vs)
-      gl::DeleteShader(vs);
-   if (fs)
-      gl::DeleteShader(fs);
 }
 
-GLenum Shader::loadFromFile(const QString & shaderPath)
+GLenum Shader::loadFromFile(const QString & shdDescPath)
 {
-   QString vsPath, fsPath;
+   ShaderDescDao shdDescDao;
+   if (!JsonReader::loadFromJsonFile(shdDescPath, shdDescDao))
+      return 0;
 
    program = gl::CreateProgram();
    if (!program)
       return gl::GetError();
 
-   GLuint vs = loadShaderFromFile(vsPath, gl::VERTEX_SHADER);
+   GLuint vs = loadShaderSrcFromFile(shdDescDao.getVsPath(), gl::VERTEX_SHADER);
    if (!vs)
       return gl::GetError();
 
-   GLuint fs = loadShaderFromFile(fsPath, gl::FRAGMENT_SHADER);
+   GLuint fs = loadShaderSrcFromFile(shdDescDao.getFsPath(), gl::FRAGMENT_SHADER);
    if (!fs)
       return gl::GetError();
 
@@ -50,10 +48,19 @@ GLenum Shader::loadFromFile(const QString & shaderPath)
    gl::AttachShader(program, fs);
    gl::LinkProgram(program);
 
-   return gl::GetError();
+   GLenum error = gl::GetError();
+   if (error)
+      return error;
+
+   gl::DetachShader(program, vs);
+   gl::DetachShader(program, fs);
+   gl::DeleteShader(vs);
+   gl::DeleteShader(fs);
+
+   return gl::NO_ERROR_;
 }
 
-GLuint Shader::loadShaderFromFile(const QString & path, GLenum type)
+GLuint Shader::loadShaderSrcFromFile(const QString & path, GLenum type)
 {
    GLuint shader = 0;
    shader = gl::CreateShader(type);
