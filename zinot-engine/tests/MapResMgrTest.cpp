@@ -5,60 +5,64 @@
 
 #include <zinot-engine/res-sys/MapResMgr.hpp>
 #include <zinot-engine/res-sys/NamesRegister.hpp>
-#include <zinot-engine/res/Shader.hpp>
 
 using Zinot::MapResMgr;
 using Zinot::NamesRegister;
-using Zinot::Shader;
+using Zinot::Resource;
 
 class MapResMgrTest : public ::testing::Test
 {
 protected:
    MapResMgr mapResMgr;
-   NamesRegister & namesRegister;
 public:
-   MapResMgrTest() : mapResMgr(), namesRegister(mapResMgr.getNamesRegister())
+   MapResMgrTest() : mapResMgr()
    {
    }
 };
 
 TEST_F(MapResMgrTest, OneOwner)
 {
-   NamesRegister::NameId res1id = namesRegister.getId("OneOwner", true);
-   Shader * shd1inst1 = mapResMgr.newRes<Shader>(res1id);
+   QString shd1name = "shader/shd1.shd";
+   MapResMgr::ResPtr<Resource> shd1inst1 = mapResMgr.getRes<Resource>(shd1name);
 
    EXPECT_TRUE(shd1inst1);
-   EXPECT_EQ(1, shd1inst1->getRefCount());
+   EXPECT_EQ(2, shd1inst1.use_count()); // One here and one in MapResMgr
    EXPECT_EQ(&mapResMgr, shd1inst1->getResOwner());
-   EXPECT_EQ("OneOwner", shd1inst1->getName());
-   EXPECT_EQ(res1id, shd1inst1->getResId());
+   EXPECT_EQ("shader/shd1.shd", shd1inst1->getName());
+   EXPECT_EQ(1, mapResMgr.getResourcesNum());
 
-   mapResMgr.deleteRes(res1id);
+   shd1inst1.reset();
+   mapResMgr.tryDeleteRes(shd1name);
+   EXPECT_EQ(0, mapResMgr.getResourcesNum());
 }
 
 TEST_F(MapResMgrTest, MultipleOwners)
 {
-   NamesRegister::NameId id = namesRegister.getId("MultipleOwners", true);
-   Shader * shd2inst1 = mapResMgr.newRes<Shader>(id);
+   QString name = "/multiple/owners.txt";
 
-   EXPECT_TRUE(shd2inst1);
-   EXPECT_EQ(&mapResMgr, shd2inst1->getResOwner());
-   EXPECT_EQ("MultipleOwners", shd2inst1->getName());
-   EXPECT_EQ(id, shd2inst1->getResId());
+   MapResMgr::ResPtr<Resource> res1 = mapResMgr.getRes<Resource>(name);
 
-   EXPECT_EQ(1, shd2inst1->getRefCount());
+   EXPECT_TRUE(res1);
+   EXPECT_EQ(&mapResMgr, res1->getResOwner());
+   EXPECT_EQ("/multiple/owners.txt", res1->getName());
+   EXPECT_EQ(2, res1.use_count()); // One here and one in MapResMgr
 
+   MapResMgr::ResPtr<Resource> res2 = mapResMgr.getRes<Resource>(name);
 
-   Shader * shd2inst2 = mapResMgr.newRes<Shader>(id);
+   EXPECT_TRUE(res2);
+   EXPECT_EQ(&mapResMgr, res2->getResOwner());
+   EXPECT_EQ("/multiple/owners.txt", res2->getName());
 
-   EXPECT_TRUE(shd2inst2);
-   EXPECT_EQ(&mapResMgr, shd2inst2->getResOwner());
-   EXPECT_EQ("MultipleOwners", shd2inst2->getName());
-   EXPECT_EQ(id, shd2inst2->getResId());
+   EXPECT_EQ(3, res1.use_count()); // Two here and one in MapResMgr
+   EXPECT_EQ(3, res2.use_count()); // Two here and one in MapResMgr
 
-   EXPECT_EQ(2, shd2inst1->getRefCount());
-   EXPECT_EQ(2, shd2inst2->getRefCount());
+   res1.reset();
+   mapResMgr.tryDeleteRes(name);   // Here is only one using
+   EXPECT_EQ(2, res2.use_count()); // One here and one in MapResMgr
 
-   mapResMgr.deleteRes(id);
-   mapResMgr.deleteRes(id);
+   res2.reset();
+   mapResMgr.tryDeleteRes(name);   // Here is only using in MapResMgr so res is deleted
+
+   // ResMgr now is empty
+   EXPECT_EQ(0, mapResMgr.getResourcesNum());
 }

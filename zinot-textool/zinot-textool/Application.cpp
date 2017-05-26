@@ -16,7 +16,7 @@ namespace Textool
 {
 Application::Application(int argc, char ** argv) : coreApplication(argc, argv)
 {
-   coreApplication.setApplicationName("Zinottextool");
+   coreApplication.setApplicationName("Zinot Textool");
    coreApplication.setApplicationVersion("0.1");
 
    parseCmd();

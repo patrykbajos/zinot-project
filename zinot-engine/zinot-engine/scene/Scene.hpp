@@ -5,19 +5,22 @@
 #ifndef ZINOT_PROJECT_SCENE_HPP
 #define ZINOT_PROJECT_SCENE_HPP
 
-#include "GameObject.hpp"
+#include <memory>
+#include <zinot-engine/scene/GameObject.hpp>
 
 namespace Zinot
 {
 
+class Engine;
+
 class Scene
 {
-protected:
+private:
+   Engine * parentEngine;
 
-   GameObject * rootGameObject;
-   QVector<GameObject *> gameObjects;
+   std::unique_ptr<GameObject> rootGameObject;
 public:
-
+   bool loadFromJsonFile(const QString & filePath);
 };
 
 }

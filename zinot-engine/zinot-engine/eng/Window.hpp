@@ -7,31 +7,32 @@
 
 #include <memory>
 #include <SFML/Window.hpp>
-#include <zinot-engine/scene/dao/SceneDao.hpp>
 
 namespace Zinot
 {
 class Engine;
+
+class Scene;
 
 class Window
 {
 protected:
    std::unique_ptr<sf::Window> sfWindow;
    Engine * parentEnginePtr;
-   SceneDao * scenePtr;
+   Scene * scenePtr;
 public:
+   Window(Engine * enginePtr);
+
    void open();
    bool enterMainLoop();
    void close();
-
-   Window(Engine * enginePtr);
 
    const sf::Window * getSfWindow() const
    {
       return sfWindow.get();
    }
 
-   void setScenePtr(SceneDao * scenePtr)
+   void setScenePtr(Scene * scenePtr)
    {
       Window::scenePtr = scenePtr;
    }

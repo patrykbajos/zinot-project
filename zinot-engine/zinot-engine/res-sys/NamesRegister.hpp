@@ -12,30 +12,35 @@
 namespace Zinot
 {
 
+/**
+ * @brief Class implamenting relations id to name and name to id
+ *
+ * Class contains map of names pointing to generated id's and conteiner
+ * containging map of id's pointing to names. It generates id's
+ * 1 =< id. Id 0 means void id.
+ */
 class NamesRegister
 {
 public:
-   typedef uint32_t NameId;
-   typedef QString Name;
+   typedef uint32_t Id; ///< Type of ID. It is unsigned 32b value.
+   typedef QString Name; ///< Type of Name. It is Qt5 string. It is using shared data.
 protected:
-   typedef QMap<QString, NameId> NameToIdContainer;
-   typedef QMap<NameId, QString> IdToNameContainer;
+   typedef QMap<QString, Id> NameToIdContainer;
+   typedef QMap<Id, QString> IdToNameContainer;
    NameToIdContainer nameToId;
    IdToNameContainer idToName;
 
-   QStack<NameId> releasedId;
-   NameId nextId = 1;
+   QStack<Id> releasedId;
+   Id nextId = 1;
 
-   NameId getNewId();
-   void releaseId(NameId id);
+   Id getNewId();
+   void releaseId(Id id);
 public:
-   //bool addNamesFromPath(const QString & path);
-
    bool deleteName(const Name & name);
-   bool deleteId(NameId nameId);
+   bool deleteId(Id nameId);
 
-   Name getName(NameId nameId) const;
-   NameId getId(const Name & name, bool autoCreate = true);
+   Name getName(Id nameId) const;
+   Id getId(const Name & name, bool autoCreate = true);
 };
 }
 

@@ -1,41 +1,22 @@
 
-[====== STARTING LOG ======]
-[ DATE: 19.08.2016 15:42:09]
-
-(INFO) Starting engine...
-(INFO): Shader[0]{name = basic-shader, vs = media/shaders/shader.vs.glsl, fs = media/shaders/shader.fs.glsl }
-(INFO): Obj[0]{model = media/models/ursus.obj, shader = basic-shader }
-(INFO): Obj[1]{model = media/models/czl.obj, shader = basic-shader }
 
 [====== STARTING LOG ======]
-[ DATE: 03.12.2016 20:39:51]
+[ DATE: 26.03.2017 16:30:35]
 
-(INFO) Starting engine...
-
-[====== STARTING LOG ======]
-[ DATE: 03.12.2016 20:53:12]
-
-(INFO) Starting engine...
+(INFO): Starting engine...
+[ERROR]: Cannot load model:
 
 [====== STARTING LOG ======]
-[ DATE: 03.12.2016 21:18:01]
+[ DATE: 26.03.2017 17:14:39]
 
-(INFO) Starting engine...
-
-[====== STARTING LOG ======]
-[ DATE: 26.12.2016 19:34:29]
-
-(INFO) Starting engine...
+(INFO): Starting engine...
+(STATUS): Loading scene result is: true
 
 [====== STARTING LOG ======]
-[ DATE: 27.12.2016 16:11:54]
+[ DATE: 26.03.2017 17:20:33]
 
-(INFO) Starting engine...
-
-[====== STARTING LOG ======]
-[ DATE: 27.12.2016 16:12:44]
-
-(INFO) Starting engine...
+(INFO): Starting engine...
+(STATUS): Loading scene result is: true
 
 [====== STARTING LOG ======]
 [ DATE: 29.12.2016 10:51:28]

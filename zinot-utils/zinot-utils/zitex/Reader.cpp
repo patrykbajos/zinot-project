@@ -17,7 +17,7 @@ bool Reader::readFromFile(const std::string & fileName, Data & outData)
       return false;
 
    auto fileSize = file.size();
-   outData.rawData.resize(fileSize);
+   outData.rawData.resize((unsigned long) fileSize);
    file.read((char *) outData.rawData.data(), fileSize);
 
    file.close();

@@ -7,7 +7,7 @@ import json
 import os
 
 bl_info = {
-    "name": "Expoter to Zimesh JSON",
+    "name": "Exporter to Zimesh JSON",
     "author": "bajos",
     "description": "Exports scene to Zinot Engine Zimesh JSON format.",
     "category": "Import-Export",
@@ -44,12 +44,22 @@ meshKeys = {
 matKeys = {
     "drawableKey": "drawable",
     "shaderPathKey": "shaderPath",
-    "shaderPropertiesKey": "shaderProperties",
+    "shaderUniformsKey": "shaderUniforms",
+    "shaderAttributesKey": "shaderAttributes",
     "envprobeTypeKey": "envprobeType",
     "renderPassKey": "renderPass",
-    "surfaceTypeKey": "surfaceType"
+    "lightingModelKey": "lightingModel"
 }
 
+
+def normalizeFilePath(path):
+    path = os.path.normpath(path)
+    path = path.lstrip('/')
+    return path
+
+
+def changeFileExtension(file, ext):
+    return (os.path.splitext(file)[0] + '.' + ext)
 
 class ZimeshJSONWriter:
     def write(self, packedData, filepath):
@@ -58,13 +68,13 @@ class ZimeshJSONWriter:
             json.dump(packedData, fileStream, indent=4, sort_keys=True)
             fileStream.close()
         except IOError:
-            return None
-        return None
+            return False
+        return True
 
 
 class DataPacker:
     exporter = None
-    toOpenGLSpaceMat = mathutils.Matrix.Rotation(math.radians(-90.0), 4, "X")
+    toOpenGLSpaceMat = mathutils.Matrix.Rotation(math.radians(-90.0), 4, 'X')
 
     def packMaterials(self, packedData, context):
         packedMaterials = packedData[rootKeys["matsKey"]] = {}
@@ -73,36 +83,87 @@ class DataPacker:
             packedMaterial = packedMaterials[mat.name] = {}
             self.packMaterial(packedMaterial, mat)
 
-        return None
+        return True
 
     def packMaterial(self, packedMaterial, mat):
         nodes = mat.node_tree.nodes
 
-        propFrame = nodes.get("zimeshShaderProp")
-        if propFrame is None:
+        """
+        EN: Search frames called "zimeshShader", "uniforms", "attributes"
+        PL: Szuka ramek "zimeshShader", "uniforms", "attributes"
+        """
+        shdFrame = nodes.get('zimeshShader')
+        if (shdFrame is None) or (type(shdFrame) is not bpy.types.NodeFrame):
             return False
 
-        packedMaterial[matKeys["shaderPathKey"]] = propFrame.label
+        shdUniformsFrame = nodes.get('uniforms')
+        if (shdUniformsFrame is None) or (type(shdUniformsFrame) is not bpy.types.NodeFrame):
+            return False
 
-        propNodes = []
+        shdAttribsFrame = nodes.get('attributes')
+        if (shdAttribsFrame is None) or (type(shdAttribsFrame) is not bpy.types.NodeFrame):
+            return False
+
+        """
+        EN: Get name Label from frame "zimeshShader", which is
+            path to shader descriptor file.
+        PL: Z ramki "zimeshShader" pobiera jej nazwę Label, która jest
+            ścieżką do deskryptora shadera.
+        """
+        packedMaterial[matKeys["shaderPathKey"]] = normalizeFilePath(shdFrame.label)
+
+        """
+        EN: Search nodes belong to frame "uniforms" or "attributes".
+        PL: Szuka nodes należących do ramki "uniforms" lub "attributes".
+        """
+        uniformNodes = []
+        attribNodes = []
         for node in nodes:
-            if node.parent == propFrame:
-                propNodes.append(node)
+            if node.parent == shdUniformsFrame:
+                uniformNodes.append(node)
+            if node.parent == shdAttribsFrame:
+                attribNodes.append(node)
 
-        packedShdProps = packedMaterial[matKeys["shaderPropertiesKey"]] = {}
-        for propNode in propNodes:
-            packedShdProp = packedShdProps[propNode.name] = None
-            self.packShaderProp(packedShdProp, propNode)
+        packedShdUniforms = packedMaterial[matKeys["shaderUniformsKey"]] = {}
+        packedShdAttribs = packedMaterial[matKeys["shaderAttributesKey"]] = {}
+
+        """
+        EN: Pack attribute and uniform nodes to dictionary
+        PL: Pakuje nodes atrybutów lub uniformów do słownika
+        """
+        for node in uniformNodes:
+            uniform = self.packShaderUniform(node)
+            if uniform is not None:
+                packedShdUniform = packedShdUniforms[node.name] = uniform
+        for node in attribNodes:
+            attrib = self.packShaderAttrib(node)
+            if attrib is not None:
+                packedShdAttrib = packedShdAttribs[node.name] = attrib
 
         packedMaterial[matKeys["drawableKey"]] = True
-        matPropFrame = nodes.get("zimeshMaterialProp")
+        packedMaterial[matKeys["envprobeTypeKey"]] = "None"
+        packedMaterial[matKeys["renderPassKey"]] = "Deferred"
+        packedMaterial[matKeys["lightingModelKey"]] = "PBR"
 
-        packedMaterial[matKeys["envprobeTypeKey"]]
-        packedMaterial[matKeys["renderPassKey"]]
-        packedMaterial[matKeys["surfaceTypeKey"]]
+        return True
 
+    def packShaderUniform(self, node):
+        if type(node) is bpy.types.ShaderNodeValue:
+            val = node.outputs[0].default_value
+            return str(val)
+        if type(node) is bpy.types.ShaderNodeTexImage:
+            img_fp = normalizeFilePath(node.image.filepath)
+            return changeFileExtension(img_fp, "zitex")
+        return None
 
-
+    def packShaderAttrib(self, node):
+        if type(node) is bpy.types.ShaderNodeUVMap:
+            return node.uv_map
+        if type(node) is bpy.types.ShaderNodeTangent:
+            if node.direction_type == "UV_MAP":
+                return node.uv_map
+            else:
+                return None
         return None
 
     def packMeshObject(self, packedData, obj, context):
@@ -161,7 +222,7 @@ class DataPacker:
                 fg = packedFaces[polygon.material_index]
                 fg.extend([polygon.loop_indices[0], polygon.loop_indices[1], polygon.loop_indices[2]])
 
-        packedObject[objectKeys["typeKey"]] = "mesh"
+        packedObject[objectKeys["typeKey"]] = "Mesh"
         packedObject[objectKeys["dataKey"]] = obj.data.name
         if obj.parent is not None:
             packedObject[objectKeys["parentKey"]] = obj.parent.name
@@ -178,10 +239,10 @@ class DataPacker:
 
         # Free temporary mesh (with applied modifiers of obj)
         bpy.data.meshes.remove(meshTemp)
-        return
+        return True
 
     def packLightObject(self, packedData, light, context):
-        return
+        return True
 
     def packObjects(self, packedData, context):
         objectsToExport = None
@@ -198,7 +259,7 @@ class DataPacker:
                 self.packMeshObject(packedData, obj, context)
             if obj.type == "LIGHT":
                 self.packLightObject(packedData, obj, context)
-        return None
+        return True
 
     def packData(self, exporter, context):
         self.exporter = exporter
@@ -217,20 +278,9 @@ class ExportZimesh(bpy.types.Operator, bpy_extras.io_utils.ExportHelper):
     filter_glob = bpy.props.StringProperty(default='*.json', options={'HIDDEN'})
 
     selectedOnly = bpy.props.BoolProperty(
-        name="Export selected only",
-        description="Export only objects selected on scene",
+        name="Selected only",
+        description="Export only selected objects.",
         default=True
-    )
-
-    vsFormat = bpy.props.StringProperty(
-        name="Vertex shader path format",
-        description="format for vertex shader path. Use {matname} for material name and {filename} for file name.",
-        default="/media/shaders/{matname}_vs.glsl"
-    )
-    fsFormat = bpy.props.StringProperty(
-        name="Fragment shader path format",
-        description="format for fragment shader path. Use {matname} for material name and {filename} for file name.",
-        default="/media/shaders/{matname}_fs.glsl"
     )
 
     packer = DataPacker()

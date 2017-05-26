@@ -5,13 +5,11 @@
 #ifndef ZINOT_PROJECT_GAMEOBJECT_HPP
 #define ZINOT_PROJECT_GAMEOBJECT_HPP
 
-#include <zinot-engine/res-sys/MapResMgr.hpp>
-#include <zinot-engine/res/GpuProgram.hpp>
-#include <zinot-engine/res/Texture.hpp>
-#include <zinot-engine/res/models/Model.hpp>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
+#include <memory>
+#include <vector>
+#include <QString>
+#include <QMap>
+#include <zinot-engine/scene/components/Component.hpp>
 
 namespace Zinot
 {
@@ -19,28 +17,17 @@ namespace Zinot
 class GameObject
 {
 protected:
-   glm::vec3 pos;
-   glm::quat orient;
-   glm::vec3 scale;
-   glm::mat4 transform;
-
-   Model* model;
-
    QString name;
    GameObject* parent;
-   QMap<QString, GameObject*> children;
+   QMap<QString, std::unique_ptr<GameObject>> children;
+   std::vector<std::unique_ptr<Component>> components;
 public:
-/* Metody TODO
- *
- * valid
- *
- * linkToParent
- * unlinkParent
- * linkChild
- * unlinkChild
- *
- * gettery/settery
- */
+   void setName(const QString & name);
+   void setParent(GameObject * parent);
+   const QString & getName() const;
+   GameObject * getParent() const;
+   const QMap<QString, std::unique_ptr<GameObject>> & getChildren() const;
+   std::vector<std::unique_ptr<Component>> & getComponents();
 };
 
 }

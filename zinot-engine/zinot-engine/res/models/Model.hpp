@@ -6,18 +6,23 @@
 #define ZINOTENGINEPROJECT_MODEL_HPP
 
 #include <GL/gl.h>
-
 #include <zinot-engine/res-sys/Resource.hpp>
-#include <zinot-engine/res/Texture.hpp>
 
 namespace Zinot
 {
 
 class Model : public Resource
 {
+private:
+   GLuint indexBuf;
+   GLuint dataBuf;
 public:
-   ~Model();
-   bool loadFromFile(MapResMgr * texResMgr);
+   Model(){
+      setLoaded(false);
+   }
+   virtual ~Model() override;
+
+   bool loadFromFile();
 };
 
 }

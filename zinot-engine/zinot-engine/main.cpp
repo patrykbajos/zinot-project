@@ -1,7 +1,6 @@
 #include <zinot-engine/eng/Engine.hpp>
 
 #ifndef NDEBUG
-
 #include <gtest/gtest.h>
 #endif
 

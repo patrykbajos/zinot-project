@@ -17,7 +17,7 @@ Material::~Material()
 
 }
 
-bool Material::loadFromZimeshJsonMaterialDao(const Zimesh::MaterialDao & materialDao, MapResMgr * gpuProgsMgr)
+bool Material::loadFromZimeshJsonMaterialDao(const Zimesh::MaterialDao & materialDao)
 {
    return true;
 }

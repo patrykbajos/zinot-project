@@ -11,46 +11,29 @@ class MapResMgr;
 class Resource
 {
 public:
-   typedef uint32_t ResRefCount;
    typedef uint32_t ResId;
 private:
-   ResRefCount refCount;
-   ResId resId;
-   MapResMgr * resOwner;
+   ResId resId = 0;
+   MapResMgr * resOwner = nullptr;
+   bool loaded;
+protected:
+   void setLoaded(bool loaded);
 public:
-   Resource();
-   Resource(Resource && src);
-   Resource(const Resource & src);
    virtual ~Resource();
-
-   virtual void decRefCount()
-   {
-      --refCount;
-   }
-
-   virtual ResRefCount getRefCount()
-   {
-      return refCount;
-   }
-
-   virtual void incRefCount()
-   {
-      ++refCount;
-   }
 
    virtual ResId getResId()
    {
       return resId;
    }
 
-   virtual void setResId(ResId newId)
+   virtual void setResId(ResId resId)
    {
-      resId = newId;
+      Resource::resId = resId;
    }
 
-   virtual void setResOwner(MapResMgr * newResOwner)
+   virtual void setResOwner(MapResMgr * resOwner)
    {
-      resOwner = newResOwner;
+      Resource::resOwner = resOwner;
    }
 
    virtual MapResMgr * getResOwner()
@@ -58,6 +41,7 @@ public:
       return resOwner;
    }
 
+   bool isLoaded() const;
    virtual QString getName();
 };
 }

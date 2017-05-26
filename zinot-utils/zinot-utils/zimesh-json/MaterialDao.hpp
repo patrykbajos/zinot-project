@@ -15,11 +15,6 @@ namespace Zimesh
 class MaterialDao
 {
 public:
-   enum SurfaceType{
-      Opaque,
-      Transparent
-   };
-
    enum EnvprobeType
    {
       None,
@@ -36,15 +31,18 @@ private:
    QString name;
    bool drawable;
    QString shaderPath;
-   QMap<QString, QString> shaderProperties;
+   QMap<QString, QString> shaderUniforms;
+   QMap<QString, QString> shaderAttributes;
    EnvprobeType envprobeType;
    RenderPass renderPass;
-   SurfaceType surfaceType;
+   QString lightingModel;
 
-   bool loadShaderProperties(const QJsonValue & shaderPropVal);
+   bool loadShaderProperties(const QJsonValue & shaderPropVal, QMap<QString, QString> & map);
+   bool loadShaderUniforms(const QJsonValue & shaderUniVal);
+   bool loadShaderAttributes(const QJsonValue & shaderAttrVal);
    bool loadEnvprobeType(const QJsonValue & envProbeVal);
    bool loadRenderPass(const QJsonValue & renderPassVal);
-   bool loadSurfaceType(const QJsonValue & surfTypeVal);
+   bool loadLightingModel(const QJsonValue & lightingMdlVal);
 public:
    bool loadFromJsonValue(const QString & matName, const QJsonValue & matVal);
 };

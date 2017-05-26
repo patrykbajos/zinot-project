@@ -1,22 +1,22 @@
 {
-  "dependentTextures": [
-    "//table_ao.zitex",
-    "//wood_d.zitex"
-  ],
   "materials": {
     "table_mat": {
-      "alpha": 1.0,
-      "dependentTextures": [
-        "//table_ao.zitex",
-        "//wood_d.zitex"
-      ],
       "drawable": true,
-      "envmapSource": "staticObject",
-      "fragmentShader": "/media/shaders/table_mat_fs.glsl",
-      "metalness": 0.0,
-      "roughness": 0.5,
-      "surfaceType": "opaque",
-      "vertexShader": "/media/shaders/table_mat_vs.glsl"
+      "envprobeType": "None",
+      "lightingModel": "PBR",
+      "renderPass": "Deferred",
+      "shaderAttributes": {
+        "vertTan": "texture",
+        "vertUv1": "texture",
+        "vertUv2": "ao"
+      },
+      "shaderPath": "media/shaders/pbrDoubleUVShader.shd",
+      "shaderUniforms": {
+        "metalness": "0.20000000298023224",
+        "roughness": "0.4000000059604645",
+        "texAO": "table_ao.zitex",
+        "texDiffuse": "wood_d.zitex"
+      }
     }
   },
   "meshes": {
@@ -8392,7 +8392,7 @@
         1.0
       ],
       "parent": null,
-      "type": "mesh"
+      "type": "Mesh"
     }
-  }
+    }
 }

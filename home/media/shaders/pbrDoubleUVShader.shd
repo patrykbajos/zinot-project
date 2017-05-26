@@ -1,0 +1,21 @@
+{
+  "shaderAttributes": {
+    "vertPos": "Position",
+    "vertNorm": "Normal",
+    "vertTan": "Tangent",
+    "vertUv1": "UV",
+    "vertUv2": "UV"
+  },
+  "shaderUniforms": {
+    "modelMat": "mat4;Model",
+    "viewMat": "mat4;View",
+    "projMat": "mat4;Projection",
+    
+    "metalness": "float;0.0",
+    "roughness": "float;0.3",
+    "texDiffuse": "sampler2D;White",
+    "texAO": "sampler2D;White"
+  },
+  "vertexShaderPath": "media/shaders/pbrDoubleUVVert.glsl",
+  "fragmentShaderPath": "media/shaders/pbrDoubleUVFrag.glsl"
+}

@@ -105,6 +105,12 @@ bool ObjectDao::loadMatWorld(const QJsonValue & matWorldJsonVal)
 
 bool ObjectDao::loadParent(const QJsonValue & parentJsonVal)
 {
+   if (parentJsonVal.isNull())
+   {
+      parent.clear();
+      return true;
+   }
+
    if (!parentJsonVal.isString())
       return false;
 

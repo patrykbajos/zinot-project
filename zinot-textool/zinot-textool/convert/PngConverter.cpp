@@ -110,7 +110,7 @@ bool PngConverter::writeToTex(const std::vector<Mipmap> & mipmaps, const ConfigD
    //data.outEndian = Endian::LE;
    auto & header = data.header;
 
-   header.isLE = true;
+   header.isLE = (uint32_t) true;
    header.target = config.getGlBindTexture().getTarget();
    header.format = config.getGlTexImage().getFormat();
    header.type = config.getGlTexImage().getType();

@@ -5,27 +5,28 @@
 #ifndef ZINOT_PROJECT_ZIMESHJSON_HPP
 #define ZINOT_PROJECT_ZIMESHJSON_HPP
 
+#include <zinot-utils/json/JsonDao.hpp>
+#include <zinot-utils/zimesh-json/MaterialDao.hpp>
+#include <zinot-utils/zimesh-json/MeshDao.hpp>
+#include <zinot-utils/zimesh-json/ObjectDao.hpp>
+
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QVector>
 #include <QMap>
 #include <QString>
 
-#include <zinot-utils/zimesh-json/MaterialDao.hpp>
-#include <zinot-utils/zimesh-json/MeshDao.hpp>
-#include <zinot-utils/zimesh-json/ObjectDao.hpp>
-
 namespace Zimesh
 {
 
-class ZimeshJsonDao
+class ZimeshJsonDao : public JsonDao
 {
 private:
    QMap<QString, MaterialDao> materials;
    QMap<QString, MeshDao> meshes;
    QMap<QString, ObjectDao> objects;
 public:
-   bool loadFromJsonObject(const QJsonObject & jsonObject);
+   virtual bool loadFromJsonDoc(const QJsonDocument & jsonDoc) override;
 
    const QMap<QString, MaterialDao> & getMaterials() const
    {
