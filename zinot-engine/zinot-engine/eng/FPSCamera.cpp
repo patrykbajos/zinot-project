@@ -1,7 +1,7 @@
 //
 // Created by patryk on 13.05.16.
 //
-#include <gl_core_3_3.hpp>
+#include "../../../glloadgen/gl_core_3_3.hpp"
 #include "FPSCamera.hpp"
 
 #include <GL/glu.h>

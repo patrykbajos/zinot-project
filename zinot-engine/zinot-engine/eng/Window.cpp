@@ -1,7 +1,7 @@
 //
 // Created by patryk on 10.05.16.
 //
-#include <gl_core_3_3.hpp>
+#include "../../../glloadgen/gl_core_3_3.hpp"
 #include "Window.hpp"
 
 namespace Zinot

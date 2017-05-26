@@ -1,31 +1,21 @@
 cmake_minimum_required(VERSION 3.5)
 project(zinot-textool)
 
-set(PROJECT_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/zinot-textool")
 set(ZINOT_TEXTOOL_SRC
-        ${PROJECT_SOURCE_DIR}/main.cpp
-        ${PROJECT_SOURCE_DIR}/Application.cpp
-        ${PROJECT_SOURCE_DIR}/convert/Converter.cpp
-        ${PROJECT_SOURCE_DIR}/convert/ConverterFactory.cpp
-        ${PROJECT_SOURCE_DIR}/convert/Mipmap.cpp
-        ${PROJECT_SOURCE_DIR}/convert/PngConverter.cpp
-        ${PROJECT_SOURCE_DIR}/convert/ZitexConverter.cpp
-        ${PROJECT_SOURCE_DIR}/convert/PngLoader.cpp
-        ${PROJECT_SOURCE_DIR}/config/ConfigDao.cpp
-        ${PROJECT_SOURCE_DIR}/config/GlBindTextureDao.cpp
-        ${PROJECT_SOURCE_DIR}/config/GlTexImageDao.cpp
-        ${PROJECT_SOURCE_DIR}/config/GlTexParameterDao.cpp
-        ${PROJECT_SOURCE_DIR}/config/LayersNamePatternsDao.cpp
-        )
+        zinot-textool/main.cpp
+        zinot-textool/Application.cpp
+        zinot-textool/convert/Converter.cpp
+        zinot-textool/convert/ConverterFactory.cpp
+        zinot-textool/convert/Mipmap.cpp
+        zinot-textool/convert/PngConverter.cpp
+        zinot-textool/convert/ZitexConverter.cpp
+        zinot-textool/convert/PngLoader.cpp
+        zinot-textool/config/ConfigDao.cpp
+        zinot-textool/config/GlBindTextureDao.cpp
+        zinot-textool/config/GlTexImageDao.cpp
+        zinot-textool/config/GlTexParameterDao.cpp
+        zinot-textool/config/LayersNamePatternsDao.cpp)
 link_directories(./)
-
-if(WIN32)
-    include_directories(E:/dev/lib/libsquish-1.14/include)
-    link_directories(E:/dev/lib/libsquish-1.14/build)
-
-    include_directories(E:/dev/lib/libFreeImage/Dist/x32)
-    link_directories(E:/dev/lib/libFreeImage/Dist/x32)
-endif()
 
 add_executable(zinot-textool ${ZINOT_TEXTOOL_SRC})
 

@@ -1,7 +1,7 @@
 //
 // Created by patryk on 14.05.16.
 //
-#include <gl_core_3_3.hpp>
+#include "../../../../glloadgen/gl_core_3_3.hpp"
 #include "Model.hpp"
 
 #include <zinot-utils/Logger.hpp>

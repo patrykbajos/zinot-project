@@ -1,7 +1,7 @@
 //
 // Created by patryk on 13.08.16.
 //
-#include <gl_core_3_3.hpp>
+#include "../../../glloadgen/gl_core_3_3.hpp"
 #include "ShaderDescDao.hpp"
 #include <QFile>
 

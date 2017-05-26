@@ -1,4 +1,4 @@
-#include <gl_core_3_3.hpp>
+#include "../../../glloadgen/gl_core_3_3.hpp"
 #include "Texture.hpp"
 
 #include <zinot-utils/zitex/Reader.hpp>
