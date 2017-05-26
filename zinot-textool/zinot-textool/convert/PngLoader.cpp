@@ -47,10 +47,10 @@ FIBITMAP * PngLoader::loadPng(const QString & inFile)
 
    FREE_IMAGE_FORMAT fiFormat = getFiFormat(inFile, bytes);
    if (fiFormat == FIF_UNKNOWN)
-      return false;
+      return nullptr;
 
    if (!isReadableFiFormat(fiFormat))
-      return false;
+      return nullptr;
 
    FIMEMORY fiMemStream;
    fiMemStream.data = bytes.data();
