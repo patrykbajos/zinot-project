@@ -266,12 +266,12 @@ bool ShaderDescDao::loadFromJsonDoc(const QJsonDocument & jsonDoc)
    return true;
 }
 
-const QMap<QString, ShaderDescDao::AttribType> & ShaderDescDao::getShdAttributes() const
+const ShaderDescDao::AttributesMap & ShaderDescDao::getShdAttributes() const
 {
    return shdAttributes;
 }
 
-const QMap<QString, ShaderDescDao::UniformType> & ShaderDescDao::getShdUniforms() const
+const ShaderDescDao::UniformsMap & ShaderDescDao::getShdUniforms() const
 {
    return shdUniforms;
 }

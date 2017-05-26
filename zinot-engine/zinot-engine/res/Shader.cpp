@@ -57,6 +57,9 @@ GLenum Shader::loadFromFile(const QString & shdDescPath)
    gl::DeleteShader(vs);
    gl::DeleteShader(fs);
 
+   getUniforms(shdDescDao);
+   getAttribs(shdDescDao);
+
    return gl::NO_ERROR_;
 }
 
@@ -103,4 +106,37 @@ GLuint Shader::loadShaderSrcFromFile(const QString & path, GLenum type)
    return shader;
 }
 
+void Shader::getUniforms(const ShaderDescDao & shdDescDao)
+{
+   using ShaderDescDao::UniformsMap;
+   using ShaderDescDao::UniformType;
+   const UniformsMap & uniformsDesc = shdDescDao.getShdUniforms();
+
+   for(UniformsMap::Iterator it=0; it != uniformsDesc.end(); ++it)
+   {
+      const QString & name = it.key();
+      GLint loc = gl::GetUniformLocation(program, name.toStdString().c_str());
+      const UniformType & type = it.value();
+
+      uniforms.insert(name, loc);
+      uniformTypes.insert(loc, type);
+   }
+}
+
+void Shader::getAttribs(const ShaderDescDao & shdDescDao)
+{
+   using ShaderDescDao::AttributesMap;
+   using ShaderDescDao::AttribType ;
+   const AttributesMap & attrDesc = shdDescDao.getShdAttributes();
+
+   for(AttributesMap::Iterator it=0; it != attrDesc.end(); ++it)
+   {
+      const QString & name = it.key();
+      GLint loc = gl::GetAttribLocation(program, name.toStdString().c_str());
+      const AttribType & type = it.value();
+
+      attribs.insert(name, loc);
+      attribTypes.insert(loc, type);
+   }
+}
 }

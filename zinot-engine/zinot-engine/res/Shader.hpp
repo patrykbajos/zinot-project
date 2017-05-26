@@ -17,17 +17,43 @@ class Shader : public Resource
 protected:
    GLuint program;
    QMap<QString, GLint> uniforms;
-   QMap<ShaderDescDao::AttribType, GLint> attribs;
+   QMap<GLint, ShaderDescDao::UniformType> uniformTypes;
+
+   QMap<QString, GLint> attribs;
+   QMap<GLint, ShaderDescDao::AttribType> attribTypes;
 
    GLuint loadShaderSrcFromFile(const QString & path, GLenum type);
+   void getUniforms(const ShaderDescDao & shdDescDao);
+   void getAttribs(const ShaderDescDao & shdDescDao);
 public:
    Shader();
    virtual ~Shader() override;
-
    GLenum loadFromFile(const QString & shdDescPath);
 
    GLuint getProgram()
-   { return program; };
+   {
+      return program;
+   };
+
+   const QMap<QString, GLint> & getUniforms() const
+   {
+      return uniforms;
+   }
+
+   const QMap<GLint, ShaderDescDao::UniformType> & getUniformTypes() const
+   {
+      return uniformTypes;
+   }
+
+   const QMap<QString, GLint> & getAttribs() const
+   {
+      return attribs;
+   }
+
+   const QMap<GLint, ShaderDescDao::AttribType> & getAttribTypes() const
+   {
+      return attribTypes;
+   }
 };
 }
 

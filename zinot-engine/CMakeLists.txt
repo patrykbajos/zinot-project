@@ -24,6 +24,7 @@ set(ZINOT_ENGINE_SRC
         zinot-engine/scene/components/Component.cpp
         zinot-engine/scene/components/Transform.cpp
         zinot-engine/eng/ResMgrList.cpp
+        zinot-engine/scene/components/ModelRenderer.cpp
         )
 set(ZINOT_ENGINE_TESTS
         tests/NamesRegisterTest.cpp

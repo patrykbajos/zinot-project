@@ -28,7 +28,13 @@ bool Model::loadFromFile()
       return false;
    }
 
-   // TODO: Perform loading model into OpenGL
+   dao.getMaterials();
+
+
+   gl::GenBuffers(1, &dataBuf);
+   gl::GenBuffers(1, &indexBuf);
+   gl::BindBuffer(gl::ARRAY_BUFFER, dataBuf);
+   gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, indexBuf);
 
    setLoaded(true);
    return true;

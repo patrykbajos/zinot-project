@@ -13,8 +13,15 @@ namespace Zinot
 
 class Model : public Resource
 {
+private:
+   GLuint indexBuf;
+   GLuint dataBuf;
 public:
+   Model(){
+      setLoaded(false);
+   }
    virtual ~Model() override;
+
    bool loadFromFile();
 };
 

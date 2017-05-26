@@ -40,32 +40,25 @@ public:
       UniformDefaults()
       { std::memset(this, 0, sizeof(UniformDefaults)); }
 
-      enum class NoneDefaults
-      {
+      enum class NoneDefaults {
          None
       };
-      enum class Mat3Defaults
-      {
+      enum class Mat3Defaults {
          Identity
       };
-      enum class Mat4Defaults
-      {
+      enum class Mat4Defaults {
          Identity, Model, View, Projection
       };
-      enum class Sampler1DDefaults
-      {
+      enum class Sampler1DDefaults {
          White
       };
-      enum class Sampler2DDefaults
-      {
+      enum class Sampler2DDefaults {
          White, Black, FlatNormal
       };
-      enum class Sampler3DDefaults
-      {
+      enum class Sampler3DDefaults {
          Fog
       };
-      enum class SamplerCubeDefaults
-      {
+      enum class SamplerCubeDefaults {
          Sky
       };
 
@@ -94,9 +87,12 @@ public:
       UniformDataType dataType;
       UniformDefaults defVal;
    };
+
+   typedef QMap<QString, AttribType> AttributesMap;
+   typedef QMap<QString, UniformType> UniformsMap;
 protected:
-   QMap<QString, AttribType> shdAttributes;
-   QMap<QString, UniformType> shdUniforms;
+   AttributesMap shdAttributes;
+   UniformsMap shdUniforms;
    QString vsPath, fsPath;
 
    bool loadShdAttributes(const QJsonValue & attribsVal);
@@ -105,13 +101,13 @@ protected:
    bool loadShdUniforms(const QJsonValue & uniformsVal);
    void loadShdUniform(const QString & uniformName, const QJsonValue & uniformVal);
 
-   ShaderDescDao::UniformDefaults getUniformDefault(const QString & defaultStr, UniformDataType dataType) const;
-   ShaderDescDao::UniformDataType getUniformDataType(const QString & dataTypeStr) const;
+   UniformDefaults getUniformDefault(const QString & defaultStr, UniformDataType dataType) const;
+   UniformDataType getUniformDataType(const QString & dataTypeStr) const;
 public:
    virtual bool loadFromJsonDoc(const QJsonDocument & jsonDoc) override;
 
-   const QMap<QString, AttribType> & getShdAttributes() const;
-   const QMap<QString, UniformType> & getShdUniforms() const;
+   const AttributesMap & getShdAttributes() const;
+   const UniformsMap & getShdUniforms() const;
    const QString & getVsPath() const;
    const QString & getFsPath() const;
 };

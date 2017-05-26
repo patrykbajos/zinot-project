@@ -10,7 +10,7 @@
 namespace Zinot
 {
 
-Transform::Transform()
+Transform::Transform() : Component()
 {
    setComponentType(Component::Type::Transform);
 }

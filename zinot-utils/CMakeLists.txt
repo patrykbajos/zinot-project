@@ -29,12 +29,11 @@ set(ZINOT_UTILS_TESTS
         tests/main.cpp
         tests/EndianTest.cpp
         tests/ZimeshJsonTest.cpp)
-link_directories(./)
-
+link_directories(${CMAKE_CURRENT_LIST_DIR})
 add_library(zinot-utils SHARED ${ZINOT_UTILS_SRC})
+
 find_package(Qt5Core)
 target_link_libraries(zinot-utils Qt5::Core)
-
 if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
     add_executable(zinot-utils-tests ${ZINOT_UTILS_TESTS})
     target_link_libraries(zinot-utils-tests zinot-utils)

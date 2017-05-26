@@ -17,7 +17,7 @@
         "texAO": "table_ao.zitex",
         "texDiffuse": "wood_d.zitex"
       }
-        }
+    }
   },
   "meshes": {
     "table_mesh": {

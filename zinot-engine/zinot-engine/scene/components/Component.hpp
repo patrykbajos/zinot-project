@@ -13,7 +13,7 @@ class Component
 public:
    enum class Type
    {
-      None, Transform
+      None, Transform, ModelRenderer
    };
 protected:
    Type componentType;
