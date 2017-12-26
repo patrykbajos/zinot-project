@@ -23,8 +23,8 @@ elseif (WIN32)
     set(LIB_SFML_LIB E:/dev/lib/SFML-2.4.1/bin CACHE PATH "")
     set(LIB_SFML_INC E:/dev/lib/SFML-2.4.1/include CACHE PATH "")
 
-    include_directories(LIB_FREEIMAGE_INC LIB_FREETYPE_INC LIB_GLM_INC LIB_SQUISH_INC LIB_SFML_INC)
-    link_directories(LIB_FREEIMAGE_LIB LIB_FREETYPE_LIB LIB_SQUISH_LIB LIB_SFML_LIB)
+    include_directories(${LIB_FREEIMAGE_INC} ${LIB_FREETYPE_INC} ${LIB_GLM_INC} ${LIB_SQUISH_INC} ${LIB_SFML_INC})
+    link_directories(${LIB_FREEIMAGE_LIB} ${LIB_FREETYPE_LIB} ${LIB_SQUISH_LIB} ${LIB_SFML_LIB})
 
     set(GL_LIB_FILE opengl32 CACHE STRING "OpenGL library file name.")
     set(GLU_LIB_FILE glu32 CACHE STRING "OpenGL Utility library file name.")
