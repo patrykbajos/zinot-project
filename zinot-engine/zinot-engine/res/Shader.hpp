@@ -23,8 +23,8 @@ protected:
    QMap<GLint, ShaderDescDao::AttribType> attribTypes;
 
    GLuint loadShaderSrcFromFile(const QString & path, GLenum type);
-   void getUniforms(const ShaderDescDao & shdDescDao);
-   void getAttribs(const ShaderDescDao & shdDescDao);
+   void loadUniforms(const ShaderDescDao & shdDescDao);
+   void loadAttribs(const ShaderDescDao & shdDescDao);
 public:
    Shader();
    virtual ~Shader() override;

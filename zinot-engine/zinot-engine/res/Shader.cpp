@@ -17,6 +17,7 @@ namespace Zinot
 
 Shader::Shader()
 {
+   setLoaded(false);
    program = 0;
 }
 
@@ -57,9 +58,10 @@ GLenum Shader::loadFromFile(const QString & shdDescPath)
    gl::DeleteShader(vs);
    gl::DeleteShader(fs);
 
-   getUniforms(shdDescDao);
-   getAttribs(shdDescDao);
+   loadUniforms(shdDescDao);
+   loadAttribs(shdDescDao);
 
+   setLoaded(true);
    return gl::NO_ERROR_;
 }
 
@@ -106,7 +108,7 @@ GLuint Shader::loadShaderSrcFromFile(const QString & path, GLenum type)
    return shader;
 }
 
-void Shader::getUniforms(const ShaderDescDao & shdDescDao)
+void Shader::loadUniforms(const ShaderDescDao & shdDescDao)
 {
    using ShaderDescDao::UniformsMap;
    using ShaderDescDao::UniformType;
@@ -123,10 +125,10 @@ void Shader::getUniforms(const ShaderDescDao & shdDescDao)
    }
 }
 
-void Shader::getAttribs(const ShaderDescDao & shdDescDao)
+void Shader::loadAttribs(const ShaderDescDao & shdDescDao)
 {
    using ShaderDescDao::AttributesMap;
-   using ShaderDescDao::AttribType ;
+   using ShaderDescDao::AttribType;
    const AttributesMap & attrDesc = shdDescDao.getShdAttributes();
 
    for(AttributesMap::Iterator it=0; it != attrDesc.end(); ++it)

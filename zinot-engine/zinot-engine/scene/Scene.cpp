@@ -25,7 +25,7 @@ bool Scene::loadFromJsonFile(const QString & filePath)
 
    ResMgrPtr & resMgrPtr = resMgrs.at((int) ResMgrType::ModelsMgr);
    MapResMgr::ResPtr<Model> mdl = resMgrPtr->getRes<Model>("media/models/table/table.json");
-   mdl->loadFromFile();
+   mdl->loadFromFile(<#initializer#>);
 
    std::unique_ptr<Component> mr(new ModelRenderer(mdl));
 

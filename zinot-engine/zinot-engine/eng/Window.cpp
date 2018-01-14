@@ -1,21 +1,20 @@
-//
-// Created by patryk on 10.05.16.
-//
-#include "../../../glloadgen/gl_core_3_3.hpp"
+#include <gl_core_3_3.hpp>
 #include "Window.hpp"
 
 namespace Zinot
 {
-Window::Window(Engine * enginePtr)
+Window::Window(Engine * parentEnginePtr)
 {
-   parentEnginePtr = enginePtr;
+   Window::parentEnginePtr = parentEnginePtr;
 }
 
 void Window::open()
 {
-   sfWindow.reset(new sf::Window(sf::VideoMode(800, 600), "OpenGL",
-                               sf::Style::Default,
-                               sf::ContextSettings(24, 8, 0, 3, 3, sf::ContextSettings::Core)));
+   sfWindow = std::make_unique<sf::Window>(
+      sf::VideoMode(800, 600), "OpenGL",
+      sf::Style::Default,
+      sf::ContextSettings(24, 8, 0, 3, 3, sf::ContextSettings::Core)
+   );
    sfWindow->setVerticalSyncEnabled(true);
 
    gl::sys::LoadFunctions();

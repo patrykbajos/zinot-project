@@ -11,18 +11,21 @@
 namespace Zinot
 {
 
+class Material;
+
 class Model : public Resource
 {
 private:
    GLuint indexBuf;
    GLuint dataBuf;
+   QMap<QString, Material> materials;
 public:
    Model(){
       setLoaded(false);
    }
    virtual ~Model() override;
 
-   bool loadFromFile();
+   bool loadFromFile(const QString & fp);
 };
 
 }

@@ -38,7 +38,9 @@ public:
    union UniformDefaults
    {
       UniformDefaults()
-      { std::memset(this, 0, sizeof(UniformDefaults)); }
+      {
+         std::memset(this, 0, sizeof(UniformDefaults));
+      }
 
       enum class NoneDefaults {
          None

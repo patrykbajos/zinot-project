@@ -25,11 +25,11 @@ public:
       glm::vec2 vec2Val;
       glm::vec3 vec3Val;
       glm::vec4 vec4Val;
-      bool boolVal;
-      int32_t intVal;
-      uint32_t uintVal;
-      float floatVal;
-      double doubleVal;
+      GLboolean boolVal;
+      GLint intVal;
+      GLuint uintVal;
+      GLfloat floatVal;
+      GLdouble doubleVal;
       GLuint sampler1DVal;
       GLuint sampler2DVal;
       GLuint sampler3DVal;

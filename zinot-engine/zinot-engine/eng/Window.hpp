@@ -11,7 +11,6 @@
 namespace Zinot
 {
 class Engine;
-
 class Scene;
 
 class Window
@@ -21,7 +20,7 @@ protected:
    Engine * parentEnginePtr;
    Scene * scenePtr;
 public:
-   Window(Engine * enginePtr);
+   Window(Engine * parentEnginePtr);
 
    void open();
    bool enterMainLoop();

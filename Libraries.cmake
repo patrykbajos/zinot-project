@@ -4,9 +4,8 @@
 #####
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
-    set(LIB_QT_HOME "~/usr/lib/libQt5.7.0/5.7/gcc_64" CACHE PATH "Qt5 home dir.")
-    list(APPEND CMAKE_PREFIX_PATH ${LIB_QT_HOME})
-
+    #set(LIB_QT_HOME "~/usr/lib/libQt5.7.0/5.7/gcc_64" CACHE PATH "Qt5 home dir.")
+    #list(APPEND CMAKE_PREFIX_PATH ${LIB_QT_HOME})
     set(GL_LIB_FILE GL CACHE STRING "OpenGL library file name.")
     set(GLU_LIB_FILE GLU CACHE STRING "OpenGL Utility library file name.")
 elseif (WIN32)

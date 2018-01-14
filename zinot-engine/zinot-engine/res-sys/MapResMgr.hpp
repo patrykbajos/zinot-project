@@ -9,6 +9,8 @@
 namespace Zinot
 {
 
+class Engine;
+
 class MapResMgr
 {
 public:
@@ -19,6 +21,7 @@ private:
 
    ContentContainer content;
    NamesRegister namesRegister;
+   Engine * engine;
 public:
 
    template<class T>
@@ -87,6 +90,16 @@ public:
    uint32_t getResourcesNum()
    {
       content.size();
+   }
+
+   Engine * getEngine() const
+   {
+      return engine;
+   }
+
+   void setEngine(Engine * engine)
+   {
+      MapResMgr::engine = engine;
    }
 };
 }

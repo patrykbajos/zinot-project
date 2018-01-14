@@ -9,7 +9,6 @@ namespace Zinot
 
 Material::Material()
 {
-
 }
 
 Material::~Material()
@@ -19,6 +18,7 @@ Material::~Material()
 
 bool Material::loadFromZimeshJsonMaterialDao(const Zimesh::MaterialDao & materialDao)
 {
+
    return true;
 }
 
