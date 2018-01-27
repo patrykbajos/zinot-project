@@ -4,46 +4,49 @@
 #include <cstdint>
 #include <QString>
 
-namespace Zinot
-{
-class MapResMgr;
+namespace Zinot {
+    class MapResMgr;
 
-class Resource
-{
-public:
-   typedef uint32_t ResId;
-private:
-   ResId resId = 0;
-   MapResMgr * resOwner = nullptr;
-   bool loaded;
-protected:
-   void setLoaded(bool loaded);
-public:
-   virtual ~Resource();
+    class Engine;
 
-   virtual ResId getResId()
-   {
-      return resId;
-   }
+    class Resource {
+    public:
+        typedef uint32_t ResId;
+    private:
+        Engine *engine = nullptr;
+        MapResMgr *resOwner = nullptr;
 
-   virtual void setResId(ResId resId)
-   {
-      Resource::resId = resId;
-   }
+        ResId resId = 0;
+        bool loaded = false;
+    protected:
+    public:
+        void setLoaded(bool loaded) {
+            Resource::loaded = loaded;
+        }
 
-   virtual void setResOwner(MapResMgr * resOwner)
-   {
-      Resource::resOwner = resOwner;
-   }
+    public:
+        Resource(Engine *engine, MapResMgr *resOwner, ResId resId) : engine(engine), resOwner(resOwner), resId(resId) {}
 
-   virtual MapResMgr * getResOwner()
-   {
-      return resOwner;
-   }
+        virtual ~Resource();
 
-   bool isLoaded() const;
-   virtual QString getName();
-};
+        virtual ResId getResId() {
+            return resId;
+        }
+
+        virtual MapResMgr *getResOwner() {
+            return resOwner;
+        }
+
+        virtual Engine *getEngine() const {
+            return engine;
+        }
+
+        virtual bool isLoaded() const {
+            return loaded;
+        }
+
+        virtual QString getName();
+    };
 }
 
 #endif // RESOURCE_HPP

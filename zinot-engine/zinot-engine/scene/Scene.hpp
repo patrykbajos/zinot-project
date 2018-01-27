@@ -16,11 +16,13 @@ class Engine;
 class Scene
 {
 private:
-   Engine * parentEngine;
+   Engine * engine;
 
    std::unique_ptr<GameObject> rootGameObject;
 public:
-   bool loadFromJsonFile(const QString & filePath);
+    Scene(Engine *engine) : engine(engine) {}
+
+    bool loadFromJsonFile(const QString & filePath);
 };
 
 }

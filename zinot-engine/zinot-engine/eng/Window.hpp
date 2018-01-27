@@ -8,34 +8,37 @@
 #include <memory>
 #include <SFML/Window.hpp>
 
-namespace Zinot
-{
-class Engine;
-class Scene;
+namespace Zinot {
+    class Engine;
 
-class Window
-{
-protected:
-   std::unique_ptr<sf::Window> sfWindow;
-   Engine * parentEnginePtr;
-   Scene * scenePtr;
-public:
-   Window(Engine * parentEnginePtr);
+    class Scene;
 
-   void open();
-   bool enterMainLoop();
-   void close();
+    class Window {
+    protected:
+        std::unique_ptr<sf::Window> sfWindow;
+        Engine *engine;
+        Scene *scenePtr;
+    public:
+        Window(Engine *parentEnginePtr);
 
-   const sf::Window * getSfWindow() const
-   {
-      return sfWindow.get();
-   }
+        void open();
 
-   void setScenePtr(Scene * scenePtr)
-   {
-      Window::scenePtr = scenePtr;
-   }
-};
+        bool enterMainLoop();
+
+        void close();
+
+        const sf::Window *getSfWindow() const {
+            return sfWindow.get();
+        }
+
+        void setScenePtr(Scene *scenePtr) {
+            Window::scenePtr = scenePtr;
+        }
+
+        Engine *getEngine() const {
+            return engine;
+        }
+    };
 }
 
 #endif //ZINOTENGINEPROJECT_WINDOW_HPP

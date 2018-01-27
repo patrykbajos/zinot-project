@@ -4,8 +4,8 @@
 
 #include "ResMgrList.hpp"
 
-namespace Zinot
-{
+namespace Zinot {
 
-ResMgrsContainer resMgrs;
+    ResMgrsContainer resMgrs;
+
 }

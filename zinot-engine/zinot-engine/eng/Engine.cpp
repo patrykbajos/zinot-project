@@ -10,8 +10,9 @@ Engine::Engine()
 {
    resMgrs.resize((int) ResMgrType::Size);
 
-   for (auto & resMgr : resMgrs)
-      resMgr.reset(new MapResMgr());
+   for (auto & resMgr : resMgrs) {
+      resMgr.reset(new MapResMgr(this));
+   }
 }
 
 int Engine::main()
@@ -20,15 +21,16 @@ int Engine::main()
    log.createLog("logs/log");
    log.log("(INFO): Starting engine...");
 
-   mainWindow.reset(new Window(this));
-   mainScene.reset(new Scene());
-   bool sceneResult = mainScene->loadFromJsonFile("media/scene.json");
+   windowPtr.reset(new Window(this));
+   scenePtr.reset(new Scene(this));
+
+   bool sceneResult = scenePtr->loadFromJsonFile("media/scene.json");
    log.log("(STATUS): Loading scene result is: " + QString(sceneResult ? "true" : "false"));
 
-   mainWindow->setScenePtr(mainScene.get());
-   mainWindow->open();
-   mainWindow->enterMainLoop();
-   mainWindow->close();
+   windowPtr->setScenePtr(scenePtr.get());
+   windowPtr->open();
+   windowPtr->enterMainLoop();
+   windowPtr->close();
 
    return 0;
 }

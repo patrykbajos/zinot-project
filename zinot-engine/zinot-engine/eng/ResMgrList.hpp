@@ -9,18 +9,16 @@
 #include <vector>
 #include <zinot-engine/res-sys/MapResMgr.hpp>
 
-namespace Zinot
-{
+namespace Zinot {
 
-typedef std::unique_ptr<MapResMgr> ResMgrPtr;
-typedef std::vector<ResMgrPtr> ResMgrsContainer;
+    typedef std::unique_ptr<MapResMgr> ResMgrPtr;
+    typedef std::vector<ResMgrPtr> ResMgrsContainer;
 
-enum class ResMgrType
-{
-   ModelsMgr, TexturesMgr, ShadersMgr, Size
-};
+    enum class ResMgrType {
+        ModelsMgr, TexturesMgr, ShadersMgr, Size
+    };
 
-extern ResMgrsContainer resMgrs;
+    extern ResMgrsContainer resMgrs;
 }
 
 #endif //ZINOT_PROJECT_RESMGRLIST_HPP

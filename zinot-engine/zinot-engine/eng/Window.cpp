@@ -5,7 +5,7 @@ namespace Zinot
 {
 Window::Window(Engine * parentEnginePtr)
 {
-   Window::parentEnginePtr = parentEnginePtr;
+   Window::engine = parentEnginePtr;
 }
 
 void Window::open()
