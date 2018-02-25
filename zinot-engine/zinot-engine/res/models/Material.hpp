@@ -13,6 +13,7 @@
 namespace Zinot
 {
 
+class Model;
 using Zimesh::MaterialDao;
 using ShaderDescDao;
 
@@ -36,6 +37,8 @@ public:
       GLuint samplerCubeVal;
    };
 private:
+   Model * parentModel;
+
    bool drawable;
    MaterialDao::EnvprobeType envprobeType;
    uint8_t lightingModelId;
@@ -45,7 +48,7 @@ private:
    QMap<GLint, UniformData> shaderUniforms;
    QMap<GLint, QString> shaderAttributes;
 public:
-   Material();
+   Material(Model * parentModel) : parentModel(parentModel) {}
    ~Material();
 
    bool loadFromZimeshJsonMaterialDao(const Zimesh::MaterialDao & materialDao);

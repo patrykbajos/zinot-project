@@ -8,10 +8,11 @@
 #include <GL/gl.h>
 #include <zinot-engine/res-sys/Resource.hpp>
 
+#include <QMap>
+#include <zinot-engine/res/models/Material.hpp>
+
 namespace Zinot
 {
-
-class Material;
 
 class Model : public Resource
 {
@@ -20,14 +21,10 @@ private:
    GLuint dataBuf;
    QMap<QString, Material> materials;
 public:
-   Model(){
-      setLoaded(false);
-   }
    virtual ~Model() override;
 
    bool loadFromFile(const QString & fp);
 };
-
 }
 
 #endif //ZINOTENGINEPROJECT_MODEL_HPP

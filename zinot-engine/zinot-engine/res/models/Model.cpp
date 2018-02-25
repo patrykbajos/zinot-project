@@ -10,33 +10,39 @@
 #include <zinot-engine/res-sys/MapResMgr.hpp>
 #include <zinot-engine/eng/ResMgrList.hpp>
 
-namespace Zinot {
+namespace Zinot
+{
 
-    Model::~Model() {
-    }
+Model::~Model()
+{
+}
 
-    bool Model::loadFromFile(const QString &fp) {
-        Logger &logger = Logger::getInstance();
-        Zimesh::ZimeshJsonDao dao;
+bool Model::loadFromFile(const QString & fp)
+{
+   Logger & logger = Logger::getInstance();
+   Zimesh::ZimeshJsonDao dao;
 
-        if (!JsonReader::loadFromJsonFile(fp, dao)) {
-            logger.log("[ERROR]: Cannot load model: " + fp);
-            return false;
-        }
+   if (!JsonReader::loadFromJsonFile(fp, dao))
+   {
+      logger.log("[ERROR]: Cannot load model: " + fp);
+      return false;
+   }
 
-        gl::GenBuffers(1, &dataBuf);
-        gl::GenBuffers(1, &indexBuf);
-        gl::BindBuffer(gl::ARRAY_BUFFER, dataBuf);
-        gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, indexBuf);
+   gl::GenBuffers(1, &dataBuf);
+   gl::GenBuffers(1, &indexBuf);
+   gl::BindBuffer(gl::ARRAY_BUFFER, dataBuf);
+   gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, indexBuf);
 
-        const auto &mats = dao.getMaterials();
-        for (const Zimesh::MaterialDao &mat : mats) {
-        }
-        resMgrs[ResMgrType::ShadersMgr].get();
-        resMgrs[ResMgrType::ModelsMgr];
+   const auto & mats = dao.getMaterials();
+   MapResMgr * shdMgr = getResMgrOfType(ResMgrType::ShadersMgr);
+   MapResMgr * texMgr = getResMgrOfType(ResMgrType::TexturesMgr);
+   for (const Zimesh::MaterialDao & mat : mats)
+   {
+      mat.
+   }
 
-        setLoaded(true);
-        return true;
-    }
+   setLoaded(true);
+   return true;
+}
 
 }

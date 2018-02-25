@@ -4,8 +4,14 @@
 
 #include "ResMgrList.hpp"
 
-namespace Zinot {
+namespace Zinot
+{
 
-    ResMgrsContainer resMgrs;
+ResMgrsContainer resMgrs;
+
+MapResMgr * getResMgrOfType(ResMgrType resMgrType)
+{
+   return resMgrs[static_cast<ResMgrsContainer::size_type>(resMgrType)].get();
+}
 
 }

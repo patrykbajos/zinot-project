@@ -14,11 +14,13 @@ namespace Zinot {
     typedef std::unique_ptr<MapResMgr> ResMgrPtr;
     typedef std::vector<ResMgrPtr> ResMgrsContainer;
 
-    enum class ResMgrType {
+    enum class ResMgrType : ResMgrsContainer::size_type {
         ModelsMgr, TexturesMgr, ShadersMgr, Size
     };
 
     extern ResMgrsContainer resMgrs;
+
+    MapResMgr * getResMgrOfType(ResMgrType resMgrType);
 }
 
 #endif //ZINOT_PROJECT_RESMGRLIST_HPP

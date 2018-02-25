@@ -94,7 +94,7 @@ bool MaterialDao::loadShaderAttributes(const QJsonValue & shaderAttrVal)
    return loadShaderProperties(shaderAttrVal, shaderAttributes);
 }
 
-bool MaterialDao::loadShaderProperties(const QJsonValue & shaderPropVal, QMap<QString, QString> & map)
+bool MaterialDao::loadShaderProperties(const QJsonValue & shaderPropVal, QMap<QString, QString> & propContainer)
 {
    if (!shaderPropVal.isObject())
       return false;
@@ -106,7 +106,7 @@ bool MaterialDao::loadShaderProperties(const QJsonValue & shaderPropVal, QMap<QS
       QJsonValueRef propJsonVal = it.value();
 
       if (propJsonVal.isString())
-         map.insert(propName, propJsonVal.toString());
+         propContainer.insert(propName, propJsonVal.toString());
    }
 
    return true;

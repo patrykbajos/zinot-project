@@ -27,17 +27,19 @@ public:
       Deferred,
       Forward
    };
+
+   typedef QMap<QString, QString> ShdPropContainer;
 private:
    QString name;
    bool drawable;
    QString shaderPath;
-   QMap<QString, QString> shaderUniforms;
-   QMap<QString, QString> shaderAttributes;
+   ShdPropContainer shaderUniforms;
+   ShdPropContainer shaderAttributes;
    EnvprobeType envprobeType;
    RenderPass renderPass;
    QString lightingModel;
 
-   bool loadShaderProperties(const QJsonValue & shaderPropVal, QMap<QString, QString> & map);
+   bool loadShaderProperties(const QJsonValue & shaderPropVal, ShdPropContainer & propContainer);
    bool loadShaderUniforms(const QJsonValue & shaderUniVal);
    bool loadShaderAttributes(const QJsonValue & shaderAttrVal);
    bool loadEnvprobeType(const QJsonValue & envProbeVal);
@@ -45,8 +47,47 @@ private:
    bool loadLightingModel(const QJsonValue & lightingMdlVal);
 public:
    bool loadFromJsonValue(const QString & matName, const QJsonValue & matVal);
-};
 
+   const QString & getName() const
+   {
+      return name;
+   }
+
+   bool isDrawable() const
+   {
+      return drawable;
+   }
+
+   const QString & getShaderPath() const
+   {
+      return shaderPath;
+   }
+
+   const QMap<QString, QString> & getShaderUniforms() const
+   {
+      return shaderUniforms;
+   }
+
+   const QMap<QString, QString> & getShaderAttributes() const
+   {
+      return shaderAttributes;
+   }
+
+   EnvprobeType getEnvprobeType() const
+   {
+      return envprobeType;
+   }
+
+   RenderPass getRenderPass() const
+   {
+      return renderPass;
+   }
+
+   const QString & getLightingModel() const
+   {
+      return lightingModel;
+   }
+};
 }
 
 #endif //ZINOT_PROJECT_MATERIAL_HPP
