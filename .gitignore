@@ -1,5 +1,4 @@
-/bin-linux
-/bin-win
+/bin-*
 /doc
 /.idea
 /home/logs/log
